@@ -48,6 +48,7 @@ you should do".
 | [F-008](findings/F-008-shipped-corpus-is-paraphrased-not-scraped.md) | **The shipped corpus is not a faithful scrape — most guidance was paraphrased** | data, site, classifier | high | open |
 | [F-009](findings/F-009-system-type-pages-linked-to-404.md) | All 8 system-type pages linked their main CTA to a 404 | site | high | **actioned** |
 | [F-010](findings/F-010-eval-pilot-no-case-has-one-answer.md) | Blind eval pilot: no realistic description had a single correct answer | classifier, site | medium | open |
+| [F-011](findings/F-011-eval-answer-set-homogeneity.md) | 6 of 15 pilot cases share one identical hosting-unknown answer pair | classifier | medium | open |
 
 **Needs a human, not more desk research:** ask GovTech whether the GenAI and Digital Services
 templates are meant to be adopted *alongside* a hosting SSP (F-002). No published material answers

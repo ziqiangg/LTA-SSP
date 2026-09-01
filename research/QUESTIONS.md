@@ -106,7 +106,7 @@ Remaining: (a) decide the recovery route for F-001 in an ADR — scrape, OSCAL i
 ---
 
 ## RQ-6 — What does a defensible eval look like, and what is the baseline?
-**Implications:** classifier · **Status:** open
+**Implications:** classifier · **Status:** open · **Findings:** F-010, F-011
 
 Nothing can be claimed about semantic or LLM approaches until the rule-based baseline — today's
 wizard tree, mechanically applied — is measured on a labelled set.
@@ -121,6 +121,12 @@ ceilings at κ≈0.71–0.76, and best-known full-coverage retrieval over regula
 FullCov@10. Targets must sit under those ceilings; a result that beats them comfortably indicates a
 leaky eval, not a breakthrough. Combined with the synthetic-data limitation
 (`evals/README.md`), v1 supports **relative** comparison only.
+
+**Spot-checked 2026-09-01:** the 15-case pilot's owner spot-check is done
+(`research/evals/v1/spot-check-2026-09-01.md`) — 13/15 agree, 1 agree-with-a-note, 1 disagreement
+(EV-013's `sandbox` answer, folded into F-010). The spot-check also surfaced F-011: 6 of 15 cases
+share one identical `hosting-unknown` answer pair, a coverage-diversity risk to correct for before
+generating the 120-160 case v1 set.
 
 ---
 

@@ -89,7 +89,11 @@ from data.
 
 - n = 15. Tag frequencies are indicative, not estimates.
 - Single labeller (me), so there is no agreement measure — the κ≈0.71–0.76 ceiling from F-007
-  cannot be checked against anything here. Owner spot-check pending.
+  cannot be checked against anything here. **Owner spot-check done 2026-09-01** — see
+  `research/evals/v1/spot-check-2026-09-01.md`. Result: 13/15 agree outright, 1 agree-with-a-note
+  (EV-007's `composite` tag), 1 genuine disagreement (EV-013, see Open questions). This is one
+  reviewer, not independent inter-annotator agreement in the PROPARAG sense, so it upgrades
+  confidence from "no signal" to "one corroborating read" — not to a κ figure.
 - The descriptions are synthetic. The generator was blind to the taxonomy but is still a language
   model imitating personas, and I chose the archetypes. Real omissions may pattern differently.
 
@@ -119,8 +123,20 @@ What is *not* uncertain: the schema defects below are demonstrated, not inferred
 
 ## Open questions
 
-- Owner spot-check of these 15 labels, to produce the pilot's only agreement signal.
+- ~~Owner spot-check of these 15 labels, to produce the pilot's only agreement signal.~~ **Done
+  2026-09-01** — `research/evals/v1/spot-check-2026-09-01.md`.
 - Does `hosting-unknown` stay this frequent at n=120? If so, hosting should be asked directly
-  rather than inferred, and the classifier should not attempt it.
+  rather than inferred, and the classifier should not attempt it. **Sharper version, from the
+  spot-check:** 6 of the 8 `hosting-unknown` cases resolve to the *identical* two-answer fork
+  (some cloud tier vs. `low-risk-on-premises`), which is a coverage-diversity risk for scaling, not
+  just a tag-frequency one — see F-011.
 - Should `acceptable_answers` be *ordered* by preference? `EV-013` has a deliberate ordering
   (`medium-risk-cloud` before `sandbox`) that the current schema does not formally interpret.
+  **Spot-check verdict: yes, order should be treated as meaningful — and not resolved.** The
+  spot-check disagreed with `EV-013` as labelled: `sandbox` is tree-reachable (a literal q4 answer)
+  but not defensible the way two answers in, say, EV-006 both are — applying it means 3 mandatory
+  controls plus 114 optional for an environment now holding unmasked citizen PII. The current
+  schema has no way to mark an answer as "reachable but substantively wrong" distinctly from
+  "genuinely uncertain between two reasonable readings," and `EV-013`'s ordering is the only place
+  that distinction survives today, informally. Not fixed here — `cases.jsonl` is unedited by this
+  pass — but the schema gap should be closed before scaling past the pilot.

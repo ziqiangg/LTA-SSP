@@ -107,7 +107,7 @@ Record provenance per case and keep a **held-out slice** untouched until a metho
 - Label from the description alone. If you needed outside knowledge, the description is
   under-specified — fix it or tag it.
 - Every label needs a `label_basis`.
-- Where two readings are defensible, put both in `acceptable_types` rather than picking. Log the
+- Where two readings are defensible, put both in `acceptable_answers` rather than picking. Log the
   disagreement in the case's `ambiguity`.
 - When a label cannot be settled because *the standard itself* is unclear, that is a finding with
   `implications: [data, site]`. File it.

@@ -49,6 +49,13 @@ Structural consequences that follow directly from this shape:
 - F-002 (GenAI profile is an overlay)
 - F-005 (medium/high nesting, and the identical sensitivity wording behind q5)
 - repo @ `4e7e6ba`
+- **EV-006** (`research/evals/v1/cases.jsonl`), spot-checked 2026-09-01
+  (`research/evals/v1/spot-check-2026-09-01.md`): a concrete synthetic case demonstrating issue 3 —
+  an analytics warehouse with untokenised NRIC is Confidential/Sensitive-High and cloud-hosted, so
+  q5's literal text routes it toward `high-risk-cloud`, but it is not CII, which is what that
+  profile is actually for. Both `medium-risk-cloud` and `high-risk-cloud` are defensible answers to
+  the same description — the compounding predicted structurally is reproducible from a single
+  example.
 
 ## Interpretation
 

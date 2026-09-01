@@ -165,3 +165,26 @@ Entries record **what happened**; findings record **what is true**. Use `/resear
   JS files, all routes 200, 64 internal links / 0 broken, browser render check.
 - Open: `system-types.json` and `level-definitions.json` still undiffed — the latter matters most
   since F-003 shows it holds the only `selectionGuidance`.
+
+## 2026-09-01 (session 4) — eval spot-check done
+
+- Reviewed all 15 `cases.jsonl` labels against `cases-raw.jsonl` and their `label_basis`, per the
+  handover's top item. 13/15 agree outright; EV-007 gets a minor note on tag reuse; EV-013 is a
+  genuine disagreement. Written up in `research/evals/v1/spot-check-2026-09-01.md`, which is now
+  the pilot's first (single-reviewer) agreement signal against F-007's κ≈0.71–0.76 ceiling.
+- **EV-006 promoted to F-004 as evidence**, not logged as a disagreement — it's a concrete synthetic
+  case reproducing the q5 CII/sensitivity compounding defect F-004 already described structurally.
+- **EV-013 disagreement folded into F-010.** `sandbox` sitting on equal footing with
+  `medium-risk-cloud` for a staging environment now holding live citizen PII understates the risk;
+  answered F-010's open question on whether `acceptable_answers` order should be meaningful (yes),
+  without editing `cases.jsonl` itself — the schema gap (no way to mark "tree-reachable but
+  substantively wrong" separately from "genuinely uncertain") stays open.
+- **F-011 filed:** 6 of 15 cases share one identical `hosting-unknown` answer pair (cloud tier vs.
+  `low-risk-on-premises`), which F-010's tag-frequency table didn't surface. Relevant to scaling the
+  eval to 120-160 cases — repeating the current archetype mix would inflate this fork without adding
+  signal.
+- Fixed a stale field name in the `eval-set` skill (`acceptable_types` → `acceptable_answers`,
+  left over from before F-010 renamed the schema).
+- Open, unchanged from the handover: ingest pipeline (`corpus-ingest` skill, `corpus-verifier`
+  agent, `system-types.json`/`level-definitions.json` diffs), ADR-001 and ADR-002, and all site work
+  gated on ADR-001.
