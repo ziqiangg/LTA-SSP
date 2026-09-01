@@ -259,3 +259,26 @@ Entries record **what happened**; findings record **what is true**. Use `/resear
 - Not yet done: implementing any of the three decision points, and ADR-002 (the guidance schema
   split). `status: proposed` — needs the project owner's sign-off before site work treats it as
   settled.
+
+## 2026-09-01 (session 4, continued) — ADR-002 drafted
+
+- **`research/decisions/ADR-002-split-guidance-into-recommendations-and-risk.md` written**,
+  `status: proposed`. Decision: ship `recommendations` and `risk`/`rationale` as separate fields in
+  `controls.json`, dropping the composed `guidance` field entirely rather than keeping both
+  representations — the scraped format already captures the parts separately, so this is a
+  promotion-shape decision, not a re-scrape. Motivated by two independent things pointing the same
+  way: F-007's classifier note that a separated risk/rationale signal is more useful than a fused
+  string, and handover item 5 (give the Risk: clause its own line), which becomes a clean two-field
+  render instead of a string-parsing hack under this decision.
+- Explicitly rejected keeping `guidance` alongside the split fields "for convenience" — that
+  recreates the exact two-representations-of-one-fact risk `diff_corpus.py`'s
+  `compose_guidance`-import coupling exists to prevent elsewhere in this corpus.
+  Real migration surface documented in Consequences rather than glossed over: `promote.py`,
+  `diff_corpus.py`, at least 8 `guidance`-keyed spots in `corpus.py`, `controls.js`'s render block,
+  and both the `ssp-corpus` and `corpus-ingest` skill docs all need updating if this is accepted —
+  none of that is done here, direction only.
+- Cross-referenced from F-008 (which first recommended this) and RQ-5's remaining items in
+  `QUESTIONS.md`.
+- Both ADRs from this session are `proposed`, not `accepted` — real review needed before either
+  changes site or pipeline code. Handover items remaining: site work (gated on ADR-001 acceptance),
+  and the eval-scaling / baseline-scoring research items.

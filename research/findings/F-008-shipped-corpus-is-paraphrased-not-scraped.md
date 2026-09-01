@@ -145,7 +145,8 @@ project's own rules rest on.
 - **schema:** Upstream's three-way split (`statement` / `recommendations` / `risk` for
   cybersecurity, `statement` / `recommendations` / `rationale` for DSS) is cleaner than the
   concatenated `guidance`. Adopt it — the `Risk:` join is a website presentation choice, not part
-  of the standard.
+  of the standard. **Formalized 2026-09-01 as [ADR-002](../decisions/ADR-002-split-guidance-into-recommendations-and-risk.md)
+  (proposed, not yet owner-accepted).**
 
 ## Open questions
 

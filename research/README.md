@@ -61,10 +61,16 @@ paraphrased sensitivity text ("Security sensitivity level designated as…") tha
 note describes. Synced to match the corrected `classificationText` (one line, presentation only —
 no data change). No other system-type page carried the stale phrasing.
 
-**Decisions:** [ADR-001](decisions/ADR-001-baseline-then-tailor-with-visible-tailoring.md) —
-baseline-then-tailor, with the tailoring step made real, visible, and recorded (**proposed**,
-2026-09-01, not yet owner-accepted). Still waiting on an ADR: the F-001 guidance-recovery route —
-re-scrape vs OSCAL import vs hybrid.
+**Decisions:**
+- [ADR-001](decisions/ADR-001-baseline-then-tailor-with-visible-tailoring.md) — baseline-then-tailor,
+  with the tailoring step made real, visible, and recorded (**proposed**, 2026-09-01, not yet
+  owner-accepted).
+- [ADR-002](decisions/ADR-002-split-guidance-into-recommendations-and-risk.md) — split the composed
+  `guidance` field into `recommendations` and `risk`/`rationale` (**proposed**, 2026-09-01, not yet
+  owner-accepted).
+
+Still waiting on an ADR: the F-001 guidance-recovery route — re-scrape vs OSCAL import vs hybrid
+(implicitly resolved via re-scrape at the F-008 rebuild, but never formally recorded as a decision).
 
 Prior-art cards: `prior-art/PA-001..PA-013`, indexed in F-007. Read F-007 rather than the cards.
 

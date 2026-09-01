@@ -109,7 +109,9 @@ upstream* (needs authoring or a pointer), or *deliberate*, with the upstream pag
 
 Remaining: (a) decide the recovery route for F-001 in an ADR — scrape, OSCAL import, or hybrid.
 ~~(b) get a human answer from GovTech on the composition question~~ — **done, F-002 confirmed
-2026-09-01.**
+2026-09-01.** ~~(c) decide whether to split the composed `guidance` field~~ — **done, drafted as
+[ADR-002](decisions/ADR-002-split-guidance-into-recommendations-and-risk.md) 2026-09-01 (proposed,
+not yet owner-accepted).**
 
 ---
 
