@@ -1,0 +1,2722 @@
+[
+  {
+    "id": "AC-1",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Principle of Least Privilege",
+    "description": "Deny access by default and grant only the minimum permissions required for authorised accounts or processes to perform a specific function based on the account inventory implemented.",
+    "guidance": "Consider attribute- or feature-based access control for customization and granularity. Suggested tools include AWS IAM Access Advisor or Azure AD Access Review. Risk: Violating least privilege principles increases risk of unauthorized access, privilege escalation, and security breaches due to unnecessary permissions.",
+    "status": "scraped"
+  },
+  {
+    "id": "AC-10",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Identity and Device-Based Access Control",
+    "description": "Adopt Identity and Device-Based Access Control for secure and context-aware connectivity to private organisational resources.",
+    "guidance": "Use solutions like Secure Service Edge (SSE), Identity Aware Proxies (IAP), or Zero Trust services (Entra ID Conditional Access, Okta Device Trust) integrating identity and device management. Risk: Relying on direct connections or traditional VPNs without strong identity and device-based measures increases risk of unauthorized access and data breaches.",
+    "status": "scraped"
+  },
+  {
+    "id": "AC-11",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Single User Endpoints",
+    "description": "Assign each endpoint device to a single designated primary [ac-11_prm_1] and enforce the assignment to ensure accountability and enhance security monitoring.",
+    "guidance": "Implement user authentication and endpoint management with device enrollment. For secondary support accounts, consider endpoint privilege management tools. Risk: Multiple users accessing a single endpoint can lead to data leakage, activity tracking difficulties, and increased insider threat vulnerability.",
+    "parameters": [
+      {
+        "id": "ac-11_prm_1",
+        "type": "type (str)",
+        "description": "Type of user or identity"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "AC-12",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Single Sign-On (SSO) for Internal Services and Accounts",
+    "description": "Use Single Sign-On (SSO) for internal services and accounts.",
+    "guidance": "Configure multi-factor authentication at the SSO identity provider, ensuring access is granted only after IdP user authentication. Risk: Without SSO, there is increased risk of unauthorized access and compromised credentials, as users may resort to weak or reused passwords across systems.",
+    "status": "scraped"
+  },
+  {
+    "id": "AC-13",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Static Credential Expiry and Rotation",
+    "description": "Rotate long-lived static credentials such as API keys, access keys, and personal access tokens every [ac-13_prm_1] day(s) or use time-restricted credentials.",
+    "guidance": "Automate credential rotation where possible. Consider time-restricted alternatives like AWS Security Token Service and IAM Identity Center instead of IAM user access keys. Risk: Failure to regularly rotate long-lived credentials increases risk of unauthorized access from stolen or unrevoked credentials.",
+    "parameters": [
+      {
+        "id": "ac-13_prm_1",
+        "type": "time period (days)",
+        "description": "Days for credential rotation"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "AC-14",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Inventory of Accounts",
+    "description": "Establish and maintain an inventory of all accounts and their access rights managed within the system.",
+    "guidance": "Regularly review and update the account inventory for accuracy and completeness. Implement automated tools where feasible to track and manage accounts and access rights. Risk: Failure to maintain accurate account inventory increases risk of unauthorized access, account misuse, and security breaches.",
+    "status": "scraped"
+  },
+  {
+    "id": "AC-15",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Validation Testing of Automated Account Lifecycle Management",
+    "description": "Conduct validation tests on the system integrated with account management tools to ensure secure integration.",
+    "guidance": "Test cases should verify provisioning occurs solely through management tools, accounts deactivate on final authorization day, provisioning follows access permission validation, and access rights match assigned roles and functions. Risk: Failure to validate account management tool integration increases risk of unauthorized access, improper provisioning, and security breaches.",
+    "status": "scraped"
+  },
+  {
+    "id": "AC-16",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Separation of Duties",
+    "description": "Implement and maintain separation of duties for access and privileges to prevent any single individual from having excessive control over key processes or systems.",
+    "guidance": "Implement multiple controls including role-based access control (RBAC), Privileged Identity Management (PIM), and Just-In-Time access. Use compensating controls like audit logging, alerting, and rate limits. Consider Azure AD PIM or AWS Organizations. Risk: Failure to implement separation of duties increases risk of fraud, errors, and system misuse due to privilege concentration.",
+    "status": "scraped"
+  },
+  {
+    "id": "AC-2",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Multi-Factor Authentication (MFA)",
+    "description": "Require MFA for privileged accounts at login.",
+    "guidance": "Authentication factors should be different and independent of the accessing device. Consider MFA for privileged actions at the application level using PIM tools. Risk: Without phishing-resistant MFA for remote access, there is increased risk of unauthorized access, credential theft, and compromise of sensitive systems.",
+    "status": "scraped"
+  },
+  {
+    "id": "AC-3",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Inactive and Expired Accounts",
+    "description": "Disable or remove [ac-3_prm_3] accounts within [ac-3_prm_1] day(s) from last day of authorised use or have not been used for [ac-3_prm_2] day(s).",
+    "guidance": "Use automated checks to identify accounts needing disabling. Consider SCIM or identity lifecycle management tools. For cloud, use tools like AWS Config iam-user-unused-credentials-check. Risk: Failure to disable unused accounts with elevated access increases risk of unauthorized access and exploitation.",
+    "parameters": [
+      {
+        "id": "ac-3_prm_1",
+        "type": "time period (days)",
+        "description": "Days after account expiry"
+      },
+      {
+        "id": "ac-3_prm_2",
+        "type": "time period (days)",
+        "description": "Days of account inactivity"
+      },
+      {
+        "id": "ac-3_prm_3",
+        "type": "type (str)",
+        "description": "Type of accounts"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "AC-4",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Access Review",
+    "description": "Perform an access review [ac-4_prm_1] and remove unauthorised or unnecessary access rights within [ac-4_prm_2] day(s).",
+    "guidance": "For applications, implement automated review workflows or reports. For cloud accounts, use AWS IAM Access Advisor or Azure AD Access Review. Risk: Without regular access reviews, there is increased risk of lingering access, privilege misuse, and compromised security.",
+    "parameters": [
+      {
+        "id": "ac-4_prm_1",
+        "type": "organisation-defined frequency",
+        "description": "Access review frequency"
+      },
+      {
+        "id": "ac-4_prm_2",
+        "type": "time period (days)",
+        "description": "Days for access removal"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "AC-5",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Endpoint Device Hardening",
+    "description": "Require hardened endpoint devices for remote developer, maintainer, or administrator access.",
+    "guidance": "Use Endpoint Management platforms to continuously check and enforce device security posture, denying access if hardening requirements are unmet. Risk: Without hardened endpoints for remote access, there is increased risk of compromised endpoints, malware infections, and unauthorized system access.",
+    "status": "scraped"
+  },
+  {
+    "id": "AC-6",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Default Credentials",
+    "description": "Change default credentials prior to first use.",
+    "guidance": "Identify default credentials in system components before deployment and change them. Configure end-user systems to prompt for password change on first login after account creation. Risk: Failure to change default credentials increases risk of unauthorized access, as these are well-known and targeted by attackers.",
+    "status": "scraped"
+  },
+  {
+    "id": "AC-7",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Singpass/Corppass for Public Users",
+    "description": "Use Singpass or Corppass MFA for digital services that require high level of identity assurance for Public Users.",
+    "guidance": "For high-impact or high-risk transactions, use Singpass/Corppass to identify public users. Agency/internal users should use Government-managed SSO (such as WOG AAD). Leverage Singpass/Corppass to reduce duplication and provide consistent user experience.",
+    "status": "scraped"
+  },
+  {
+    "id": "AC-8",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Automated Account Lifecycle Management",
+    "description": "Automate account [ac-8_prm_1] for [ac-8_prm_3] using an account lifecycle management tool.",
+    "guidance": "Consider adopting SSO with just-in-time provisioning or tools such as [ac-8_prm_2]. Perform validation testing to ensure timely provisioning/deprovisioning. Configure systems to enhance capabilities via automation. Risk: Manual account lifecycle management introduces errors and weaknesses, making access control measures ineffective.",
+    "parameters": [
+      {
+        "id": "ac-8_prm_1",
+        "type": "process (str)",
+        "description": "Account lifecycle processes to automate"
+      },
+      {
+        "id": "ac-8_prm_2",
+        "type": "tool (str)",
+        "description": "Recommended account lifecycle tool"
+      },
+      {
+        "id": "ac-8_prm_3",
+        "type": "type (str)",
+        "description": "Type of accounts"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "AC-9",
+    "domainId": "AC",
+    "catalog": "cybersecurity",
+    "title": "Endpoint Device Management",
+    "description": "Implement and maintain an endpoint device management solution to ensure the security and integrity of endpoint devices used within the organisation.",
+    "guidance": "Mobile Device Management (MDM) platforms enable management, monitoring, and secure configuration, including disk encryption, configuration management, regular updates, and remote data wiping capabilities. Risk: Unmanaged endpoint devices increase risk of unauthorized access and loss of sensitive information.",
+    "status": "scraped"
+  },
+  {
+    "id": "AS-1",
+    "domainId": "AS",
+    "catalog": "cybersecurity",
+    "title": "Input Validation",
+    "description": "Validate all application inputs to ensure that they match the expected type, structure, or format.",
+    "guidance": "Strictly validating inputs against a comprehensive schema prevents injection attacks caused by inserting special characters or content that would cause the application to perform incorrect operations. Risk: Without input validation, there's a heightened risk of injection attacks, data manipulation, or system crashes due to unexpected input, potentially leading to unauthorised access or disruption of services.",
+    "status": "scraped"
+  },
+  {
+    "id": "AS-10",
+    "domainId": "AS",
+    "catalog": "cybersecurity",
+    "title": "HTTP Strict Transport Security (HSTS)",
+    "description": "Set HTTP Strict Transport Security (HSTS) response headers with a maximum age value of at least 1 year (31536000 seconds) to mitigate protocol downgrade attacks.",
+    "guidance": "Refer to the OWASP Secure Headers Project Best Practices for recommended header values. Risk: Failure to implement HTTP Strict Transport Security (HSTS) with a sufficient maximum age may expose the system to protocol downgrade attacks, compromising the security of communication channels.",
+    "citations": [
+      {
+        "standard": "OWASP",
+        "reference": "OWASP Secure Headers Project"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "AS-11",
+    "domainId": "AS",
+    "catalog": "cybersecurity",
+    "title": "Session Management",
+    "description": "Require [ insert: param, as-11_prm_2 ] to re-authenticate after their session exceeds [ insert: param, as-11_prm_1 ] hour(s) or terminate the session.",
+    "guidance": "NIST SP 800-63B recommends re-authentication once per 30 days for Authenticator Assurance Level 1, 12 hours or 30 minutes inactivity for Authenticator Assurance Level 2, and 12 hours or 15 minutes inactivity for Authenticator Assurance Level 3. In addition to time period, system can consider re-authentication when roles, authenticators or credentials change or when the execution of privileged functions occurs. Risk: Not re-authenticating regularly and at suitable checkpoints could allow someone who has access to the account to carry out unauthorised actions.",
+    "parameters": [
+      {
+        "id": "as-11_prm_1",
+        "type": "time period (hours) (int)",
+        "description": "The maximum time period in hours of a user's session."
+      },
+      {
+        "id": "as-11_prm_2",
+        "type": "type (str)",
+        "description": "The type of session."
+      }
+    ],
+    "citations": [
+      {
+        "standard": "NIST SP 800-63B",
+        "reference": "NIST SP 800-63B"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "AS-12",
+    "domainId": "AS",
+    "catalog": "cybersecurity",
+    "title": "Malware Scanning of Uploaded Files",
+    "description": "Scan file uploads for malware before further processing by the system.",
+    "guidance": "Consider uploading the files to temporary storage for malware scanning on ephemeral compute like serverless functions before moving safe files to another storage for further processing or unsafe files to quarantine storage. Risk: Without scanning uploaded files for malware, there's an increased risk of exploits or infection for consumers of the files.",
+    "status": "scraped"
+  },
+  {
+    "id": "AS-13",
+    "domainId": "AS",
+    "catalog": "cybersecurity",
+    "title": "Exposure of Internal System Details",
+    "description": "Prevent the unnecessary disclosure of internal system details to Public Users.",
+    "guidance": "Ensure all system messages and notifications are informative yet secure. These messages should be contextually appropriate, providing relevant information without exposing internal system details such as debug information, stack traces, or software versioning. Risk: Disclosure of internal system details or debug stack traces can expose vulnerabilities, software versions, and system architecture, potentially leading to targeted attacks, exploitation of known vulnerabilities, and unauthorised access to sensitive systems or data.",
+    "status": "scraped"
+  },
+  {
+    "id": "AS-14",
+    "domainId": "AS",
+    "catalog": "cybersecurity",
+    "title": "Secure Cryptographic Libraries",
+    "description": "Use reputable and secure cryptographic libraries and functions to handle cryptographic operations.",
+    "guidance": "Follow the OWASP Cryptographic Storage Cheat Sheet for best practices in securely implementing cryptographic operations. Regularly update libraries and prefer widely recognised ones such as OpenSSL. Consider using libraries that are FIPS 140-2 or FIPS 140-3 compliant for enhanced security assurance. Risk: Using insecure cryptographic libraries and functions can expose applications to significant security risks, such as data breaches and unauthorised access, compromising sensitive information.",
+    "citations": [
+      {
+        "standard": "OWASP",
+        "reference": "OWASP Cryptographic Storage Cheat Sheet"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "AS-15",
+    "domainId": "AS",
+    "catalog": "cybersecurity",
+    "title": "Password Change",
+    "description": "Enforce password change upon suspected account compromise.",
+    "guidance": "Implement mechanisms to detect signs of account compromise, such as unusual login activity or multiple failed login attempts. Notify users promptly to change their passwords and provide guidance on creating strong, unique passwords. Consider integrating multi-factor authentication to enhance security. Risk: Failure to enforce password changes upon suspected account compromise increases the risk of prolonged unauthorised access, leading to potential data breaches and exploitation of systems.",
+    "status": "scraped"
+  },
+  {
+    "id": "AS-2",
+    "domainId": "AS",
+    "catalog": "cybersecurity",
+    "title": "Parameterised Interfaces",
+    "description": "Use parameterised interfaces for database queries or system commands.",
+    "guidance": "Parameterised interfaces such Object-Relational Mapping (ORM) libraries ensure that parameters used in database queries or system commands are properly sanitised and prevent injection attacks. Risk: Failure to use parameterised interfaces increases the vulnerability to SQL injection or command injection attacks, posing a significant risk of unauthorised access, data manipulation, or even potential system compromise.",
+    "status": "scraped"
+  },
+  {
+    "id": "AS-3",
+    "domainId": "AS",
+    "catalog": "cybersecurity",
+    "title": "Output Sanitisation",
+    "description": "Sanitise all application outputs that will be used to render a HTML document.",
+    "guidance": "Any application outputs that are returned to the requester and used to render a HTML document can lead to cross-site scripting (XSS) attacks if they contain special characters that change the rendering of the HTML document by the browser. Risk: Lack of sanitisation for application outputs used in rendering HTML documents exposes the system to the risk of cross-site scripting (XSS) attacks, allowing malicious code execution in browsers.",
+    "status": "scraped"
+  },
+  {
+    "id": "AS-4",
+    "domainId": "AS",
+    "catalog": "cybersecurity",
+    "title": "Authentication Mechanism Rate-Limiting",
+    "description": "Apply rate-limiting on all authentication mechanisms to deter brute-force attacks.",
+    "guidance": "Consider rate-limiting to a maximum of 3 consecutive failed authentication attempts within 15 minutes or other reasonable rate limits. Time delays between log-on attempts reduce the risk of successful brute-forcing attacks. Bot mitigation tools such as CAPTCHA can further reduce this risk. Risk: Without rate-limiting, there's an increased risk of unauthorised access as attackers may exploit weak credentials through repeated login attempts.",
+    "status": "scraped"
+  },
+  {
+    "id": "AS-5",
+    "domainId": "AS",
+    "catalog": "cybersecurity",
+    "title": "Password Requirements",
+    "description": "Where SSO or passwordless is not supported, verify that [ insert: param, as-5_prm_3 ] passwords are at least [ insert: param, as-5_prm_1 ] characters in length and [ insert: param, as-5_prm_2 ].",
+    "guidance": "Latest NIST SP 800-63B guidelines found that password length is a primary factor in determining the strength of a password while composition and complexity rules provide marginal security benefits. Risk: Short or commonly used passwords increase the vulnerability to unauthorised access, potentially leading to compromised accounts and unauthorised activities on the system.",
+    "parameters": [
+      {
+        "id": "as-5_prm_1",
+        "type": "number of characters (int)",
+        "description": "The minimum length of a password."
+      },
+      {
+        "id": "as-5_prm_2",
+        "type": "policy (str)",
+        "description": "The password policy."
+      },
+      {
+        "id": "as-5_prm_3",
+        "type": "type (str)",
+        "description": "The type of password."
+      }
+    ],
+    "citations": [
+      {
+        "standard": "NIST SP 800-63B",
+        "reference": "NIST SP 800-63B"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "AS-6",
+    "domainId": "AS",
+    "catalog": "cybersecurity",
+    "title": "Password Salting and Hashing",
+    "description": "Store passwords as salted hashes using a password hashing scheme that is resistant to offline attacks such as those described in NIST SP 800-63b. The salt should be: Generated using a cryptographically secure pseudo-random number generator in accordance with industry standards; At least 32 bits long; and Randomly generated for each account.",
+    "guidance": "Refer to NIST SP 800-90Ar1 for suitable pseudo-random number generators. Refer to NIST SP 800-63b Memorized Secret Verifiers section for suitable hashing schemes, including Argon2, scrypt, and PBKDF2. For application source code, use a cryptographically secure pseudo-random number generator function instead of an insecure one, such as crypto.randomBytes instead of Math.random in Node.js and java.security.SecureRandom.nextBytes instead of java.util.Random in Java. Risk: Without salting and hashing, in case of a data breach, exposed passwords can be easily extracted, leading to potential compromise of accounts and sensitive information.",
+    "citations": [
+      {
+        "standard": "NIST SP 800-63b",
+        "reference": "NIST SP 800-63b"
+      },
+      {
+        "standard": "NIST SP 800-90Ar1",
+        "reference": "NIST SP 800-90Ar1"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "AS-7",
+    "domainId": "AS",
+    "catalog": "cybersecurity",
+    "title": "Access Control Check Enforcement",
+    "description": "Perform access control checks on all authenticated requests.",
+    "guidance": "Utilise authorisation filters or middleware to force all authenticated requests to undergo access control checks. Risk: Failure to perform access control checks on authenticated requests increases the risk of unauthorised access to sensitive data or functionalities, potentially leading to data breaches and misuse of system resources.",
+    "status": "scraped"
+  },
+  {
+    "id": "AS-8",
+    "domainId": "AS",
+    "catalog": "cybersecurity",
+    "title": "Secrets Management",
+    "description": "Securely store secrets in an appropriate secrets management solution with access control enforcement, encryption, and monitoring.",
+    "guidance": "Secrets include API keys, access keys, and other static credentials. Do not store secrets unencrypted in source code or configuration files. Store secrets in cloud-native solutions like AWS Secrets Manager and Azure Key Vault or cloud-agnostic solutions like HashiCorp Vault and CyberArk Conjur. For SaaS or platforms, ensure that secrets are stored in an appropriate solution. For example, use GitHub Actions secrets instead of variables. Risk: Exposure of sensitive information and unauthorised access to system credentials may occur if application secrets are stored insecurely or hard-coded in source code.",
+    "status": "scraped"
+  },
+  {
+    "id": "AS-9",
+    "domainId": "AS",
+    "catalog": "cybersecurity",
+    "title": "Content Security Policy (CSP)",
+    "description": "Set minimally permissive CSP response headers to mitigate cross-site scripting attacks.",
+    "guidance": "Utilise the relevant fetch directives such as default-src, script-src, style-src, connect-src, img-src, media-src and object-src to prevent loading of scripts from malicious sources. Refer to the OWASP Secure Headers Project Best Practices for recommended header values. Risk: Without minimally permissive Content Security Policy (CSP) headers, the risk of cross-site scripting attacks, leading to unauthorised script execution and potential data theft, is increased.",
+    "citations": [
+      {
+        "standard": "OWASP",
+        "reference": "OWASP Secure Headers Project"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "BD-1",
+    "domainId": "BD",
+    "catalog": "dss",
+    "title": "Responsive Web Design",
+    "description": "Adopt Responsive Web Design for web-based digital services. If specific content is deemed unsuitable for mobile devices, disable mobile device access, and clearly explain why the content or service is disabled and how it can be accessed.",
+    "guidance": "A significant amount of web traffic comes from mobile devices. Responsive Web Design allows for optimised browsing experience on devices with different screen sizes.",
+    "status": "scraped"
+  },
+  {
+    "id": "BD-2",
+    "domainId": "BD",
+    "catalog": "dss",
+    "title": "Site Search",
+    "description": "Provide a site search function for multi-page websites. Not required for mobile applications, transactional services, or websites where search is the service offered.",
+    "guidance": "Search is a known and effective alternative to navigation for users who know what they are looking for.",
+    "status": "scraped"
+  },
+  {
+    "id": "BD-3",
+    "domainId": "BD",
+    "catalog": "dss",
+    "title": "Support multiple languages",
+    "description": "Provide content in multiple languages to accommodate language preferences.",
+    "guidance": "Allowing end users to select their preferred language enhances usability and inclusivity, allowing broader access and understanding.",
+    "status": "scraped"
+  },
+  {
+    "id": "BD-4",
+    "domainId": "BD",
+    "catalog": "dss",
+    "title": "Clear and Concise Content",
+    "description": "Write in a clear and concise manner that is easy to read and understand; Choose simple words that most people can understand.",
+    "guidance": "Writing in a simple and concise manner allows more users with different backgrounds and language proficiency to understand your content.",
+    "status": "scraped"
+  },
+  {
+    "id": "BD-5",
+    "domainId": "BD",
+    "catalog": "dss",
+    "title": "Search Engine Optimisation",
+    "description": "Implement Search Engine Optimisation (SEO) best practices to improve website search engine rankings and results. Not required for restricted-access services or experimental/beta services.",
+    "guidance": "SEO increases the findability and reach of web content by helping search platforms effectively crawl your content and optimising the content displayed in search listings.",
+    "status": "scraped"
+  },
+  {
+    "id": "BD-6",
+    "domainId": "BD",
+    "catalog": "dss",
+    "title": "Consistent UI Design",
+    "description": "Use a design system or style guide to maintain a consistent user interface design throughout the entire service.",
+    "guidance": "Consistent design and placement of interface components improves usability by allowing end users to quickly learn interface patterns.",
+    "status": "scraped"
+  },
+  {
+    "id": "BD-7",
+    "domainId": "BD",
+    "catalog": "dss",
+    "title": "Mandatory and Optional Fields",
+    "description": "Indicate if input fields are mandatory or optional. Not required for login pages asking for username and password.",
+    "guidance": "Reduces completion time by allowing end users to skip unnecessary fields and increases completion rates by helping end users understand the effort required.",
+    "status": "scraped"
+  },
+  {
+    "id": "BD-8",
+    "domainId": "BD",
+    "catalog": "dss",
+    "title": "Log-in Indication",
+    "description": "Prominently display the name or identifier of the individual associated with the account after login.",
+    "guidance": "Provides a clear indication that the end user is logged into the right account. This is especially important for shared devices.",
+    "status": "scraped"
+  },
+  {
+    "id": "BD-9",
+    "domainId": "BD",
+    "catalog": "dss",
+    "title": "Contact Channels",
+    "description": "Provide at least one contact channel for help or assistance.",
+    "guidance": "Allow end users to contact the relevant parties if they require help or assistance. Reassures users by providing a clear method to acquire information or resolve issues.",
+    "status": "scraped"
+  },
+  {
+    "id": "BR-1",
+    "domainId": "BR",
+    "catalog": "cybersecurity",
+    "title": "Backup",
+    "description": "Backup all important data and systems at least every [ insert: param, br-1_prm_1 ] day(s), and store backups in a secure and separate location.",
+    "guidance": "Use default CSP-managed backup services (AWS Backup, Azure Backup, GCP Backup and DR Service). Store backups separately from primary data with encryption-at-rest. For SaaS, ensure provider can restore last backup. Risk: Without regular backups stored in a secure and separate location, there is an increased risk of data loss, system failures, and extended downtime in the event of accidental deletion, hardware failures, or malicious attacks.",
+    "parameters": [
+      {
+        "id": "br-1_prm_1",
+        "type": "time period (days) (int)",
+        "description": "The time period in days for backup."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "BR-2",
+    "domainId": "BR",
+    "catalog": "cybersecurity",
+    "title": "Recovery Testing",
+    "description": "Conduct testing of recovery processes at least every [ insert: param, br-2_prm_1 ] day(s) to ensure their effectiveness.",
+    "guidance": "Each test should verify the system's ability to fully restore all data and services. Risk: Failure to regularly test recovery processes may result in ineffective response during actual incidents, increasing the risk of prolonged downtime, data loss, and compromised business continuity in the event of a disaster or system failure.",
+    "parameters": [
+      {
+        "id": "br-2_prm_1",
+        "type": "time period (days) (int)",
+        "description": "The time period in days for recovery testing."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "BR-3",
+    "domainId": "BR",
+    "catalog": "cybersecurity",
+    "title": "Backup Retention",
+    "description": "Prevent backups from being modified or deleted for [ insert: param, br-3_prm_1 ] day(s) or as stipulated in the agency's data retention policies.",
+    "guidance": "Use S3 Object Lock or Azure Blob Storage with immutability enabled to enforce time-based retention policies. Risk: Lack of prevention measures against the modification or deletion of backups for the specified duration increases the risk of data loss, unauthorised alterations, and potential inability to recover from incidents, compromising the integrity and availability of critical information.",
+    "parameters": [
+      {
+        "id": "br-3_prm_1",
+        "type": "time period (days) (int)",
+        "description": "The time period in days of backup retention."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "BR-4",
+    "domainId": "BR",
+    "catalog": "cybersecurity",
+    "title": "Disaster Recovery Plan",
+    "description": "Develop, maintain, and regularly test a disaster recovery plan that ensures critical functions and data can be restored within the Recovery Time Objective (RTO) and Recovery Point Objective (RPO) as determined by business requirements and risk assessments.",
+    "guidance": "Plan should include defined roles/responsibilities, step-by-step recovery procedures, communication protocols, and integration with business continuity planning. Assess effectiveness during disaster recovery exercises. Risk: Absence of a comprehensive disaster recovery plan increases the risk of prolonged system downtime, data loss, and inability to maintain business continuity in the event of a disaster, potentially leading to significant financial losses and damage to organisational reputation.",
+    "status": "scraped"
+  },
+  {
+    "id": "BR-5",
+    "domainId": "BR",
+    "catalog": "cybersecurity",
+    "title": "Business Continuity Plan",
+    "description": "Develop a business continuity plan.",
+    "guidance": "Refer to the Cyber Security Agency's Cybersecurity Toolkit for IT Teams for a business continuity plan template. Risk: Failure to develop a Business Continuity Plan may result in prolonged system downtime, loss of critical data, and diminished organisational resilience during disruptive events, increasing the risk of financial and reputational damage.",
+    "status": "scraped"
+  },
+  {
+    "id": "BR-6",
+    "domainId": "BR",
+    "catalog": "cybersecurity",
+    "title": "Business Continuity Exercise",
+    "description": "Conduct a business continuity exercise at least every [ insert: param, br-6_prm_1 ] day(s) to test the effectiveness of the business continuity plan.",
+    "guidance": "Testing can include checklists, tabletop exercises, and simulations based on the business continuity plan. Risk: Failure to conduct regular business continuity exercises may lead to unpreparedness during an actual disruption, increasing response times, operational impact, and the risk of ineffective recovery, ultimately jeopardising business operations and stakeholder trust.",
+    "parameters": [
+      {
+        "id": "br-6_prm_1",
+        "type": "time period (days) (int)",
+        "description": "The time period in days of business continuity exercise frequency."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "CK-1",
+    "domainId": "CK",
+    "catalog": "cybersecurity",
+    "title": "Cryptographic Key Establishment",
+    "description": "Use industry-standard cryptographic key establishment schemes and key derivation methods.",
+    "guidance": "Risk: Insecure cryptographic key establishment can lead to weak or broken encryption.",
+    "citations": [
+      {
+        "standard": "NIST SP 800-56A",
+        "reference": "NIST SP 800-56A"
+      },
+      {
+        "standard": "NIST SP 800-56B",
+        "reference": "NIST SP 800-56B"
+      },
+      {
+        "standard": "NIST SP 800-56C",
+        "reference": "NIST SP 800-56C"
+      },
+      {
+        "standard": "AWS Key Management Service",
+        "reference": "AWS Key Management Service"
+      },
+      {
+        "standard": "Azure Key Vault",
+        "reference": "Azure Key Vault"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "CK-2",
+    "domainId": "CK",
+    "catalog": "cybersecurity",
+    "title": "Cryptographic Key Rotation",
+    "description": "Rotate cryptographic keys every [insert: param, ck-2_prm_1] days.",
+    "guidance": "Risk: Failing to rotate cryptographic keys increases the risk of broken encryption.",
+    "parameters": [
+      {
+        "id": "ck-2_prm_1",
+        "type": "time period (days) (int)",
+        "description": "The time period in days of cryptographic key rotation frequency."
+      }
+    ],
+    "citations": [
+      {
+        "standard": "AWS Key Management Service",
+        "reference": "AWS Key Management Service"
+      },
+      {
+        "standard": "Azure Key Vault",
+        "reference": "Azure Key Vault"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "CK-3",
+    "domainId": "CK",
+    "catalog": "cybersecurity",
+    "title": "Cryptographic Key Management",
+    "description": "Implement cryptographic key management processes to ensure cryptographic keys are well-managed and safeguarded throughout their lifecycle.",
+    "guidance": "Risk: Inadequate key management increase the risk of unauthorised access, data breaches, and compromised cryptographic operations due to poorly managed or safeguarded keys.",
+    "citations": [
+      {
+        "standard": "NIST SP 800-57",
+        "reference": "NIST SP 800-57"
+      },
+      {
+        "standard": "ISO/IEC 27017",
+        "reference": "ISO/IEC 27017"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "CK-4",
+    "domainId": "CK",
+    "catalog": "cybersecurity",
+    "title": "Cryptographic Key Storage",
+    "description": "Securely store cryptographic keys and implement strict access controls based on the principle of least privilege.",
+    "guidance": "Risk: Inadequate key storage and access controls can lead to unauthorised key access and potential data breaches.",
+    "citations": [
+      {
+        "standard": "AWS Key Management Service",
+        "reference": "AWS Key Management Service"
+      },
+      {
+        "standard": "Azure Key Vault",
+        "reference": "Azure Key Vault"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "CS-1",
+    "domainId": "CS",
+    "catalog": "cybersecurity",
+    "title": "Unique Base Container Image Tags",
+    "description": "Use unique base container image tags instead of rolling tags.",
+    "guidance": "Avoid latest tag or other rolling tags to minimize unintended changes during subsequent builds. Digest SHA provides unique identifier if no tag assigned at build time. Risk: Using unique tags reduces risk of unintentional updates, inconsistencies, and security vulnerabilities in containerized environments.",
+    "status": "scraped"
+  },
+  {
+    "id": "CS-10",
+    "domainId": "CS",
+    "catalog": "cybersecurity",
+    "title": "Container Workload Segmentation",
+    "description": "Segregate container workloads to help contain attacks through isolation.",
+    "guidance": "Create Kubernetes namespaces or similar segmentation controls to isolate workloads, services, or projects. Risk: Without workload separation, increased lateral movement and compromise risk.",
+    "status": "scraped"
+  },
+  {
+    "id": "CS-11",
+    "domainId": "CS",
+    "catalog": "cybersecurity",
+    "title": "Container Runtime Security",
+    "description": "Detect and remediate changes to running containers with container runtime protection tools.",
+    "guidance": "Runtime tools (AWS EKS Protection, Microsoft Defender for Containers, Falco) monitor threats and changes. Isolate vulnerable instances for investigation and replace with patched images. Replace frequently with uncompromised images until patch release. These replace Malware Protection and EDR in container environments. Risk: Failure to detect and remediate runtime changes increases risk of unnoticed compromises and unauthorized alterations.",
+    "status": "scraped"
+  },
+  {
+    "id": "CS-2",
+    "domainId": "CS",
+    "catalog": "cybersecurity",
+    "title": "Minimal Base Container Images",
+    "description": "Build container images with minimal base images.",
+    "guidance": "Use minimal images such as alpine, scratch, wolfi, and distroless as base to reduce attack surface. Risk: Minimal base images reduce attack surface, vulnerabilities, and resource overhead, minimizing security exploit risk.",
+    "status": "scraped"
+  },
+  {
+    "id": "CS-3",
+    "domainId": "CS",
+    "catalog": "cybersecurity",
+    "title": "Runtime Container Secrets",
+    "description": "Provide secrets and sensitive data to the container at runtime instead of image build time.",
+    "guidance": "Ensure no secrets (TLS keys, cloud credentials, SSH keys, database passwords) embedded in image using Docker secrets or podman-secret-create. Risk: Runtime secret provisioning reduces exposure risk and enhances security through independent secret management.",
+    "status": "scraped"
+  },
+  {
+    "id": "CS-4",
+    "domainId": "CS",
+    "catalog": "cybersecurity",
+    "title": "Non-Privileged Container User",
+    "description": "Create a non-root user and set it as the default user in the container image build instructions.",
+    "guidance": "Ensure non-root user has minimal permissions required to run container. Risk: Failure to use non-root user increases vulnerability risk, as root privileges may lead to host system compromise.",
+    "status": "scraped"
+  },
+  {
+    "id": "CS-5",
+    "domainId": "CS",
+    "catalog": "cybersecurity",
+    "title": "Dockerfile Linting",
+    "description": "Lint Dockerfiles before building container images.",
+    "guidance": "Use linters like Hadolint to check Dockerfile instructions and flag best practice violations. Ensure linting runs in CI pipelines. Risk: Without linting, increased risk of syntax errors, misconfigurations, and security vulnerabilities.",
+    "status": "scraped"
+  },
+  {
+    "id": "CS-6",
+    "domainId": "CS",
+    "catalog": "cybersecurity",
+    "title": "Read-Only Container Root Filesystem",
+    "description": "Configure the container root filesystem to be read-only during runtime, except for designated non-persistent storage locations or mounted volumes for stateful storage (e.g., caches, service data).",
+    "guidance": "Use security policies (e.g., readonlyRootFilesystem for Kubernetes) to prevent root filesystem writes. Apply patches by rebuilding images. Use tmpfs mounts for temporary filesystems. Risk: Failure to enforce read-only filesystem increases tampering risk and compromise potential.",
+    "status": "scraped"
+  },
+  {
+    "id": "CS-7",
+    "domainId": "CS",
+    "catalog": "cybersecurity",
+    "title": "Container Image Scanning",
+    "description": "Scan container images in the [ insert: param, cs-7_prm_1 ] for known vulnerabilities.",
+    "guidance": "Tools like Amazon Inspector, Trivy, Grype scan for known vulnerabilities. Configure automatic, continuous scanning and block deployment of critical/high severity images. Risk: Failure to scan increases risk of deploying insecure images and exposing infrastructure to known exploits.",
+    "parameters": [
+      {
+        "id": "cs-7_prm_1",
+        "type": "location (str)",
+        "description": "The location where container image scanning occurs."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "CS-8",
+    "domainId": "CS",
+    "catalog": "cybersecurity",
+    "title": "Private Container Image Registries",
+    "description": "Host built container images in private container registries.",
+    "guidance": "Use only private registries (e.g., Amazon ECR private) since images may contain proprietary code or sensitive information. Risk: Private registries reduce exposure, minimize unauthorized access risk, and maintain image distribution control.",
+    "status": "scraped"
+  },
+  {
+    "id": "CS-9",
+    "domainId": "CS",
+    "catalog": "cybersecurity",
+    "title": "Container Orchestrator API Access Control",
+    "description": "Disable public access to Container Orchestrator API endpoints from the internet.",
+    "guidance": "Restrict API endpoints (Kubernetes API Server) to specific address ranges or use CSP features like disabling endpoint public access and Private Clusters. Risk: Public API endpoint exposure increases risk of unauthorized access, exploitation, and infrastructure compromise.",
+    "status": "scraped"
+  },
+  {
+    "id": "DC-1",
+    "domainId": "DC",
+    "catalog": "cybersecurity",
+    "title": "Separate hosting",
+    "description": "Physically separate Government resources from non-Government resources.",
+    "guidance": "For on-premise environments, ensure government resources are physically stored and secured separately from non-government resources. Risk: Violating this control can subject government data and systems to access risks leading to compromised systems and data.",
+    "status": "scraped"
+  },
+  {
+    "id": "DC-2",
+    "domainId": "DC",
+    "catalog": "cybersecurity",
+    "title": "Physical Access Controls",
+    "description": "Implement physical access controls to prohibit unauthorised access to the hosting environment or network rooms.",
+    "guidance": "Measures include: a) personnel security clearance and checks; b) continuous monitoring; c) immediate security response; d) strong authentication card access systems; e) 24/7 guards; f) restrict unauthorized devices; g) intrusion detection systems; h) CCTV monitoring. Risk: Violating this control can subject government data and systems to access risks leading to compromised systems and data.",
+    "status": "scraped"
+  },
+  {
+    "id": "DP-1",
+    "domainId": "DP",
+    "catalog": "cybersecurity",
+    "title": "Data Residency",
+    "description": "Enforce data residency of [ insert: param, dp-1_prm_2 ] data in [ insert: param, dp-1_prm_1 ].",
+    "guidance": "Risk: Failure to enforce data residency in the appropriate country may lead to legal and regulatory compliance issues, privacy concerns, and potential unauthorised access or storage of sensitive data outside the jurisdiction.",
+    "parameters": [
+      {
+        "id": "dp-1_prm_1",
+        "type": "country (str)",
+        "description": "The country the data resides in."
+      },
+      {
+        "id": "dp-1_prm_2",
+        "type": "type (str)",
+        "description": "The type of data that should have enforced data residency."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "DP-2",
+    "domainId": "DP",
+    "catalog": "cybersecurity",
+    "title": "Data at Rest Encryption",
+    "description": "Encrypt data at rest.",
+    "guidance": "Many cloud service provider services encrypt data at rest by default but this should be confirmed and validated depending on service usage. Risk: Without encrypting data at rest, there's increased risk of unauthorised access and data exposure from physical theft, unauthorised storage media access, or compromised security controls.",
+    "status": "scraped"
+  },
+  {
+    "id": "DP-3",
+    "domainId": "DP",
+    "catalog": "cybersecurity",
+    "title": "Data in Transit Encryption",
+    "description": "Encrypt data in transit.",
+    "guidance": "While some CSP services transparently encrypt data in transit at the network layer, data at the application layer should be encrypted using protocols such as Transport Layer Security (TLS) and Secure Socket Layer (SSL). Risk: Failure to encrypt data in transit increases risk of unauthorised interception and eavesdropping, potentially leading to data breaches and compromise of sensitive information during transmission.",
+    "status": "scraped"
+  },
+  {
+    "id": "DP-4",
+    "domainId": "DP",
+    "catalog": "cybersecurity",
+    "title": "Central Cloud Tenant Management",
+    "description": "Implement a centralised cloud tenant management structure for [ insert: param, dp-4_prm_1 ] using [ insert: param, dp-4_prm_2 ].",
+    "guidance": "Consider services like AWS Organizations, GCP Organizations, or Azure Management Groups for centralised management. Implement appropriate landing zone frameworks, consistent policies, centralised logging, and tagging strategies. Risk: Lack of centralised cloud tenant management can lead to inconsistent security policies, reduced visibility, and increased difficulty managing and securing cloud resources across the organisation.",
+    "parameters": [
+      {
+        "id": "dp-4_prm_1",
+        "type": "systems (str)",
+        "description": "The systems to be hosted on a central tenant."
+      },
+      {
+        "id": "dp-4_prm_2",
+        "type": "system (str)",
+        "description": "The central tenant management structure."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "DP-5",
+    "domainId": "DP",
+    "catalog": "cybersecurity",
+    "title": "Sanitisation",
+    "description": "Sanitise all hardware that stores data at rest. Shred or incinerate data storage meant for retirement.",
+    "guidance": "Use industry standards such as a) Peter Gutmann Secure Deletion; b) Bruce Schneier Algorithm c) US Department of Defence's Standards (DoD 5220.22-M). Risk: Violating this control can expose government data to unauthorised users.",
+    "status": "scraped"
+  },
+  {
+    "id": "DP-6",
+    "domainId": "DP",
+    "catalog": "cybersecurity",
+    "title": "Witness Sanitisation and Destruction of Storage Devices",
+    "description": "Witness the sanitisation and destruction process to ensure data is removed from storage.",
+    "guidance": "Establish a SOP to ensure sanitisation and destruction are witnessed by an agency staff. Risk: Ensuring storage devices are sanitised or destroyed will eliminate the possibility of unauthorised or unintended data retention.",
+    "status": "scraped"
+  },
+  {
+    "id": "DP-7",
+    "domainId": "DP",
+    "catalog": "cybersecurity",
+    "title": "Data Loss Prevention",
+    "description": "Implement data loss prevention mechanisms that monitor data flows, detect sensitive data transfers, and block unauthorised sharing of sensitive data.",
+    "guidance": "Where possible, use built-in solutions such as Microsoft Purview or Google Workspace data loss prevention rules. Regularly review and update policies to adapt to evolving threats. Risk: Failure to implement data loss prevention measures increases risk of unauthorised data exfiltration, accidental data leaks, and data breaches, compromising sensitive information and organisational integrity.",
+    "status": "scraped"
+  },
+  {
+    "id": "DP-8",
+    "domainId": "DP",
+    "catalog": "cybersecurity",
+    "title": "Data Classification Disclosure",
+    "description": "For internal applications serving public officers, specify the highest permitted security and sensitivity classification for input data, such as text, audio, or multimedia/file uploads, in the system's user interface and guides.",
+    "guidance": "Indicate with a clear message, either at or near the input field, the relevant data classification that may be used with the system. Risk: Users not informed of maximum allowed data classification may submit sensitive information the system is not permitted to process, risking data breaches and legal violations.",
+    "status": "scraped"
+  },
+  {
+    "id": "GA-1",
+    "domainId": "GA",
+    "catalog": "cybersecurity",
+    "title": "Overseas-hosted GenAI API services",
+    "description": "Use only up to RESTRICTED and SENSITIVE NORMAL data with GenAI API services served by models hosted overseas.",
+    "guidance": "Verify data classification with data owner before using the data with overseas GenAI API services. Ensure that these API services are accessed only via environments authorised for up to RESTRICTED and SENSITIVE NORMAL data. Risk: Primary data is at greater legal, privacy, and exfiltration risk when in transit and processed by GenAI API services hosted in other countries.",
+    "status": "scraped"
+  },
+  {
+    "id": "GA-2",
+    "domainId": "GA",
+    "catalog": "cybersecurity",
+    "title": "Singapore-hosted GenAI API services",
+    "description": "Use only up to CONFIDENTIAL and SENSITIVE HIGH data with GenAI API services served by models hosted in Singapore.",
+    "guidance": "Verify data classification with data owner before using the data with Singapore-hosted GenAI API services. Ensure that these API services are accessed only via environments authorised for up to CONFIDENTIAL and SENSITIVE HIGH data. Check documentation for whether cross-region inferencing or overseas processing occurs under certain conditions. Risk: Primary data carries legal, privacy, and exfiltration risk when in transit and processed by GenAI API services hosted in Singapore.",
+    "status": "scraped"
+  },
+  {
+    "id": "GA-3",
+    "domainId": "GA",
+    "catalog": "cybersecurity",
+    "title": "Non-logging and non-training Agreement",
+    "description": "Obtain a legally-binding commitment from the GenAI API service provider that states that they do not log, store, nor retain input and output data, and that no input and output data are used for training GenAI models. Prompt caching (i.e. temporarily storing responses to frequently used prompts) is exempt from the above restriction on logging, storing, or retaining data, provided the cache time-to-live (TTL) is ≤ 24 hours.",
+    "guidance": "Ensure that the agreement covers all endpoints, parameters, outputs and models in use. Using GenAI API services provided by GCC 2.0 satisfies this control. Risk: Without a legally binding agreement, the GenAI service provider can access primary data or logs through automated or manual checks that can expose classified data, or they may use the data for further training of their GenAI models.",
+    "status": "scraped"
+  },
+  {
+    "id": "GA-4",
+    "domainId": "GA",
+    "catalog": "cybersecurity",
+    "title": "Data classification for self-hosted GenAI models",
+    "description": "Ensure that GenAI models are hosted in an environment that can host the highest data classification of government data contained in the system that the model is deployed in.",
+    "guidance": "Refer to relevant IM8 SSPs for controls that need to be met before hosting government data of a given data classification in that environment (e.g. in a Singapore-hosted GCC environment.) Risk: Using GenAI models with data that is more classified than what its environment is permitted to hold may open up cybersecurity vulnerabilities for attackers to exfiltrate classified data.",
+    "status": "scraped"
+  },
+  {
+    "id": "GA-5",
+    "domainId": "GA",
+    "catalog": "cybersecurity",
+    "title": "GenAI model formats and loaders",
+    "description": "Use approved formats (such as [ insert: param, ga-5_prm_1 ]) when using any open-weights GenAI models. Use approved loaders (such as [ insert: param, ga-5_prm_2 ]) to load open-weights GenAI models.",
+    "guidance": "Update GenAI model loaders frequently to hinder attacks. Risk: Insecure model formats or loaders have been shown to be potential threat vectors that may allow for arbitrary code execution. Failure to use more secure formats or loaders may result in potential unauthorised access to the system.",
+    "parameters": [
+      {
+        "id": "ga-5_prm_1",
+        "type": "list of model formats (str)",
+        "description": "An example list of approved model formats."
+      },
+      {
+        "id": "ga-5_prm_2",
+        "type": "list of model loaders (str)",
+        "description": "An example list of approved model loaders."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "GA-6",
+    "domainId": "GA",
+    "catalog": "cybersecurity",
+    "title": "File upload safeguards",
+    "description": "Implement file upload safeguards if file uploads are enabled in the system.",
+    "guidance": "Examples of safeguards include but are not limited to: (1) Implementing Data Loss Protection (\"DLP\") tools to monitor document uploads, (2) Disabling bulk or batch file uploads, such as by preventing users from selecting multiple files with a single action, or by requiring users to confirm the data security/sensitivity classification of each file individually before uploading, (3) Prompting users who upload excessively large files to review file contents and their collective data security/sensitivity classification. Risk: Enabling file uploads in a generative AI application creates two key risks: (a) the possibility of sensitive data leaks if models are prompted to reveal information from uploaded files, and (b) the risk of exceeding permitted data classification levels — either by uploading multiple files without reassessing their collective classification, or by inadvertently uploading documents with a higher classification level due to human error.",
+    "status": "scraped"
+  },
+  {
+    "id": "GA-7",
+    "domainId": "GA",
+    "catalog": "cybersecurity",
+    "title": "Evaluation of GenAI accuracy, safety, and output quality",
+    "description": "Test the accuracy, safety, and quality of the GenAI application's outputs, with clearly defined metrics, test scenarios, and criteria.",
+    "guidance": "Determine the adequate level of accuracy, safety, and output quality for your application. Develop tests to assess outputs on these dimensions. The complexity and structure of these tests should be tailored to the risk profile of your application. Document this approach and measure & monitor results after relevant model, prompt, and dependency updates. Risk: Failure to evaluate models, prompts, and their dependencies (such as tool integrations and retrieval-augmented generation (RAG) systems) can result in low-quality outputs after updates or configuration changes.",
+    "status": "scraped"
+  },
+  {
+    "id": "GA-8",
+    "domainId": "GA",
+    "catalog": "cybersecurity",
+    "title": "Inform users about GenAI risks and limitations",
+    "description": "Require users to explicitly acknowledge the risk of inaccurate or fabricated outputs (hallucinations), such as selecting a checkbox or clicking on an 'I Agree' button before the application can be accessed.",
+    "guidance": "Include clauses about the risk of inaccurate / fabricated outputs in your Terms of Use. Indicate prominently in your application about the possibility of inaccurate or fabricated outputs. Ensure that educational materials, such as documentation, guides, playbooks, or workshops, highlight responsible use and best practices for users of the GenAI system. Risk: Uninformed users may trust inaccurate model-generated outputs.",
+    "status": "scraped"
+  },
+  {
+    "id": "HR-1",
+    "domainId": "HR",
+    "catalog": "cybersecurity",
+    "title": "Security Awareness Training",
+    "description": "Conduct security awareness training for all employees that operate and manage the system every [ insert: param, hr-1_prm_1 ] months.",
+    "guidance": "Develop training covering: (a) Relevant laws, regulations, codes of practice, policies, standards, guidelines and procedures (b) Phishing and social engineering awareness (c) Incident reporting procedures (d) Secure handling of sensitive information. Also utilize posters, emails to provide regular and timely communication covering cybersecurity awareness messages and prevailing threats, impacts and mitigations.",
+    "parameters": [
+      {
+        "id": "hr-1_prm_1",
+        "type": "time period (months) (int)",
+        "description": "The frequency at which security awareness training should be conducted."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "HR-2",
+    "domainId": "HR",
+    "catalog": "cybersecurity",
+    "title": "Security Screening of Employees",
+    "description": "Conduct security screening of employees that operate and manage the system, during their hiring phase.",
+    "guidance": "Consider engaging reputable 3rd party screening companies to conduct background checks before extending employment offers.",
+    "status": "scraped"
+  },
+  {
+    "id": "HR-3",
+    "domainId": "HR",
+    "catalog": "cybersecurity",
+    "title": "Employee Termination Process",
+    "description": "Develop and document a process for the secure termination of employees.",
+    "guidance": "Process should include: (1) Deprovisioning accounts promptly before terminating employees to reduce opportunity for damage (2) Conducting exit interviews to ensure understanding of ongoing confidentiality obligations (3) Ensuring all issued equipment is returned and inventoried (4) Secure disposal of employee's data and removal of access rights (5) Notification to relevant stakeholders.",
+    "status": "scraped"
+  },
+  {
+    "id": "IS-1",
+    "domainId": "IS",
+    "catalog": "cybersecurity",
+    "title": "Management Agents",
+    "description": "Install CSP management agents on hosts to remotely and securely manage their configurations.",
+    "status": "scraped"
+  },
+  {
+    "id": "IS-10",
+    "domainId": "IS",
+    "catalog": "cybersecurity",
+    "title": "Synchronise time clocks",
+    "description": "Synchronise internal clocks to a common reference time source.",
+    "status": "scraped"
+  },
+  {
+    "id": "IS-11",
+    "domainId": "IS",
+    "catalog": "cybersecurity",
+    "title": "Central Domain Name Registration",
+    "description": "Register .gov.sg and .edu.sg domain names with GovTech as the sole registrar.",
+    "status": "scraped"
+  },
+  {
+    "id": "IS-12",
+    "domainId": "IS",
+    "catalog": "cybersecurity",
+    "title": "DNS Security Extensions (DNSSEC)",
+    "description": "Implement DNS Security Extensions (DNSSEC) for public DNS records and servers.",
+    "status": "scraped"
+  },
+  {
+    "id": "IS-13",
+    "domainId": "IS",
+    "catalog": "cybersecurity",
+    "title": "Defensive Domain Name Registration",
+    "description": "Register second (.sg) and third (.com.sg, .org.sg, .net.sg, .edu.sg) level domain name variants.",
+    "status": "scraped"
+  },
+  {
+    "id": "IS-14",
+    "domainId": "IS",
+    "catalog": "cybersecurity",
+    "title": "Singapore SMS Sender ID Registry Registration",
+    "description": "Register and use whitelisted SMS Sender IDs with the Singapore SMS Sender ID Registry for sending SMSes to members of the public.",
+    "status": "scraped"
+  },
+  {
+    "id": "IS-2",
+    "domainId": "IS",
+    "catalog": "cybersecurity",
+    "title": "Automated Patch Management Tools",
+    "description": "Use automated patch management tools to facilitate security patching of operating systems and software included in the operating systems.",
+    "status": "scraped"
+  },
+  {
+    "id": "IS-3",
+    "domainId": "IS",
+    "catalog": "cybersecurity",
+    "title": "Restricted Administrator Privileges",
+    "description": "Restrict administrator privileges by disabling remote login for the root/administrator user and restricting sudo/administrators group access.",
+    "status": "scraped"
+  },
+  {
+    "id": "IS-4",
+    "domainId": "IS",
+    "catalog": "cybersecurity",
+    "title": "Least Functionality",
+    "description": "Disable or remove unnecessary functions, system ports, protocols, software, and services on the host.",
+    "status": "scraped"
+  },
+  {
+    "id": "IS-5",
+    "domainId": "IS",
+    "catalog": "cybersecurity",
+    "title": "Host System Hardening",
+    "description": "Harden the host configuration with reference to industry standards.",
+    "citations": [
+      {
+        "standard": "NIST National Checklist Program",
+        "reference": ""
+      },
+      {
+        "standard": "CIS Benchmarks",
+        "reference": ""
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "IS-6",
+    "domainId": "IS",
+    "catalog": "cybersecurity",
+    "title": "Remote Administration",
+    "description": "Use remote administration tools to control and monitor remote access.",
+    "status": "scraped"
+  },
+  {
+    "id": "IS-7",
+    "domainId": "IS",
+    "catalog": "cybersecurity",
+    "title": "Malware Protection",
+    "description": "Detect and quarantine malware on hosts with anti-malware tools.",
+    "status": "scraped"
+  },
+  {
+    "id": "IS-8",
+    "domainId": "IS",
+    "catalog": "cybersecurity",
+    "title": "Endpoint Detection and Response (EDR)",
+    "description": "Monitor security threats on hosts with an EDR tool.",
+    "status": "scraped"
+  },
+  {
+    "id": "IS-9",
+    "domainId": "IS",
+    "catalog": "cybersecurity",
+    "title": "End-of-Support (EOS) Assets",
+    "description": "Ensure deployed [insert: param, is-9_prm_1] assets have not reached end-of-support (EOS).",
+    "parameters": [
+      {
+        "id": "is-9_prm_1",
+        "type": "string",
+        "description": "The type of asset."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "LM-1",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Separate Log Storage",
+    "description": "Store logs in a different system or system component than the system component that generated the logs.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-10",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Resource Usage Monitoring and Alerting",
+    "description": "Configure resource usage monitoring to identify abnormal usage and send automated alerts.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-11",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Service Level Monitoring and Alerting",
+    "description": "Monitor, maintain and alert on service level objectives (SLOs) and indicators (SLIs) to ensure consistent service performance, availability and reliability.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-12",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Central Security Log Management and Monitoring",
+    "description": "Centralise security log management and monitoring with [insert: param, lm-12_prm_1].",
+    "parameters": [
+      {
+        "id": "lm-12_prm_1",
+        "type": "service (str)",
+        "description": "The central security log management and monitoring service."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "LM-13",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Anomalous Database Activity Monitoring",
+    "description": "Monitor database activities for anomalous activity.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-14",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Web Defacement Monitoring",
+    "description": "Plan for and implement measures to detect and recover from web defacements.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-15",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Structured Log Formatting",
+    "description": "Publish logs in a consistent, structured format that aligns with industry standards for easy parsing and analysis.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-16",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Key Signals Monitoring",
+    "description": "Monitor key user-facing signals to maintain robust service health and performance.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-17",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Software delivery performance monitoring",
+    "description": "Measure and analyse software delivery performance to optimise development velocity and operational efficiency.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-18",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Whole of Government Application Analytics (WOGAA)",
+    "description": "Implement Whole of Government Application Analytics (WOGAA) in public facing digital services.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-19",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Log Sanitisation",
+    "description": "Sanitise logs to protect classified and sensitive data before it is recorded in any logging system or shared to any third party.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-2",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Tamper-Resistant Log Storage",
+    "description": "Protect logs from unauthorised access, modification, and deletion.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-20",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "User and Entity Behaviour Analytics",
+    "description": "Implement User and Entity Behaviour Analytics (UEBA) to monitor and analyse user activities for suspicious behaviour and potential threats.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-21",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Detection Updates",
+    "description": "Update detections for malware and indicators of compromise at least every [insert: param, lm-21_prm_1] day(s).",
+    "parameters": [
+      {
+        "id": "lm-21_prm_1",
+        "type": "time period (days) (int)",
+        "description": "The time period in days for detection update frequency."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "LM-3",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Network Flow Logging",
+    "description": "Log network traffic going to and from network interfaces.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-4",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Audit Logging",
+    "description": "Log management and audit events.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-5",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Database Logging",
+    "description": "Log database audit events.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-6",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Access Logging",
+    "description": "Log access requests sent to web application firewalls, load balancers, proxies or web servers.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-7",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Host Security Event Logging",
+    "description": "Log security events on hosts.",
+    "status": "scraped"
+  },
+  {
+    "id": "LM-8",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Security Log Retention",
+    "description": "Retain security logs for at least [insert: param, lm-8_prm_1] day(s).",
+    "parameters": [
+      {
+        "id": "lm-8_prm_1",
+        "type": "time period (days) (int)",
+        "description": "The time period in days of log retention."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "LM-9",
+    "domainId": "LM",
+    "catalog": "cybersecurity",
+    "title": "Security Monitoring and Alerting",
+    "description": "Configure security monitoring to identify potential security violations or breaches and send automated alerts, and respond to them accordingly.",
+    "status": "scraped"
+  },
+  {
+    "id": "NS-1",
+    "domainId": "NS",
+    "catalog": "cybersecurity",
+    "title": "Network and System Component Segmentation",
+    "description": "Segment and isolate system components into separate physical and logical networks or environments based on their security requirements and risk levels.",
+    "guidance": "Deploy firewalls, security groups, and API gateways for segmentation. Implement tiered cloud architecture with public-facing services isolated from private backend systems. Consider micro-segmentation based on workload sensitivity. Risk: Failure to segregate private and public resources within distinct subnets in a virtual network increases the risk of unauthorised access to sensitive data, as private resources may be exposed to the public internet, compromising the overall security of the infrastructure.",
+    "status": "scraped"
+  },
+  {
+    "id": "NS-10",
+    "domainId": "NS",
+    "catalog": "cybersecurity",
+    "title": "Private Network Connectivity",
+    "description": "Implement strong access controls, encryption, and logging for remote developer, maintainer, or administrator access to private network resources.",
+    "guidance": "Use strong authentication and MFA. Inspect gateway traffic, terminate connections in dedicated segments, implement strong encryption, restrict device access, avoid perpetual connections, re-authenticate periodically, enforce failed authentication lockouts, and disable split tunnelling. Risk: Weak private network security may expose the network to malicious activities, jeopardising the confidentiality, integrity, and availability of critical resources.",
+    "status": "scraped"
+  },
+  {
+    "id": "NS-11",
+    "domainId": "NS",
+    "catalog": "cybersecurity",
+    "title": "Alerts on Firewall Configuration Changes",
+    "description": "Generate alerts to inform appointed administrators on changes to firewall rules, including the enabling or disabling of rules.",
+    "guidance": "Implement real-time alerts for firewall rule creation, deletion, modification, enabling/disabling, and unusual resource utilization spikes. Risk: Any unintended changes to firewall rules can significantly lower the perimeter defence of a network.",
+    "status": "scraped"
+  },
+  {
+    "id": "NS-2",
+    "domainId": "NS",
+    "catalog": "cybersecurity",
+    "title": "Access Restrictions on CSP Resources Outside Virtual Network",
+    "description": "Restrict access to CSP resources outside of a virtual network (e.g., Lambda, DynamoDb, API Gateways, S3, CloudFront) using access controls or application layer authorisation.",
+    "guidance": "Apply resource-specific restrictions (IAM policies for DynamoDB, Lambda authorizers for API Gateway, IAM policies and public access blocks for S3). Use private API endpoints when needed. Risk: Lack of access restrictions raises the risk of unauthorised access, data exposure, and potential misuse of critical services, compromising the overall security posture.",
+    "status": "scraped"
+  },
+  {
+    "id": "NS-3",
+    "domainId": "NS",
+    "catalog": "cybersecurity",
+    "title": "Deny by Default - Allow by Exception",
+    "description": "Deny network communications traffic by default and allow network communications traffic by exception at managed interfaces.",
+    "guidance": "Configure network ACLs and security groups to deny all traffic initially. Allow only specific hosts/ports by exception. Consider whitelisting domains at application layer for egress. Risk: Without network access controls, there's an increased risk of unauthorised or malicious network access, leading to potential security breaches and compromise of system integrity.",
+    "status": "scraped"
+  },
+  {
+    "id": "NS-4",
+    "domainId": "NS",
+    "catalog": "cybersecurity",
+    "title": "Inter-Private Network Connectivity",
+    "description": "Route network traffic between private networks without going through the internet.",
+    "guidance": "Use AWS PrivateLink with VPC endpoints for unidirectional service access. Alternatively, use VPC peering or Transit Gateway for layer-3 IP connectivity between VPCs. Risk: When routing through the internet, there's an increased risk of man-in-the-middle and spoofing attacks. Allowing bidirectional access between networks without fine-grained access controls increases the risk of unauthorised access, potential data exfiltration, and compromise of network security compared to unidirectional access to specific resources.",
+    "status": "scraped"
+  },
+  {
+    "id": "NS-5",
+    "domainId": "NS",
+    "catalog": "cybersecurity",
+    "title": "Network and Application Layer Filtering",
+    "description": "Filter direct traffic from the internet to protect against network and application layer attacks.",
+    "guidance": "Deploy Web Application Firewall, Distributed Denial of Service Protection (e.g., AWS Shield), or Content Delivery Network (e.g., CloudFront) as appropriate. Risk: Lack of filtering for direct traffic from the internet exposes the system to the risk of network and application layer attacks, increasing the likelihood of unauthorised access, denial-of-service incidents, and compromise of sensitive data.",
+    "status": "scraped"
+  },
+  {
+    "id": "NS-6",
+    "domainId": "NS",
+    "catalog": "cybersecurity",
+    "title": "Valid and Trusted SSL/TLS Certificates",
+    "description": "Ensure that deployed SSL/TLS certificates are: signed by a trusted root Certificate Authority; match the domain name of the service they are issued for; not expired; and not revoked.",
+    "guidance": "Configure certificate manager with auto-renewal and pre-expiry alerts (e.g., AWS Certificate Manager) or automate separately. Risk: Using invalid SSL/TLS certificates introduces the risk of compromised encryption, man-in-the-middle attacks, and potential unauthorised access to sensitive information.",
+    "status": "scraped"
+  },
+  {
+    "id": "NS-7",
+    "domainId": "NS",
+    "catalog": "cybersecurity",
+    "title": "Secure Inter-Service Communication",
+    "description": "Ensure communications between services are secure by making them authenticated, authorised and encrypted.",
+    "guidance": "Design inter-service communications (databases, microservices) to be authenticated, authorised and encrypted via API gateways, proxies, private endpoint services, message queues, or service meshes. Log communications for detection and investigation. Risk: Failure to ensure secure communications between services increases the risk of unauthorised access, data breaches, and potential manipulation of sensitive information during transit.",
+    "status": "scraped"
+  },
+  {
+    "id": "NS-8",
+    "domainId": "NS",
+    "catalog": "cybersecurity",
+    "title": "Secure Cloud and On-Premises Connectivity",
+    "description": "Route network traffic between on-premises systems and cloud systems through a secure intermediary.",
+    "guidance": "Design secure communications via managed interfaces with boundary protections rather than direct connectivity. Use API gateways, application proxies, or private endpoint services. Risk: Insecure connectivity between cloud and on-premises environments can lead to data breaches, unauthorised access, and compromise of both cloud and on-premises resources.",
+    "status": "scraped"
+  },
+  {
+    "id": "NS-9",
+    "domainId": "NS",
+    "catalog": "cybersecurity",
+    "title": "Intrusion Prevention System (IPS)/Intrusion Detection System (IDS)",
+    "description": "Set up and configure an Intrusion Prevention System (IPS)/Intrusion Detection System (IDS) in the network.",
+    "guidance": "Configure network or host IPS/IDS to detect malicious traffic to/from public or untrusted networks. Risk: Absence of network or host IPS or IDS in the network increases the likelihood of undetected intrusions, putting sensitive data and system integrity at risk.",
+    "status": "scraped"
+  },
+  {
+    "id": "PM-1",
+    "domainId": "PM",
+    "catalog": "cybersecurity",
+    "title": "Cybersecurity Incident Management Plan",
+    "description": "Develop, document, and disseminate an organisation-level cybersecurity incident management plan to respond to cybersecurity incidents.",
+    "citations": [
+      {
+        "standard": "NIST SP 800-61",
+        "reference": "Computer Security Incident Handling Guide"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "PM-10",
+    "domainId": "PM",
+    "catalog": "cybersecurity",
+    "title": "Cybersecurity Leadership and Oversight",
+    "description": "Ensure that the board of directors (or equivalent body) and senior management team includes at least one member that has knowledge and awareness of cybersecurity matters to have oversight of cybersecurity risks.",
+    "status": "scraped"
+  },
+  {
+    "id": "PM-2",
+    "domainId": "PM",
+    "catalog": "cybersecurity",
+    "title": "Risk Assessment",
+    "description": "Develop and document a risk assessment by [insert: param, pm-2_prm_1] and get it approved by [insert: param, pm-2_prm_2] prior to [insert: param, pm-2_prm_3] and conduct a review every [insert: param, pm-2_prm_4] day(s).",
+    "parameters": [
+      {
+        "id": "pm-2_prm_1",
+        "type": "system owner (str)",
+        "description": "The owner of the system."
+      },
+      {
+        "id": "pm-2_prm_2",
+        "type": "risk assessment approver (str)",
+        "description": "The approver of the risk assessment."
+      },
+      {
+        "id": "pm-2_prm_3",
+        "type": "risk assessment use case (str)",
+        "description": "The use case of the risk assessment."
+      },
+      {
+        "id": "pm-2_prm_4",
+        "type": "time period (days) (int)",
+        "description": "The time period in days for risk assessment."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "PM-3",
+    "domainId": "PM",
+    "catalog": "cybersecurity",
+    "title": "System Security Plan (SSP) Development",
+    "description": "Develop and maintain a comprehensive System Security Plan (SSP) that accurately reflects the system characteristics and security controls in place for the organisation's systems and environments.",
+    "status": "scraped"
+  },
+  {
+    "id": "PM-4",
+    "domainId": "PM",
+    "catalog": "cybersecurity",
+    "title": "Approval of Residual Risks",
+    "description": "Get acceptance and approval of the residual risks from agency's [insert: param, pm-4_prm_1], and review and seek approval every [insert: param, pm-4_prm_2] days.",
+    "parameters": [
+      {
+        "id": "pm-4_prm_1",
+        "type": "approving authority (str)",
+        "description": "The authority for approval of residual risks."
+      },
+      {
+        "id": "pm-4_prm_2",
+        "type": "review frequency (int)",
+        "description": "The frequency of risk review requirement."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "PM-5",
+    "domainId": "PM",
+    "catalog": "cybersecurity",
+    "title": "Central Submission of Approved System Security Plan (SSP)",
+    "description": "Submit approved SSPs centrally to maintain a unified and up-to-date repository of security plans and practices.",
+    "status": "scraped"
+  },
+  {
+    "id": "PM-6",
+    "domainId": "PM",
+    "catalog": "cybersecurity",
+    "title": "System Documentation",
+    "description": "Maintain detailed, up-to-date documentation of all system information and architecture.",
+    "status": "scraped"
+  },
+  {
+    "id": "PM-7",
+    "domainId": "PM",
+    "catalog": "cybersecurity",
+    "title": "Certification",
+    "description": "Ensure that the Software as a Service (SaaS) provider is certified with [insert: param, pm-7_prm_1].",
+    "parameters": [
+      {
+        "id": "pm-7_prm_1",
+        "type": "certifications (str)",
+        "description": "The required certifications."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "PM-8",
+    "domainId": "PM",
+    "catalog": "cybersecurity",
+    "title": "SaaS Whitelisting",
+    "description": "Maintain and enforce a whitelist of authorised software and services.",
+    "parameters": [
+      {
+        "id": "pm-8_prm_1",
+        "type": "whitelisting authority (str)",
+        "description": "The whitelisting authority."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "PM-9",
+    "domainId": "PM",
+    "catalog": "cybersecurity",
+    "title": "Cybersecurity Incident Response Testing",
+    "description": "Conduct incident response testing and exercises at least every [insert: param, pm-9_prm_1] day(s) to evaluate the effectiveness of incident response plans and procedures.",
+    "parameters": [
+      {
+        "id": "pm-9_prm_1",
+        "type": "time period (days) (int)",
+        "description": "The time period in days for cybersecurity incident response testing."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "PR-1",
+    "domainId": "PR",
+    "catalog": "dss",
+    "title": "Digital Service Review",
+    "description": "Review digital services every [ insert: param, pr-1_prm_1 ] day(s). Shut down services that are no longer needed or fail to meet their intended objectives.",
+    "guidance": "Review factors such as relevance, importance and usage rates of the service. Rationale: Services that are not effective incur unnecessary costs for the organisation.",
+    "parameters": [
+      {
+        "id": "pr-1_prm_1",
+        "type": "int",
+        "description": "The time period in days within which a digital service review must be conducted."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "PR-2",
+    "domainId": "PR",
+    "catalog": "dss",
+    "title": "Digital Service Registration",
+    "description": "Register and implement WOGAA on all public facing digital services.",
+    "guidance": "Registration includes registration of all public facing digital services, implementation of WOGAA tracking code, and enabling Sentiments. Only registration is required for SaaS and COTS products lacking customization options. Rationale: A centralised registry and tracking of digital services across Whole-of-Government facilitates central oversight and benchmarking of digital services.",
+    "status": "scraped"
+  },
+  {
+    "id": "PR-3",
+    "domainId": "PR",
+    "catalog": "dss",
+    "title": "Digital Service Availability",
+    "description": "Make digital services available to users 24/7. Clearly communicate the operational hours if a service cannot be available 24/7.",
+    "guidance": "Do not limit the availability of services to specific hours unless justified by operational or business requirements. Rationale: End users expect to have access to digital channels anytime excluding planned and unplanned downtime.",
+    "status": "scraped"
+  },
+  {
+    "id": "PR-4",
+    "domainId": "PR",
+    "catalog": "dss",
+    "title": "Notify of Scheduled Downtime",
+    "description": "Provide notice of scheduled downtime at least [ insert: param, pr-4_prm_1 ] day(s) in advance.",
+    "guidance": "Clearly communicate scheduled downtime using methods like maintenance banners and in-app notifications. Rationale: Awareness of scheduled downtime minimises disruption to users by allowing them to plan around it.",
+    "parameters": [
+      {
+        "id": "pr-4_prm_1",
+        "type": "int",
+        "description": "The time period in days to provide notice of schedule downtime."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "PR-5",
+    "domainId": "PR",
+    "catalog": "dss",
+    "title": "Manage Broken Links",
+    "description": "Establish processes to detect broken links, and address them within [ insert: param, pr-5_prm_1 ] day(s) from detection.",
+    "guidance": "Use automated tools like WOGAA's broken link scanner to regularly scan for broken links. Rationale: Broken links affect content delivery and prevent end users from completing tasks.",
+    "parameters": [
+      {
+        "id": "pr-5_prm_1",
+        "type": "int",
+        "description": "The time period in days to address broken links."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "PR-6",
+    "domainId": "PR",
+    "catalog": "dss",
+    "title": "Browser Compatibility",
+    "description": "Ensure web-based services are compatible with the latest major versions of at least [ insert: param, pr-6_prm_1 ] widely used web browsers, based on usage statistics.",
+    "guidance": "Regularly test your service on the latest two major versions of popular browsers such as Chrome, Firefox, Safari, and Edge. Rationale: Browser incompatibility can cause layout bugs and other functional issues.",
+    "parameters": [
+      {
+        "id": "pr-6_prm_1",
+        "type": "int",
+        "description": "The number of web browsers."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "PR-7",
+    "domainId": "PR",
+    "catalog": "dss",
+    "title": "Optimise Load Times",
+    "description": "Ensure that page load time of web-based services is [ insert: param, pr-7_prm_1 ] second(s) or less.",
+    "guidance": "Track or regularly test and optimise performance using tools like WOGAA and Google PageSpeed Insights. Rationale: Long page load times frustrate end users and lead to longer transaction times and increased abandonment rate.",
+    "parameters": [
+      {
+        "id": "pr-7_prm_1",
+        "type": "int",
+        "description": "The time period in seconds for page load times."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "RS-1",
+    "domainId": "RS",
+    "catalog": "cybersecurity",
+    "title": "Multi-AZ Deployment",
+    "description": "Deploy the system in [ insert: param, rs-1_prm_1 ] availability zones (AZs) within the region.",
+    "guidance": "Utilize cloud-native services for load-balancing and auto-scaling across multiple AZs. Implement health checks and automated failover mechanisms to redirect traffic. Ensure data is replicated across multiple AZs. Risk: Failure to deploy services across multiple availability zones increases the risk of extended service outages due to a single point of failure.",
+    "parameters": [
+      {
+        "id": "rs-1_prm_1",
+        "type": "number of zones (str)",
+        "description": "The number of availability zones to deploy to."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "RS-2",
+    "domainId": "RS",
+    "catalog": "cybersecurity",
+    "title": "Dynamic Resource Scaling",
+    "description": "Implement and utilise dynamic resource scaling techniques in the system.",
+    "guidance": "Resource optimization techniques like load balancing and auto-scaling should maximize utilization and minimize idle resources by adjusting to real-time demand fluctuations, per the AWS Well-Architected Framework's 'Reliability' pillar. Risk: Failure to implement dynamic resource scaling may lead to inefficient resource utilisation and potential service degradation during spikes in demand. This can lead to system outages during peak loads, reducing overall system performance and reliability.",
+    "status": "scraped"
+  },
+  {
+    "id": "RS-3",
+    "domainId": "RS",
+    "catalog": "cybersecurity",
+    "title": "Load Testing",
+    "description": "Perform load testing every [ insert: param, rs-3_prm_1 ] days.",
+    "guidance": "Load testing should be conducted on a replica of the production system. The load should mimic real user traffic. Risk: Inadequate load testing may lead to unexpected system failures during periods of high demand, leading to service interruptions.",
+    "parameters": [
+      {
+        "id": "rs-3_prm_1",
+        "type": "time period (days) (int)",
+        "description": "The frequency at which load testing should be performed."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "SC-1",
+    "domainId": "SC",
+    "catalog": "cybersecurity",
+    "title": "Code Repository",
+    "description": "Manage the codebase in a central code repository with version control.",
+    "guidance": "Use common internal platforms that provide Git repository services. Risk: Absence of centralised code repository and version control increases the risk of code inconsistencies, loss of code history, and difficulties in collaboration.",
+    "status": "scraped"
+  },
+  {
+    "id": "SC-2",
+    "domainId": "SC",
+    "catalog": "cybersecurity",
+    "title": "Commit Signing",
+    "description": "Configure the code repository to reject unsigned commits.",
+    "guidance": "Use GitLab's push rules, GitHub's branch protection rules or similar controls to reject unsigned commits on push. Risk: Allowing unsigned commits introduces risk of unauthorised or malicious code changes, compromising software development integrity.",
+    "status": "scraped"
+  },
+  {
+    "id": "SC-3",
+    "domainId": "SC",
+    "catalog": "cybersecurity",
+    "title": "Peer Review",
+    "description": "Require peer review and approval by a designated reviewer before merging into the default branch.",
+    "guidance": "Use GitLab's protected branch and merge request settings, GitHub's branch protection settings or similar controls. Risk: Without peer review, increased risk of undetected coding errors, security vulnerabilities, and consistency challenges.",
+    "status": "scraped"
+  },
+  {
+    "id": "SC-4",
+    "domainId": "SC",
+    "catalog": "cybersecurity",
+    "title": "Dependency Manifest Version Pinning",
+    "description": "Pin direct and transitive dependency versions in the application's dependency manifest.",
+    "guidance": "Dependency manifests such as package-lock.json for npm and Pipfile.lock for pipenv allow pinning dependency versions. Risk: Failure to pin versions may lead to version drift, compatibility issues, security vulnerabilities, and unpredictability.",
+    "status": "scraped"
+  },
+  {
+    "id": "SC-5",
+    "domainId": "SC",
+    "catalog": "cybersecurity",
+    "title": "Build and Release Process",
+    "description": "Use a consistent build and release process that generates a record of how the release artefact was built and deployed.",
+    "guidance": "Consider automated tools like CI/CD Pipelines, Infrastructure as Code (IaC), and scripts enabling signing and validation of build artefacts. Risk: Inconsistent releases may lead to configuration drift, increased errors, and unapproved changes.",
+    "status": "scraped"
+  },
+  {
+    "id": "SC-6",
+    "domainId": "SC",
+    "catalog": "cybersecurity",
+    "title": "Dependency Installation during Deployment",
+    "description": "Only install pinned versions in the manifest when installing dependencies during deployment.",
+    "guidance": "Use package manager commands like npm ci for npm and pipenv sync for pipenv ensuring only manifest-specified versions install. Risk: Failure to install pinned versions increases risk of unforeseen changes, compatibility issues, and security vulnerabilities.",
+    "status": "scraped"
+  },
+  {
+    "id": "SC-7",
+    "domainId": "SC",
+    "catalog": "cybersecurity",
+    "title": "Software Artefact Signing",
+    "description": "Sign software artefacts such as code and container images using a trusted source during build.",
+    "guidance": "Use tools like Cosign or AWS Signer to sign and verify code. Risk: Unsigned code and container images risk tampering, impersonation, and malicious code injection during build.",
+    "status": "scraped"
+  },
+  {
+    "id": "SC-8",
+    "domainId": "SC",
+    "catalog": "cybersecurity",
+    "title": "Software Artefact Signature Verification",
+    "description": "Verify the signatures of code and artefacts before deployment or runtime.",
+    "guidance": "Implement a signature verification step such as a pipeline stage or Kubernetes Admission Controller. Risk: Without signature verification, increased risk of deploying tampered or malicious software.",
+    "status": "scraped"
+  },
+  {
+    "id": "SC-9",
+    "domainId": "SC",
+    "catalog": "cybersecurity",
+    "title": "Internal Code Collaboration and Sharing",
+    "description": "Share source code internally to enhance code quality, accelerate innovation, and improve problem-solving efficiency.",
+    "guidance": "Adopt InnerSource practices for internal collaboration utilising Git platforms. Evaluate code suitability for sharing, considering confidential algorithms or sensitive data. Risk: Restricting repositories to closed source results in duplicated efforts, hindered learning, and missed vulnerabilities.",
+    "status": "scraped"
+  },
+  {
+    "id": "SD-1",
+    "domainId": "SD",
+    "catalog": "cybersecurity",
+    "title": "Push Protection for Secrets",
+    "description": "Configure the code repository to prevent secrets from being pushed to the repository.",
+    "guidance": "Use GitLab's push rules or GitHub's push protection to reject secrets on push. Risk: Failure to configure the code repository to prevent secrets from being pushed introduces the risk of inadvertent exposure, unauthorised access, and potential misuse of sensitive information, compromising the security of the codebase and associated systems.",
+    "status": "scraped"
+  },
+  {
+    "id": "SD-10",
+    "domainId": "SD",
+    "catalog": "cybersecurity",
+    "title": "Secure Software Development Lifecycle (SSDLC)",
+    "description": "Implement and maintain a secure software development lifecycle based on an industry-standard or organisation-defined framework, integrating security practices throughout all phases of application design, development, testing, deployment, and maintenance.",
+    "guidance": "Outline a framework that defines roles, responsibilities, and accountability for security throughout the SSDLC. Existing frameworks include NIST Secure Software Development Framework (SSDF), OWASP Software Assurance Maturity Model (SAMM), and Microsoft Security Development Lifecycle (SDL). Risk: Failure to implement a comprehensive secure software development lifecycle increases the risk of introducing vulnerabilities throughout the development process, potentially leading to security breaches, data leaks, and compromised system integrity in production environments.",
+    "citations": [
+      {
+        "standard": "NIST Secure Software Development Framework (SSDF)",
+        "reference": ""
+      },
+      {
+        "standard": "OWASP Software Assurance Maturity Model (SAMM)",
+        "reference": ""
+      },
+      {
+        "standard": "Microsoft Security Development Lifecycle (SDL)",
+        "reference": ""
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "SD-2",
+    "domainId": "SD",
+    "catalog": "cybersecurity",
+    "title": "Default Branch Push Permissions",
+    "description": "Configure the code repository to prevent pushes (including force pushes) to the default branch.",
+    "guidance": "Use GitLab's protected branch and merge request settings or GitHub's branch protection settings to enforce this. Risk: Without configuring the code repository to prevent pushes, including force pushes, to the default branch, there's an increased risk of unintentional or malicious changes, potential loss of code history, and compromised version control, impacting the integrity and reliability of the software development process.",
+    "status": "scraped"
+  },
+  {
+    "id": "SD-3",
+    "domainId": "SD",
+    "catalog": "cybersecurity",
+    "title": "Continuous Integration (CI) Tests",
+    "description": "Require Continuous Integration (CI) tests to pass before merging into the default branch.",
+    "guidance": "Use GitLab's protected branch and merge request settings or GitHub's branch protection settings to enforce this. Risk: Failing to require passing Continuous Integration (CI) tests before merging into the default branch increases the risk of introducing faulty code, potential regressions, and compromise of code quality.",
+    "status": "scraped"
+  },
+  {
+    "id": "SD-4",
+    "domainId": "SD",
+    "catalog": "cybersecurity",
+    "title": "Static Analysis",
+    "description": "Set up a static analysis job in the [insert: param, sd-4_prm_1], and remediate or risk accept true positive vulnerability findings before deploying to production.",
+    "guidance": "Static analysis tools (such as SAST or IaC security scanners) check source code for common vulnerabilities and misconfigurations. By running static analysis tools earlier in the DevSecOps cycle, vulnerabilities can be detected and prevented from being deployed to production. Risk: Without setting up static analysis in the CI/CD pipeline for each merge request and addressing true positive vulnerability findings, there is an increased risk of deploying insecure code to the production branch, potentially leading to security breaches and compromise of the overall system.",
+    "parameters": [
+      {
+        "id": "sd-4_prm_1",
+        "type": "location (str)",
+        "description": "The location where static analysis occurs."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "SD-5",
+    "domainId": "SD",
+    "catalog": "cybersecurity",
+    "title": "Dependency Scanning",
+    "description": "Schedule a scan at least every [insert: param, sd-5_prm_1] day(s) in the [insert: param, sd-5_prm_2] to identify the use of vulnerable software libraries.",
+    "guidance": "Dependency scanning checks the source code for dependencies with known vulnerabilities. By running scans regularly using bots or software composition analysis (SCA) tools, vulnerabilities arising from outdated dependencies can be quickly detected and patched. Software composition analysis can be performed using tools such as Gitlab, Nexus IQ, or their equivalent, with output in a common SBOM format such as SPDX or CycloneDX. Risk: Failing to schedule regular dependency scanning to identify vulnerable software libraries and address findings in a timely manner increases the risk of deploying applications with known vulnerabilities, potentially exposing the system to security exploits and compromise.",
+    "parameters": [
+      {
+        "id": "sd-5_prm_1",
+        "type": "time period (days) (int)",
+        "description": "The time period in days of dependency scanning frequency."
+      },
+      {
+        "id": "sd-5_prm_2",
+        "type": "location (str)",
+        "description": "The location where dependency scanning occurs."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "SD-6",
+    "domainId": "SD",
+    "catalog": "cybersecurity",
+    "title": "Secret Detection",
+    "description": "Set up secret detection in the [insert: param, sd-6_prm_1] and remediate true positives within [insert: param, sd-6_prm_2] day(s).",
+    "guidance": "Ensure that the exposed secret is revoked and purged from the Git history. Risk: Without setting up secret detection and addressing true positive findings promptly, there's an increased risk of exposing sensitive information, potential unauthorised access, and compromised security.",
+    "parameters": [
+      {
+        "id": "sd-6_prm_1",
+        "type": "location (str)",
+        "description": "The location where secret detection occurs."
+      },
+      {
+        "id": "sd-6_prm_2",
+        "type": "time period (days) (int)",
+        "description": "Number of days within which to remediate a secret detection true positive."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "SD-7",
+    "domainId": "SD",
+    "catalog": "cybersecurity",
+    "title": "CI Environment Variable Secrets Management",
+    "description": "Protect environment variable secrets used in CI jobs by limiting them to protected pipelines and masking them in job logs.",
+    "guidance": "Use GitLab's CI/CD variable security settings or GitHub's encrypted secrets with the add-mask workflow command. Risk: Failing to protect environment variable secrets in CI jobs by limiting them to protected pipelines and masking them in job logs increases the risk of unauthorised access and exposure of sensitive information.",
+    "status": "scraped"
+  },
+  {
+    "id": "SD-8",
+    "domainId": "SD",
+    "catalog": "cybersecurity",
+    "title": "Deployment Environment Segregation",
+    "description": "Segregate production and non-production environments including applications, services, data, secrets, roles, and networks.",
+    "guidance": "Achieve segregation using separate cloud tenant accounts for environments such as production, development, test, and staging. Account segregation enhances security by limiting exposure, simplifies resource and cost management, maintains configuration integrity, facilitates compliance and auditing and streamlines operational tasks. Deploy and operate environments as similarly as possible to enhance debugging and time-to-market. Risk: Failure to segregate production and non-production environments increases the risk of unauthorised access, data leaks, and denial of service attacks, as compromises in non-production environments may lead to cascading impacts on production systems.",
+    "status": "scraped"
+  },
+  {
+    "id": "SD-9",
+    "domainId": "SD",
+    "catalog": "cybersecurity",
+    "title": "Dynamic Analysis",
+    "description": "Implement dynamic analysis testing in the [insert: param, sd-9_prm_1], and address or risk-accept all identified vulnerabilities before deploying to production.",
+    "guidance": "Dynamic analysis tools (such as DAST, IAST, or fuzzing tools) test applications in runtime conditions to identify vulnerabilities that may not be apparent in static code. Integrate these tools into your CI/CD pipeline to automatically scan applications in a controlled environment. Ensure that the analysis covers various attack vectors, including input validation, authentication mechanisms, and API endpoints. Regularly update and tune your dynamic analysis tools to detect emerging threats and vulnerabilities. Risk: Failure to perform dynamic analysis in a controlled environment before production deployment increases the risk of undetected runtime vulnerabilities, potentially leading to security breaches, data leaks, and compromised system integrity in the production environment.",
+    "parameters": [
+      {
+        "id": "sd-9_prm_1",
+        "type": "location (str)",
+        "description": "The location where static analysis occurs."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "ST-1",
+    "domainId": "ST",
+    "catalog": "cybersecurity",
+    "title": "Vulnerability Assessment",
+    "description": "Run regular [insert: param, st-1_prm_1] vulnerability assessment scans for eligible hosts at least every [insert: param, st-1_prm_2] day(s).",
+    "parameters": [
+      {
+        "id": "st-1_prm_1",
+        "type": "type (str)",
+        "description": "The type of vulnerability assessment scanning."
+      },
+      {
+        "id": "st-1_prm_2",
+        "type": "time period (days) (int)",
+        "description": "The time period in days for vulnerability assessment scans."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "ST-2",
+    "domainId": "ST",
+    "catalog": "cybersecurity",
+    "title": "Cloud Security Posture Management",
+    "description": "Set up cloud security posture management that performs continuous configuration scans on cloud assets.",
+    "status": "scraped"
+  },
+  {
+    "id": "ST-3",
+    "domainId": "ST",
+    "catalog": "cybersecurity",
+    "title": "Public Vulnerability Disclosure Programme",
+    "description": "Establish a public reporting channel for disclosing vulnerabilities in public-facing systems via [insert: param, st-3_prm_1].",
+    "parameters": [
+      {
+        "id": "st-3_prm_1",
+        "type": "type (str)",
+        "description": "The type of public vulnerability reporting channel."
+      }
+    ],
+    "citations": [
+      {
+        "standard": "security.txt standard",
+        "reference": "securitytxt.org"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "ST-4",
+    "domainId": "ST",
+    "catalog": "cybersecurity",
+    "title": "Security Testing Programme",
+    "description": "Conduct and document a [insert: param, st-4_prm_1] by internal teams or independent external parties every [insert: param, st-4_prm_2] day(s).",
+    "parameters": [
+      {
+        "id": "st-4_prm_1",
+        "type": "type (str)",
+        "description": "The type of security testing programme."
+      },
+      {
+        "id": "st-4_prm_2",
+        "type": "time period (days) (int)",
+        "description": "The time period in days of penetration testing frequency."
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "ST-5",
+    "domainId": "ST",
+    "catalog": "cybersecurity",
+    "title": "Vulnerability Management",
+    "description": "Triage, prioritise and then remediate or risk accept vulnerabilities that materially impact security within the following timeframe based on severity: Critical: [insert: param, st-5_prm_1] day(s); High: [insert: param, st-5_prm_2] day(s); Medium: [insert: param, st-5_prm_3] day(s); Low: [insert: param, st-5_prm_4] day(s).",
+    "parameters": [
+      {
+        "id": "st-5_prm_1",
+        "type": "time period (days) (int)",
+        "description": "The time period in days to remediate or risk accept critical findings."
+      },
+      {
+        "id": "st-5_prm_2",
+        "type": "time period (days) (int)",
+        "description": "The time period in days to remediate or risk accept high findings."
+      },
+      {
+        "id": "st-5_prm_3",
+        "type": "time period (days) (int)",
+        "description": "The time period in days to remediate or risk accept medium findings."
+      },
+      {
+        "id": "st-5_prm_4",
+        "type": "time period (days) (int)",
+        "description": "The time period in days to remediate or risk accept low findings."
+      }
+    ],
+    "citations": [
+      {
+        "standard": "Known Exploited Vulnerabilities Catalog",
+        "reference": "CISA"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "TL-1",
+    "domainId": "TL",
+    "catalog": "dss",
+    "title": "Official Government Domain",
+    "description": "Use .gov.sg domain for web-based digital services. Education Institutions may use .edu.sg. domain.",
+    "guidance": "Register .gov.sg and .edu.sg domain names on the Whole of Government Domain Name Server (DNS) portal on the IT Service Management (ITSM) portal. Rationale: Helps end users easily recognise that they are interacting with an authentic government source, reducing the risk of fraud, phishing, or misinformation.",
+    "status": "scraped"
+  },
+  {
+    "id": "TL-2",
+    "domainId": "TL",
+    "catalog": "dss",
+    "title": "Agency or Initiative Logo",
+    "description": "Display the agency/initiative logo on the top left of every page of web-based digital services; Hyperlink the logo to the homepage.",
+    "guidance": "The logo should render clearly without distortion or pixellation to maintain trust and reinforce brand reputation. Rationale: Provides reassurance about the legitimacy of the service.",
+    "status": "scraped"
+  },
+  {
+    "id": "TL-3",
+    "domainId": "TL",
+    "catalog": "dss",
+    "title": "Official Government Banner",
+    "description": "Display the Official Government Banner on every page of web-based .gov.sg digital services.",
+    "guidance": "The Official Government banner must be the topmost component of the web service. Use the Singapore Government Design System (SGDS) 'Official Government Banner' component. Not required for SaaS and COTS products that do not allow customisation. Rationale: Helps end users easily recognize that they are interacting with an authentic government service, reducing the risk of fraud, phishing, or misinformation.",
+    "status": "scraped"
+  },
+  {
+    "id": "TL-4",
+    "domainId": "TL",
+    "catalog": "dss",
+    "title": "Official Government Footer",
+    "description": "Adopt the Official Global Footer on every page of .gov.sg web-based services. Use the basic footer provided by SGDS. The footer must contain A) The following footer links in this order i) Contact / Contact Us ii) Feedback iii) FAQ (if any) iv) Sitemap (if any) v) Report Vulnerability vi) Privacy Statement vii) Terms of Use B) Copyright Statement in the format '© [current year in YYYY], Government of Singapore'. Digital services owned by statutory boards may use the agency's name instead of 'Government of Singapore'. Not required for pages that are part of transactional services.",
+    "guidance": "Rationale: Provides consistency across government digital services and ensures that end users have access to consistently placed important utility links.",
+    "status": "scraped"
+  },
+  {
+    "id": "TL-5",
+    "domainId": "TL",
+    "catalog": "dss",
+    "title": "Mobile App Ownership and Distribution",
+    "description": "Distribute government mobile applications through official app stores and retain IP rights.",
+    "guidance": "Retain full ownership of all intellectual property rights, including copyright. Avoid releasing mobile applications under licenses that permit free distribution. Ensure compliance with platform guidelines for official government endorsement. Distribute apps only through the following platforms: 1. Apple App Store 2. Google Play Store 3. Huawei AppGallery. Rationale: Minimise the risk of end users downloading unauthorised versions of Government apps. Owning the IP rights provides agencies with a legal basis to request third-party app stores or websites to remove unauthorised versions of Government mobile applications.",
+    "status": "scraped"
+  },
+  {
+    "id": "TL-6",
+    "domainId": "TL",
+    "catalog": "dss",
+    "title": "Application Store Listings",
+    "description": "Ensure that the agency name is used as the application store developer account name when publishing mobile applications.",
+    "guidance": "Use the full agency name. Rationale: Having clear and properly named developer accounts reassures end users of the legitimacy of the mobile app.",
+    "status": "scraped"
+  },
+  {
+    "id": "TX-1",
+    "domainId": "TX",
+    "catalog": "dss",
+    "title": "Digital-First Approach",
+    "description": "Design digital transactions to be fully digital from start to finish, unless otherwise stated in legal regulations.",
+    "guidance": "Avoid requiring non-digital interactions such as physical signatures, paper-based approvals, or in-person submissions as part of a digital service. Implement digital signature solutions such as Singpass, and enable common digital payment methods like credit card and Paynow. Rationale: A transaction that is not fully digital diminishes the convenience of being able to transact anywhere and anytime.",
+    "status": "scraped"
+  },
+  {
+    "id": "TX-10",
+    "domainId": "TX",
+    "catalog": "dss",
+    "title": "Failed Transaction Details",
+    "description": "Provide the following details for failed transactions: a) Clear reasons for failure or rejection (unless limited by policy considerations) b) Alternative actions c) Channels for appeals or further enquiries.",
+    "guidance": "Ensuring explanations are clear and as detailed as possible within policy constraints. Rationale: Providing specific and actionable information to end users when a transaction fails allows them to quickly understand the reasons, and resolve issues if applicable.",
+    "status": "scraped"
+  },
+  {
+    "id": "TX-11",
+    "domainId": "TX",
+    "catalog": "dss",
+    "title": "Payment details",
+    "description": "Display payment details once payment has been completed.",
+    "guidance": "Important payment details include: i) Acknowledgement code or receipt number (where applicable); ii) Transaction date; iii) List of products and/or services transacted (where applicable); iv) Chosen digital payment mechanism (where applicable); v) Amount paid. Payment information can be displayed on the success screen and/or sent via other acknowledgement channels. Consider providing the option to download or print the receipt for record-keeping. Rationale: Transactions involving payment are important to end users. Post transaction acknowledgement serves as a secondary check and can potentially reduce the consequences of errors.",
+    "status": "scraped"
+  },
+  {
+    "id": "TX-12",
+    "domainId": "TX",
+    "catalog": "dss",
+    "title": "Transaction Outcome",
+    "description": "Provide an estimated timeframe for the transaction outcome when it is not immediately available.",
+    "guidance": "This information can be provided before the start of the transaction, on the submission success screen, and/or in acknowledgement or receipts. Rationale: Keeping users informed about when to expect a decision reduces uncertainty and manages user expectations.",
+    "status": "scraped"
+  },
+  {
+    "id": "TX-13",
+    "domainId": "TX",
+    "catalog": "dss",
+    "title": "Post-transaction Acknowledgement",
+    "description": "Send and/or allow download of an acknowledgement after a successful transaction.",
+    "guidance": "Send acknowledgement via channels like SMS, email, push notification, or in-app notifications. Ensure that the acknowledgment includes key details about the submission. Rationale: Allowing the end user to retain a receipt or acknowledgement of the transaction that can be revisited provides reassurance that the submission or transaction has been received.",
+    "status": "scraped"
+  },
+  {
+    "id": "TX-14",
+    "domainId": "TX",
+    "catalog": "dss",
+    "title": "Transaction Status Updates",
+    "description": "Provide notifications when there are updates to transaction status.",
+    "guidance": "Notifications can be sent via SMS, email, push notification, or in-app notifications. Rationale: An active approach of notifying end users when they are updates to their transaction status reduces the need to manually check, and allows for timely follow-ups.",
+    "status": "scraped"
+  },
+  {
+    "id": "TX-15",
+    "domainId": "TX",
+    "catalog": "dss",
+    "title": "Tracking Transaction Status",
+    "description": "Enable online tracking of transaction status.",
+    "guidance": "Provide clear status labels and descriptions, estimated completion timelines, and any required end user actions. Rationale: Allowing end users to track their transactions online increases transparency and builds trust. The ability to self-service provides a sense of control, reducing anxiety for users, and reducing reliance and load on customer support.",
+    "status": "scraped"
+  },
+  {
+    "id": "TX-2",
+    "domainId": "TX",
+    "catalog": "dss",
+    "title": "Transaction Prerequisites",
+    "description": "Provide all information required to complete the transaction before the start of the transaction.",
+    "guidance": "Information should include: a) Prerequisites or eligibility criteria b) Estimated completion time/time range c) Required documents and accepted file formats d) Cost and payment modes available. Rationale: Knowing the information and documents required allows end users to assess their readiness and ability to complete the transaction before committing to it.",
+    "status": "scraped"
+  },
+  {
+    "id": "TX-3",
+    "domainId": "TX",
+    "catalog": "dss",
+    "title": "Break Down Long Transactions",
+    "description": "Break long transactions down into logical steps or sections.",
+    "guidance": "Group related input fields together to reduce cognitive load and streamline data entry. Rationale: Makes long or multi-step tasks feel more manageable.",
+    "status": "scraped"
+  },
+  {
+    "id": "TX-4",
+    "domainId": "TX",
+    "catalog": "dss",
+    "title": "Progress Indicators",
+    "description": "Provide progress indicators for multi-step transactions.",
+    "guidance": "Use a clear and intuitive design to visually convey the process and progress. Rationale: Progress indicators can help end users estimate time required for a task, and know their progress within a transaction or flow.",
+    "status": "scraped"
+  },
+  {
+    "id": "TX-5",
+    "domainId": "TX",
+    "catalog": "dss",
+    "title": "Save Draft Function",
+    "description": "Provide a save draft function for long transactions.",
+    "guidance": "Ensure the option to save drafts is clearly visible and accessible. Provide clear feedback when a draft has been saved and provide easy access to retrieve and resume the draft. Rationale: Some transactions have long estimated completion time or many fields. An option to save and continue later provides end users with the flexibility of performing the transaction in chunks, and assurance that input can be retrieved if something goes wrong.",
+    "status": "scraped"
+  },
+  {
+    "id": "TX-6",
+    "domainId": "TX",
+    "catalog": "dss",
+    "title": "Pre-fill Data",
+    "description": "Pre-fill forms with known data where applicable; Where SingPass/CorpPass is used, provide the option to pre-fill personal or business data with MyInfo and Enterprise Data Hub (EDH).",
+    "guidance": "Properly assess accuracy and relevance of any pre-filled data before implementation. Rationale: Pre-filled data saves end users time and minimises the risk of errors from manual input.",
+    "status": "scraped"
+  },
+  {
+    "id": "TX-7",
+    "domainId": "TX",
+    "catalog": "dss",
+    "title": "Payment and Refund",
+    "description": "Provide payment and refund information before payment is made.",
+    "guidance": "Ensure this information is easily accessible on the payment page and before the start of the transaction. Rationale: Being transparent and upfront about payment related details reassures end users and minimises the unpleasantness of rectifying an error.",
+    "status": "scraped"
+  },
+  {
+    "id": "TX-8",
+    "domainId": "TX",
+    "catalog": "dss",
+    "title": "Managing Stored Payment Details",
+    "description": "Allow updating and removal of stored payment details in all digital services involving payments.",
+    "guidance": "Provide clear instructions and confirmation prompts to guide end users through the process to minimise errors. Rationale: Provides end users with control over sensitive payment information.",
+    "status": "scraped"
+  },
+  {
+    "id": "TX-9",
+    "domainId": "TX",
+    "catalog": "dss",
+    "title": "Success or failure message",
+    "description": "Display a success or failure message at the end of the transaction.",
+    "guidance": "Use familiar and unambiguous visual cues, such as clear copy, iconography, and colour (e.g. green for success, red for failure) to enhance immediate recognition. Rationale: Clear feedback on the outcome of the transaction reassures end users.",
+    "status": "scraped"
+  },
+  {
+    "id": "UU-1",
+    "domainId": "UU",
+    "catalog": "dss",
+    "title": "Understand User Needs",
+    "description": "Understand and document Public Users' needs and context when creating a new digital service, redesigning existing services or introducing major features.",
+    "guidance": "Organizations should investigate user context, needs, and problems prior to solution selection through activities including user research (surveys, interviews, ethnographic studies), analysis of end user feedback, and web analytics and relevant data evaluation. Rationale: Understanding end user context, goals, behaviour and mindsets allows you to design solutions that truly meet their needs. Better-aligned digital services effectively meet user needs from the start, improving user satisfaction, and reducing costly rework.",
+    "status": "scraped"
+  },
+  {
+    "id": "UU-2",
+    "domainId": "UU",
+    "catalog": "dss",
+    "title": "Test with Users",
+    "description": "Conduct and document usability testing with representative Public Users when creating a new digital service, redesigning existing services or introducing major features. Remediate or risk accept findings within [uu-2_prm_1] day(s).",
+    "guidance": "Perform usability testing at significant development phases before public launch. Base testing on actual user scenarios and prototypes. Document findings in structured reports prioritizing by severity. Lightweight approaches like guerrilla testing are acceptable if they produce actionable insights. Rationale: Testing with end users allows early identification of usability issues at various points in the design and development process. This ensures the product is intuitive and usable, and reduces the risk of costly fixes later.",
+    "parameters": [
+      {
+        "id": "uu-2_prm_1",
+        "type": "time period (days) (int)",
+        "description": "The time period in days to remediate or risk accept findings"
+      }
+    ],
+    "status": "scraped"
+  },
+  {
+    "id": "WO-1",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Keyboard Equivalent",
+    "description": "Ensure any action done using a pointer device can also be done using a keyboard.",
+    "guidance": "Provide keyboard operation for all the functionality of the page unless the function requires path-dependent input such as handwriting. Avoid requiring specific timings for individual keystrokes such as requirements to repeat or execute multiple keystrokes within a short period of time. Rationale: Ensures that there is no loss of functionality for users who rely on keyboards such as those with motor impairments.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-10",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Link Text And Purpose",
+    "description": "Ensure that link text identifies the purpose of the link and can be interpreted easily on its own.",
+    "guidance": "Avoid using vague link text such as 'click here' or 'read more'. Rationale: Descriptive and meaningful link text helps users understand the content and purpose of each link without needing to read the surrounding text. This is especially important for screen reader users who often navigate web pages by jumping from one link to another.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-11",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Multiple Ways",
+    "description": "Provide at least two ways to reach the same content.",
+    "guidance": "Focus on information architecture and implement multiple ways to reach content such as clear and logical navigation structures, search function and shortcuts. Rationale: Providing multiple ways to access content allows end users to locate content in ways that best meet their needs. Users may find one navigation path easier or more comprehensible than another, improving both the user experience of the service and the discoverability of content.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-12",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Headings and Labels",
+    "description": "Provide descriptive headers and labels that identify the context of surrounding text and the component's purpose.",
+    "guidance": "Do not disable platform or user-agent default visual focus indicators. If default focus indicators are not available or do not meet other accessible guidelines like colour contrast, modify the background colour or border of the element with focus. Ensure that 'floating' components like widgets and sticky headers do not cover elements receiving focus. Rationale: Allows end users to quickly identify which element or control has keyboard focus. This is especially important for users relying exclusively on keyboards to navigate.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-13",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Focus Visible and Not Obscured",
+    "description": "Ensure components receiving focus have distinguishable indicators and are not obscured by other elements.",
+    "guidance": "Do not disable platform or user-agent default visual focus indicators. If default focus indicators are not available or do not meet other accessible guidelines like colour contrast, modify the background colour or border of the element with focus. Ensure that 'floating' components like widgets and sticky headers do not cover elements receiving focus. Rationale: Allows end users to quickly identify which element or control has keyboard focus. This is especially important for users relying exclusively on keyboards to navigate.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-14",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Simple Pointer Alternatives",
+    "description": "Provide single-point alternatives to multipoint or path-based interactions or gestures.",
+    "guidance": "If multipoint or path-based gestures such as sliders and drag-and-drop functions are used, provide alternative options to perform the same interaction through simple single-point alternatives. Rationale: Interactions that involve complicated gestures or precise movements such as dragging or pinching can be challenging or impossible for end users with mobility disabilities, elderly users, or those using adaptive input devices.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-15",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Pointer Cancellation",
+    "description": "Provide a predictable and consistent way to cancel or undo pointer interactions.",
+    "guidance": "Implement clear and accessible methods to cancel critical actions such as an 'undo' function. Confirmation dialogs can be used as a secondary confirmation for critical actions. Unless absolutely necessary, only execute a function when the click or touch is released (up-event) instead of when the click or touch is made (down-event). Rationale: People with various disabilities can accidentally initiate touch or mouse events. Allowing such end users to easily recover from such unintended pointer actions minimises unintended consequences such as accidental submissions.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-16",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Label In Name",
+    "description": "Ensure that visible text labels of user interface components match or are contained within their programmatic or accessible names.",
+    "guidance": "Ensure that accessibility labels meaningfully describe the equivalent visual UI element by containing both the visible text label and other contextual descriptors that help assistive technology users fully understand the purpose and interaction. Rationale: Matching visible text labels with the programmatic component supports the use of assistive technologies such as allowing speech-input users to navigate by speaking the visible text labels of components.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-17",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Motion Actuation",
+    "description": "Provide an option to disable motion control for motion-operated features, and provide alternative means to operate such features. Not required when motion is essential to the function, such as in pedometers that require device motion to count steps.",
+    "guidance": "When implementing motion-operated features, provide a way to disable motion actuation and offer alternative means to operate these features through user interface components. Rationale: End users with motor impairments may have difficulty holding or moving a device steadily, which can prevent them from using motion-operated features and may cause accidental triggering of functions.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-18",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Minimum Pointer Target Size",
+    "description": "Ensure that interactive areas for pointer input are at least 24 by 24 CSS pixels. Not required if the size of the interactive area is constrained by the line-height of non-interactive text such as text links within a body of text.",
+    "guidance": "Use min-height and min-width to ensure sufficient target spacing. If targets have to be smaller than 24-pixels, they must be spaced so that a 24-pixel area around each target does not overlap adjacent targets. Follow platform guidelines and consider larger target sizes for mobile applications and mobile web browsing where touch is the input mechanism. Rationale: End users with physical and fine motor disabilities require more effort to accurately activate small targets or targets that are close to each other.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-2",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "No Keyboard Trap",
+    "description": "Ensure that keyboard users can move keyboard focus away or out from a component or section of the digital service.",
+    "guidance": "Test forms, widgets, and custom elements with keyboard-only navigation to confirm end users can exit all components using standard keys (like Tab and Shift+Tab). If the key functionality of the component restricts the focus to a subsection of the content, communicate clearly to users how to leave that state and 'untrap' the focus. Rationale: A keyboard trap happens when keyboard focus is moved to a component or subsection of the digital service without a way of the end user navigating back out using a keyboard interface.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-3",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Character Key Shortcuts",
+    "description": "Provide a mechanism to disable or remap shortcuts that are activated using only one character key press.",
+    "guidance": "If character key shortcuts are used, provide end users with the ability to disable or remap them. Implement keyboard settings within the interface for customisation, ensuring shortcuts do not interfere with common keyboard interactions. Rationale: Reduces the risk of accidental activation of keyboard shortcuts for keyboard users and speech input users, whose dictation is interpreted as strings of letters.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-4",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Adjustable Timings",
+    "description": "Allow time limits to be turned off, adjusted, or extended. Not required when the time limit is: a) Mandatory from a legal point of view b) Required as part of a real-time event where extensions would invalidate the activity c) Longer than 20 hours.",
+    "guidance": "Avoid time-dependent functions unless absolutely necessary. Ensure timers are non-disruptive and adjustable or extendable. Rationale: Persons with disabilities may need more time to complete complex tasks such as filling out lengthy grant forms. Designing functions that are not time-dependent or allow for adjustable timings will help everyone, especially people with disabilities, succeed at completing these tasks.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-5",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Pause, Stop, Hide",
+    "description": "Provide a function to pause, stop, hide or control the frequency of moving, blinking, scrolling or auto-updating content that occur in parallel with other content.",
+    "guidance": "Content changes refer to, but are not exclusive to, auto-updating information, animations containing essential information or similar components. Allow users to pause, stop, or hide content that automatically moves, blinks, scrolls or auto-updates for more than 5 seconds. Rationale: Content that moves or auto-updates can be a barrier to anyone who has trouble reading stationary text quickly, tracking moving objects or noticing page changes easily.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-6",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Reduce Flash Triggers",
+    "description": "Avoid content that flashes more than three times per second or provide a warning and the option to skip such content.",
+    "guidance": "Provide a clearly displayed warning message such as 'This video may potentially trigger seizures for people with photosensitive epilepsy. Viewer discretion is advised.' Excludes flashes contained in a small area, are low contrast or include a small amount of the colour red. Rationale: Flashing content can trigger seizures in end users with photosensitive epilepsy leading to serious health risks for these users.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-7",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Bypass Repeating Content",
+    "description": "Provide a means of skipping repetitive blocks of content that appear across multiple pages.",
+    "guidance": "Implement visible and keyboard accessible link(s) for end users to skip repeated content blocks and/or group blocks of repeated material in a way that can be skipped through the use of ARIA landmarks or heading markup. Rationale: End users who navigate sequentially with keyboards or screen readers often encounter repeated content such as headers and navigation links across multiple pages.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-8",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Page Title And Purpose",
+    "description": "Provide a page title describing the purpose of every web page or distinct Single-Page Application view served from the same Uniform Resource Identifier (URI).",
+    "guidance": "Provide a clear and succinct page title that describes the purpose of the page. For example, 'Budget 2024 Support Schemes Calculator' is a clear title stating the page contains a calculator for Support Schemes from Budget 2024. Rationale: Clear, descriptive titles provide quick context, enabling all end users (including users of assistive technologies) to quickly understand where they are without having to scan page content.",
+    "status": "scraped"
+  },
+  {
+    "id": "WO-9",
+    "domainId": "WO",
+    "catalog": "dss",
+    "title": "Sequential Focus Order",
+    "description": "Ensure focusable components receive focus in an order that preserves meaning and operability when the navigation sequences affect meaning or operation.",
+    "guidance": "When a user triggers a focusable element like a modal dialog via an element (button or link), the keyboard focus should be set to within the modal and limited to the elements of modal until dismissed. When the modal is dismissed, the keyboard focus should logically return to the original trigger element to minimise confusion for the user. Rationale: Allows keyboard users to navigate in a sequence that reflects the content's logical structure, preventing disorientation from unexpected tabbing focus.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-1",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Text Alternatives for Non-Text Content",
+    "description": "Provide text alternatives for essential non-text content.",
+    "guidance": "Provide accurate, concise alt text or a relevant textual description for non-text content (images, charts, media). Implement purely decorative non-text content in a way that can be ignored by assistive technology. Rationale: Ensures that equivalent information is conveyed to all end users by allowing assistive technologies to read and communicate essential non-text content.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-10",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Identify Input Purpose",
+    "description": "Use labels and code to clearly specify the purpose and format of common inputs.",
+    "guidance": "Clearly distinguish similar fields such as billing address and shipping address. Specify the exact format of input fields that may have multiple valid interpretations such as dates. Rationale: Ensures that both regular end users and users of assistive technology can clearly discern the purpose of an input function.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-11",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Use of Color",
+    "description": "Avoid using colour as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.",
+    "guidance": "Use a mix of shape (icons, symbols), colour and text for essential content such as error messages. Rationale: Using multiple modes in addition to colour, ensures that crucial information and state changes are well communicated to end users, especially those with colour vision deficiencies.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-12",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Audio Control",
+    "description": "Providing options to pause, stop or adjust the volume of audio that automatically plays for more than 3 seconds.",
+    "guidance": "Only play sounds on user request or provide the user with functions to pause, stop or adjust the volume near the beginning of the digital service so it is easily and quickly discovered. Rationale: To prevent unexpected or disruptive audio from affecting users' experience, particularly those with cognitive or hearing impairments. Background audio also interferes with narration by screen reading software.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-13",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Minimum Contrast",
+    "description": "Ensure a minimum contrast ratio of 4.5:1 between text and its background. Large text (at least 18 point or 14 point bold) can have a reduced contrast ratio of at least 3:1.",
+    "guidance": "Use tools like WebAIM's Contrast Checker or Oobee to verify that text and images of text meet the minimum contrast ratio. Not required for a) Text that is decorative, conveys no meaningful information b) Part of a component in an inactive state. Rationale: Adequate contrast between text and background is essential for good readability and usability, especially for end users with low vision or colour vision deficiencies.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-14",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Text Scaling",
+    "description": "Ensure text can be scaled up to 200% without loss of content or functionality.",
+    "guidance": "Use relative units like REM. Ensure at least one browser or platform text scaling mechanism can be used. This includes zoom (of the entire page's content), magnification, and text-only resizing. Test to confirm that no content is clipped, truncated, or obscured after resizing. This excludes captions and images of text. Rationale: Resizable text makes digital content accessible to a wide range of end users with different visual capabilities, particularly those without access to screen magnification tools.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-15",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Images of Text",
+    "description": "Use text instead of images of text.",
+    "guidance": "Avoid using images of text except when essential, such as for logos. Where text in images are necessary, ensure that alternative text or captions provide the same information. Rationale: Text in images are not accessible, especially for end users with visual impairments or reading disabilities. Users cannot adjust the size or font for better readability and the text is not readable by common screen reader technology.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-16",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Content Reflow",
+    "description": "Enable lines of text and content to reflow across different viewports.",
+    "guidance": "Use responsive design frameworks like CSS Flexbox or Grid and test on a variety of devices to confirm that content remains legible and usable without excessive scrolling even when text is resized. Not required for content that requires two-dimensional layout for understanding or functionality, such as maps, complex data tables or data visualisations. Rationale: Enabling reflowing of content allows users who rely on large fonts, including those using devices with smaller screens to be able to view and navigate digital content without scrolling horizontally even when text size is increased.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-17",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Non-text Contrast",
+    "description": "Ensure a minimum contrast ratio of 3:1 between colours of user interface components and graphical objects that convey important information, and their respective backgrounds.",
+    "guidance": "Use tools like WebAIM's Contrast Checker to test contrast. Focus on elements critical for interaction, such as buttons and form inputs. Rationale: Sufficient contrast helps end users better perceive and identify non-text user interface components and key graphical objects, improving usability.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-18",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Text Spacing",
+    "description": "Ensure that text implemented using markup languages can be adjusted to the following text style properties with no loss of content or functionality: a) Line height to 1.5 times the font size b) Paragraph spacing to 2 times the font size c) Letter spacing to 0.12 times the font size d) Word spacing to 0.16 times the font size.",
+    "guidance": "Allow for text spacing override by assistive technology and test with tools that simulate the spacing configurations specified. Text content does not need to use these text spacing values as defaults, and there is no need to implement controls for users to adjust text properties within the digital service. Rationale: Ensures that end users, in particular those with low vision or dyslexia are: a) Not restricted from overriding default text spacing through the use of assistive technology, stylesheets or extensions. b) Content or functionality is not lost and the content remains legible and functional.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-19",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Content on Hover or Focus",
+    "description": "Ensure content appearing on hover or focus a) Appears long enough to be read and interacted with b) Does not disappear unexpectedly c) Can be easily dismissed using a pointer device or keyboard.",
+    "guidance": "Design custom tooltips, sub-menus and other non-modal popups which display on hover and focus to be perceivable and dismissible without disrupting the overall user experience. Rationale: Elements that appear on hover or focus can be difficult to manage. End users with limited motor control may have trouble keeping their pointer steady, and keyboard-only users need a reliable way to dismiss such content.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-2",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Captions for Prerecorded Media",
+    "description": "Provide captions for prerecorded video or audio content.",
+    "guidance": "Use transcribing or captioning tools to generate captions. Ensure captions are aligned with audio and are readable. Not required when the content is a media alternative for text and is clearly labeled as such. Rationale: Ensures that individuals with hearing impairments can access and understand the material. Captions also help people engage better with content and allow people to access the content without audio.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-3",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Text or Audio Alternatives for Prerecorded Media",
+    "description": "Provide alternatives for all prerecorded audio and video media.",
+    "guidance": "Provide text transcripts for audio-only content. Provide text alternatives or audio descriptions for video-only content and synchronised media (audio and video). Not required when the content is a media alternative for text and is clearly labeled as such. Rationale: Ensures information conveyed by prerecorded audio and video content is available to all end users.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-4",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Live Captions",
+    "description": "Provide captions for live audio and video content.",
+    "guidance": "Use automated or live captioning services for content like livestream and webinars. Ensure that the service or tool is sufficiently accurate. Rationale: Live captions make live audio and video content accessible to end users who are deaf or hard of hearing.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-5",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Audio Description for Prerecorded Video Content",
+    "description": "Provided an audio description for all prerecorded video content.",
+    "guidance": "Provide user-selectable audio tracks focusing on critical visual elements necessary for understanding. This is an extension of WP-3 which recommends but does not prescribe audio descriptions. Rationale: Ensures that individuals who have visual impairments can better experience video content. This involves both information conveyed through the audio track and also descriptions of visual information such as actions, signs and facial expressions.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-6",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Presentation of Info and Relationships",
+    "description": "Present the structure, order and relationships of information on a page in a way that can be programmatically determined by assistive technology.",
+    "guidance": "Apply techniques such as correct use of semantic HTML elements (e.g., headings, lists, tables), text descriptions and where necessary, ARIA markups. Do not overuse ARIA as it creates clutter and overwhelm end users. Rationale: Ensures that the structure and organisation of content are clear to all end users, including those who use assistive technologies.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-7",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Meaningful Content Order",
+    "description": "Ensure that the logical reading order of content can be programmatically determined by software.",
+    "guidance": "Ensure code is structured to preserve the logical reading order of content. Validate with screen reader testing to confirm that end users can navigate content in a logical sequence. Rationale: Allows assistive technology to present content in the intended reading order needed to understand the meaning.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-8",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Describing Displayed Controls",
+    "description": "Do not rely only on sensory characteristics such shape, colour, size, visual location, orientation, or sound when describing controls.",
+    "guidance": "Describe controls by name. Avoid using expressions like 'click the blue button' or 'Select an option after the beep' when describing or referring to controls. Instead use clear, obvious and meaningful instructions like 'Click the 'next' button to continue with the survey', 'When you have finished filling in your application form, click 'Submit' to complete your submission'. Rationale: Reliance of specific sensory characteristics may make descriptions or instructions inaccessible to some users with specific disabilities. E.g. Colour and shape may not perceivable by blind users.",
+    "status": "scraped"
+  },
+  {
+    "id": "WP-9",
+    "domainId": "WP",
+    "catalog": "dss",
+    "title": "Display Orientation",
+    "description": "Do not restrict content to a single display orientation.",
+    "guidance": "Avoid locking orientation to a particular view. Ensure content can adapt to various orientations such as landscape and portrait without layout or functionality issues. Not required if a specific display orientation is necessary to provide the content in an accurate and functional manner. Rationale: To ensure that content displays in the orientation (portrait or landscape) preferred by the end user. Users with dexterity impairments such as those in wheelchairs may have devices mounted in a particular orientation.",
+    "status": "scraped"
+  },
+  {
+    "id": "WR-1",
+    "domainId": "WR",
+    "catalog": "dss",
+    "title": "Name, Role, Value",
+    "description": "Ensure that essential information of custom components and controls can be identified and read by assistive technologies.",
+    "guidance": "Essential information including name, roles, properties, values, states, and state changes are provided using techniques like ARIA labels. Standard HTML controls should already meet this criterion when used according to specification. Rationale: Enables end users of assistive technology to properly understand and interact with custom components.",
+    "status": "scraped"
+  },
+  {
+    "id": "WR-2",
+    "domainId": "WR",
+    "catalog": "dss",
+    "title": "Status Messages",
+    "description": "Ensure that assistive technology can identify and announce system status changes that don't receive focus.",
+    "guidance": "Use ARIA roles and properties to inform users of status changes, such as when an incorrect text in an input is entered and a status message appears above. Rationale: Allows screen readers to identify and announce changes to content that may otherwise be missed by users of assistive technologies.",
+    "status": "scraped"
+  },
+  {
+    "id": "WU-1",
+    "domainId": "WU",
+    "catalog": "dss",
+    "title": "Language of Page",
+    "description": "Ensure that the primary language on a page is programmatically determined.",
+    "guidance": "Specify language via HTML lang attribute, platform language attributes (iOS accessibilityLanguage), or PDF /Lang entry. Rationale: Specifying the language ensures that assistive technology can present content to end users using the correct language settings.",
+    "status": "scraped"
+  },
+  {
+    "id": "WU-10",
+    "domainId": "WU",
+    "catalog": "dss",
+    "title": "Error Identification",
+    "description": "Indicate input errors by visually and audibly identifying the component or section that generated the error and providing a text description of the error.",
+    "guidance": "Clearly associate error messages with the source component or section using ARIA attributes. Rationale: Helping end users easily and quickly identify, locate and understand errors minimises frustration.",
+    "status": "scraped"
+  },
+  {
+    "id": "WU-11",
+    "domainId": "WU",
+    "catalog": "dss",
+    "title": "Error Suggestion",
+    "description": "Ensure that error messages explain what went wrong in non-technical language and explain how to correct the issue or provide alternative actions.",
+    "guidance": "Write error messages in plain language that is understood by end users of different backgrounds for inline and system errors. Rationale: Error messages that are not clear prevent end users from completing their tasks and lead to frustration.",
+    "status": "scraped"
+  },
+  {
+    "id": "WU-12",
+    "domainId": "WU",
+    "catalog": "dss",
+    "title": "Error Prevention",
+    "description": "Prevent errors by checking user-entered data for errors and/or providing a mechanism to review, confirm, and correct information before final submission and allow submissions to be reversed.",
+    "guidance": "Implement proper validation; provide summary pages for review, especially for multi-page forms. Rationale: Providing ways for end users to confirm, correct, or reverse important submissions reduces the chance of errors.",
+    "status": "scraped"
+  },
+  {
+    "id": "WU-13",
+    "domainId": "WU",
+    "catalog": "dss",
+    "title": "Redundant Entry",
+    "description": "Avoid requiring re-entry of information already provided within the same process.",
+    "guidance": "Auto-populate or allow selection of previously provided information (exceptions for security/validity). Rationale: Repetitive data entry requires unnecessary effort especially for end users with cognitive or motor impairments.",
+    "status": "scraped"
+  },
+  {
+    "id": "WU-14",
+    "domainId": "WU",
+    "catalog": "dss",
+    "title": "Accessible Authentication (Minimum)",
+    "description": "Provide accessible authentication alternatives that do not require recalling, solving, or transcribing information.",
+    "guidance": "Provide at least 1 non-password authentication such as Singpass QR login or text/email based one-time codes. Rationale: End users with cognitive impairments have difficulties recalling or performing cognitively demanding actions.",
+    "status": "scraped"
+  },
+  {
+    "id": "WU-2",
+    "domainId": "WU",
+    "catalog": "dss",
+    "title": "Language of Parts",
+    "description": "Ensure the language of words or sections that differ from the page's primary language is programmatically determined.",
+    "guidance": "Use lang attribute in HTML or platform equivalent for non-primary language text. Rationale: Allows assistive technology to identify language changes and properly present content in the correct intonation and proper pronunciation.",
+    "status": "scraped"
+  },
+  {
+    "id": "WU-3",
+    "domainId": "WU",
+    "catalog": "dss",
+    "title": "Unusual Words",
+    "description": "Provide definitions for technical jargon and unusual terms.",
+    "guidance": "Avoid jargon and unusual terms where possible. If absolutely necessary, provide contextual help such as inline explanations, tooltips, or glossaries. Rationale: Slang and jargon may not be understood by some users; providing guidance improves accessibility.",
+    "status": "scraped"
+  },
+  {
+    "id": "WU-4",
+    "domainId": "WU",
+    "catalog": "dss",
+    "title": "Abbreviations",
+    "description": "Provide the expanded form of abbreviations.",
+    "guidance": "Provide expanded forms of abbreviations the first time they appear on a page or flow, or provide contextual help such as inline explanations, tooltips, or glossaries. Rationale: Abbreviations or acronyms may not be understood by some end users, especially when used for the first time.",
+    "status": "scraped"
+  },
+  {
+    "id": "WU-5",
+    "domainId": "WU",
+    "catalog": "dss",
+    "title": "Changes On Focus",
+    "description": "Avoid changing the context when a user interface component receives focus.",
+    "guidance": "Avoid actions such as form submissions, opening a new window and changing focus to another component when a component receives focus. Rationale: Unexpected changes of context triggered by focus change can be disorienting to users of assistive technology.",
+    "status": "scraped"
+  },
+  {
+    "id": "WU-6",
+    "domainId": "WU",
+    "catalog": "dss",
+    "title": "Changes On Input",
+    "description": "Provide advance warning when input causes a change of context.",
+    "guidance": "Explicitly inform end users if provision of input like checking a checkbox or entering text into a text field results in a change in context. Rationale: Unexpected changes of context triggered by input can be disorienting to users of assistive technology.",
+    "status": "scraped"
+  },
+  {
+    "id": "WU-7",
+    "domainId": "WU",
+    "catalog": "dss",
+    "title": "Consistent Navigation",
+    "description": "Implement a primary or main navigation panel that is placed at or near the top of the website, is not hidden or collapsed within an icon on desktop for websites, and presents navigation links in the same relative order on each page.",
+    "guidance": "Test navigation component with users for usability and accessibility. Rationale: Consistency prevents disorientation for users with sensory/cognitive impairment.",
+    "status": "scraped"
+  },
+  {
+    "id": "WU-8",
+    "domainId": "WU",
+    "catalog": "dss",
+    "title": "Consistent Identification",
+    "description": "Identify and label repeated or related components consistently within the digital service.",
+    "guidance": "Ensure that text used to identify a component such as label, name, or text alternatives are identical for each user interface component with the same function. Rationale: Allows end users to quickly learn and understand navigation, design and interaction patterns within the digital service.",
+    "status": "scraped"
+  },
+  {
+    "id": "WU-9",
+    "domainId": "WU",
+    "catalog": "dss",
+    "title": "Consistent Help",
+    "description": "Place help and support mechanisms consistently across multiple pages.",
+    "guidance": "Implement official footer; ensure consistent placement of messaging systems/chatbots. Rationale: Consistent placement makes it easy for end users, especially those who may struggle with complex or unfamiliar interfaces to find help.",
+    "status": "scraped"
+  }
+]

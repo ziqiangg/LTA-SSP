@@ -1,0 +1,212 @@
+[
+  {
+    "id": "low-risk-cloud",
+    "name": "Low-Risk Cloud",
+    "catalog": "cybersecurity",
+    "classificationText": "A generic system hosted on the cloud through a third-party Cloud Service Provider. Security Sensitivity Level: Up to Restricted, Sensitive Normal.",
+    "domainsUsed": [
+      "AS",
+      "SC",
+      "ST",
+      "NS",
+      "BR",
+      "DP",
+      "LM",
+      "AC",
+      "CS",
+      "PM",
+      "IS",
+      "SD",
+      "CK"
+    ],
+    "levelsAvailable": [
+      0,
+      1,
+      2
+    ],
+    "sourceUrl": "https://info.standards.tech.gov.sg/ssp/low-risk-cloud/"
+  },
+  {
+    "id": "low-risk-on-premises",
+    "name": "Low-Risk On-Premises",
+    "catalog": "cybersecurity",
+    "classificationText": "A generic system hosted on-premises. Security Sensitivity Level: Up to Restricted, Sensitive Normal.",
+    "domainsUsed": [
+      "AS",
+      "SC",
+      "ST",
+      "NS",
+      "BR",
+      "DP",
+      "LM",
+      "AC",
+      "PM",
+      "IS",
+      "SD",
+      "DC",
+      "CK"
+    ],
+    "levelsAvailable": [
+      0,
+      1,
+      2
+    ],
+    "sourceUrl": "https://info.standards.tech.gov.sg/ssp/low-risk-on-premises/"
+  },
+  {
+    "id": "medium-risk-cloud",
+    "name": "Medium-Risk Cloud",
+    "catalog": "cybersecurity",
+    "classificationText": "A generic system hosted on the cloud through a third-party Cloud Service Provider. Security Sensitivity Level: Confidential, Sensitive High.",
+    "domainsUsed": [
+      "AS",
+      "SC",
+      "ST",
+      "NS",
+      "BR",
+      "DP",
+      "LM",
+      "AC",
+      "CS",
+      "PM",
+      "IS",
+      "SD",
+      "CK"
+    ],
+    "levelsAvailable": [
+      0,
+      1,
+      2
+    ],
+    "sourceUrl": "https://info.standards.tech.gov.sg/ssp/medium-risk-cloud/"
+  },
+  {
+    "id": "high-risk-cloud",
+    "name": "High-Risk Cloud CII",
+    "catalog": "cybersecurity",
+    "classificationText": "A generic system hosted on the cloud through a third-party Cloud Service Provider. Security Sensitivity Level: Confidential, Sensitive High.",
+    "domainsUsed": [
+      "AS",
+      "SC",
+      "ST",
+      "NS",
+      "BR",
+      "DP",
+      "LM",
+      "AC",
+      "CS",
+      "PM",
+      "IS",
+      "SD",
+      "CK",
+      "HR",
+      "RS"
+    ],
+    "levelsAvailable": [
+      0,
+      1,
+      2
+    ],
+    "sourceUrl": "https://info.standards.tech.gov.sg/ssp/high-risk-cloud/"
+  },
+  {
+    "id": "generative-ai",
+    "name": "Generative AI",
+    "catalog": "cybersecurity",
+    "classificationText": "A generic system that utilises generative AI models. Security Sensitivity Level: Up to Confidential, Sensitive High.",
+    "domainsUsed": [
+      "DP",
+      "GA"
+    ],
+    "levelsAvailable": [
+      0,
+      1
+    ],
+    "sourceUrl": "https://info.standards.tech.gov.sg/ssp/gen-ai/"
+  },
+  {
+    "id": "sandbox",
+    "name": "Sandbox",
+    "catalog": "cybersecurity",
+    "classificationText": "A generic pilot sandbox system. Security sensitivity level designated as Restricted, Sensitive Normal.",
+    "domainsUsed": [
+      "AS",
+      "SC",
+      "ST",
+      "NS",
+      "BR",
+      "DP",
+      "LM",
+      "AC",
+      "CS",
+      "PM",
+      "IS",
+      "SD",
+      "CK"
+    ],
+    "levelsAvailable": [
+      0,
+      2
+    ],
+    "sourceUrl": "https://info.standards.tech.gov.sg/ssp/sandbox/"
+  },
+  {
+    "id": "digital-services-others",
+    "name": "Digital Services (Others)",
+    "catalog": "dss",
+    "classificationText": "Digital Service (also known as Government Digital Service) refers to any public service that is delivered digitally. It is used to convey the Government’s position, provide information, and/or deliver services to the public. Digital Services (Others) refer to Digital services with less than 1 million visits per year (note: this will be determined based on WOGAA statistics).",
+    "domainsUsed": [
+      "UU",
+      "BD",
+      "TX",
+      "PR",
+      "TL",
+      "WP",
+      "WO",
+      "WU",
+      "WR"
+    ],
+    "levelsAvailable": [
+      0,
+      1,
+      2
+    ],
+    "totalControls": 92,
+    "levelCounts": {
+      "0": 3,
+      "1": 73,
+      "2": 16
+    },
+    "sourceUrl": "https://info.standards.tech.gov.sg/ssp/dss-others/"
+  },
+  {
+    "id": "digital-services-high-impact",
+    "name": "Digital Services (High Impact)",
+    "catalog": "dss",
+    "classificationText": "Digital Service (also known as Government Digital Service) refers to any public service that is delivered digitally. It is used to convey the Government’s position, provide information, and/or deliver services to the public. Digital Services (High impact) refer to Digital services with at least 1 million visits per year (note: this will be determined based on WOGAA statistics).",
+    "domainsUsed": [
+      "UU",
+      "BD",
+      "TX",
+      "PR",
+      "TL",
+      "WP",
+      "WO",
+      "WU",
+      "WR"
+    ],
+    "levelsAvailable": [
+      0,
+      1,
+      2
+    ],
+    "totalControls": 92,
+    "levelCounts": {
+      "0": 3,
+      "1": 82,
+      "2": 7
+    },
+    "note": "CONTRADICTS the prior-research premise supplied in the task brief. Verified directly against the live page DOM (Profile Level values), not just a text-summarization fetch: this page DOES contain Level 0 controls (PR-2, TL-3, TL-5 are all Level 0, identical to the Others page). The actual difference between the two templates is that several WP/WO/WU controls that are Level 2 on the Others page (WP-4, WP-5, WP-9, WP-15, WO-3, WO-11, WO-14, WO-15, WU-3) are downgraded to Level 1 on this High Impact page, while BD-3/4/5 and TX-3/4/5/15 remain Level 2 on both. So levelsAvailable is [0,1,2] on both templates, not [1,2] as previously assumed for High Impact.",
+    "sourceUrl": "https://info.standards.tech.gov.sg/ssp/dss-high/"
+  }
+]

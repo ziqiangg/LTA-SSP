@@ -1,0 +1,533 @@
+/* Overrides on top of vendored Pico.css (classless, v2.0.6). */
+
+:root {
+  --pico-font-family-sans-serif: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --brief-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  --pico-primary: #0f766e;
+  --pico-primary-background: #0f766e;
+  --pico-primary-hover: #115e59;
+  --pico-primary-underline: #0f766e;
+  --pico-primary-focus: rgba(15, 118, 110, 0.5);
+  --brief-accent: #0f766e;
+  --brief-rule: #0f766e33;
+
+  /* Domain palette: the dataviz skill's 8-hue validated categorical theme,
+     round-robin assigned across all 26 SSP domains (17 cybersecurity + 9
+     DSS, in docs/assets/data/domains.json order). 8 hues can't give 26
+     pairwise-distinct colors (the skill's own validator caps distinguishable
+     categorical series at 8) - color here is a supplementary scanning aid,
+     never the sole identifier: every swatch always sits next to its code and
+     full name. See CLAUDE.md for the palette source and rationale. */
+  --domain-AC: #2a78d6;
+  --domain-AS: #eb6834;
+  --domain-BR: #1baf7a;
+  --domain-CK: #eda100;
+  --domain-CS: #e87ba4;
+  --domain-DC: #008300;
+  --domain-DP: #4a3aa7;
+  --domain-GA: #e34948;
+  --domain-HR: #2a78d6;
+  --domain-IS: #eb6834;
+  --domain-LM: #1baf7a;
+  --domain-NS: #eda100;
+  --domain-PM: #e87ba4;
+  --domain-RS: #008300;
+  --domain-SC: #4a3aa7;
+  --domain-SD: #e34948;
+  --domain-ST: #2a78d6;
+  --domain-BD: #eb6834;
+  --domain-PR: #1baf7a;
+  --domain-TL: #eda100;
+  --domain-TX: #e87ba4;
+  --domain-UU: #008300;
+  --domain-WO: #4a3aa7;
+  --domain-WP: #e34948;
+  --domain-WR: #2a78d6;
+  --domain-WU: #eb6834;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --pico-primary: #2dd4bf;
+    --pico-primary-background: #2dd4bf;
+    --pico-primary-hover: #5eead4;
+    --pico-primary-underline: #2dd4bf;
+    --pico-primary-focus: rgba(45, 212, 191, 0.5);
+    --brief-accent: #2dd4bf;
+    --brief-rule: #2dd4bf33;
+
+    --domain-AC: #3987e5;
+    --domain-AS: #d95926;
+    --domain-BR: #199e70;
+    --domain-CK: #c98500;
+    --domain-CS: #d55181;
+    --domain-DC: #008300;
+    --domain-DP: #9085e9;
+    --domain-GA: #e66767;
+    --domain-HR: #3987e5;
+    --domain-IS: #d95926;
+    --domain-LM: #199e70;
+    --domain-NS: #c98500;
+    --domain-PM: #d55181;
+    --domain-RS: #008300;
+    --domain-SC: #9085e9;
+    --domain-SD: #e66767;
+    --domain-ST: #3987e5;
+    --domain-BD: #d95926;
+    --domain-PR: #199e70;
+    --domain-TL: #c98500;
+    --domain-TX: #d55181;
+    --domain-UU: #008300;
+    --domain-WO: #9085e9;
+    --domain-WP: #e66767;
+    --domain-WR: #3987e5;
+    --domain-WU: #d95926;
+  }
+}
+
+body > header {
+  padding-bottom: 0;
+}
+
+/* Signature layout: a single "brief" panel — a document-style block with a
+   monospace eyebrow label, instead of a generic centered hero. No border:
+   the left accent rule is reserved for clickable nav-cards, so a reader
+   doesn't mistake this static block for one. */
+.brief {
+  padding-block: 0.25rem;
+  margin-block: 2rem;
+}
+
+.brief .eyebrow {
+  display: block;
+  font-family: var(--brief-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brief-accent);
+  margin-bottom: 0.5rem;
+}
+
+.brief h1 {
+  margin-bottom: 1rem;
+}
+
+.brief p {
+  max-width: 65ch;
+}
+
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  border-bottom: 1px solid var(--brief-rule);
+  padding-bottom: 0.15em;
+  text-decoration: none;
+}
+
+.source-link:hover,
+.source-link:focus-visible {
+  border-bottom-color: var(--brief-accent);
+}
+
+.source-link .arrow {
+  transition: transform 0.15s ease;
+}
+
+.source-link:hover .arrow,
+.source-link:focus-visible .arrow {
+  transform: translate(0.15em, -0.15em);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .source-link .arrow {
+    transition: none;
+  }
+}
+
+.note {
+  font-family: var(--brief-mono);
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+  border-top: 1px dashed var(--pico-muted-border-color);
+  padding-top: 1rem;
+  margin-top: 2.5rem;
+}
+
+/* --- SSP section: nav card grid (reuses the .brief left-accent motif) --- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin-block: 1.5rem;
+  padding: 0;
+}
+
+.card-grid li,
+.wizard-options li,
+.control-list li,
+.check-list li {
+  list-style: none;
+}
+
+.nav-card {
+  display: block;
+  border: 1px solid var(--pico-muted-border-color);
+  border-left: 3px solid var(--brief-accent);
+  border-radius: var(--pico-border-radius);
+  padding: 1rem 1.25rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-card:hover,
+.nav-card:focus-visible {
+  border-color: var(--brief-accent);
+}
+
+.nav-card .nav-card-title {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.nav-card .nav-card-meta {
+  display: block;
+  font-family: var(--brief-mono);
+  font-size: 0.75rem;
+  color: var(--pico-muted-color);
+}
+
+/* --- Primary nav-cards: the top-level entry points (e.g. "Find your system
+   type", "Browse the full control catalog"). Filled with a tinted accent
+   background and a full accent border, rather than the plain box + left
+   rule the secondary .nav-card grid uses below them - so the two calls to
+   action read as the primary path, not another item in a list. --- */
+.nav-card-primary {
+  display: block;
+  border: 1.5px solid var(--brief-accent);
+  border-radius: var(--pico-border-radius);
+  padding: 1.5rem 1.75rem;
+  text-decoration: none;
+  color: inherit;
+  background: color-mix(in srgb, var(--brief-accent) 10%, transparent);
+}
+
+.nav-card-primary:hover,
+.nav-card-primary:focus-visible {
+  background: color-mix(in srgb, var(--brief-accent) 20%, transparent);
+}
+
+.nav-card-primary .nav-card-title {
+  display: block;
+  font-family: var(--brief-mono);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--brief-accent);
+  margin-bottom: 0.35rem;
+}
+
+.nav-card-primary .nav-card-meta {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--pico-color);
+}
+
+/* --- Level chips: read-only weight badge (mandatory -> optional). Purely
+   decorative wherever it sits next to a real control (a checkbox in the
+   filter, or the ID/title text on a control card) - it never carries
+   selection state itself. --- */
+.level-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--brief-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  line-height: 1.4;
+  background: none;
+}
+
+.level-chip[data-level="0"] {
+  background: var(--brief-accent);
+  color: var(--pico-primary-inverse);
+  border: 1.5px solid var(--brief-accent);
+}
+
+.level-chip[data-level="1"] {
+  background: transparent;
+  color: var(--brief-accent);
+  border: 1.5px solid var(--brief-accent);
+}
+
+.level-chip[data-level="2"] {
+  background: transparent;
+  color: var(--brief-accent);
+  border: 1.5px dashed var(--brief-accent);
+}
+
+.level-chip.is-unavailable {
+  opacity: 0.35;
+}
+
+/* --- Domain tags: read-only badge (control cards, profile-page domain
+   rows). Colored via a per-domain custom property set inline by whatever
+   renders it (--tag-color), never the sole signal - code text always sits
+   inside the badge, and profile pages additionally show the full name. --- */
+.domain-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--brief-mono);
+  font-size: 0.7rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--pico-border-radius);
+  border: 1px solid var(--pico-muted-border-color);
+  border-left: 3px solid var(--tag-color, var(--pico-muted-border-color));
+  color: var(--pico-color);
+  background: transparent;
+}
+
+.domain-tag.is-unavailable {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+/* --- Controls browser filter bar: stacked rows (system type, then level,
+   then search, then the domain grid) rather than side-by-side, so the long
+   domain list doesn't crowd the others. --- */
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--pico-muted-border-color);
+}
+
+.filter-bar fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.filter-bar legend {
+  font-family: var(--brief-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pico-muted-color);
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
+
+.filter-bar select,
+.filter-bar input[type="search"] {
+  margin-bottom: 0;
+}
+
+.filter-bar select {
+  max-width: 28rem;
+}
+
+.result-count {
+  font-family: var(--brief-mono);
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+  margin-bottom: 1rem;
+}
+
+/* --- Checkbox-based filters (level, domain): selection state is native
+   checked/unchecked, never color-dependent. --- */
+.check-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0;
+  margin: 0;
+}
+
+.check-list.domain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 0.4rem 1rem;
+}
+
+.level-check,
+.domain-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: var(--pico-border-radius);
+  cursor: pointer;
+}
+
+.level-check:hover,
+.domain-check:hover {
+  background: var(--pico-muted-border-color);
+}
+
+.level-check:has(input:disabled),
+.domain-check:has(input:disabled) {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.level-check input,
+.domain-check input {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.domain-swatch {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  background: var(--swatch-color, var(--pico-muted-border-color));
+  flex-shrink: 0;
+}
+
+.domain-check .domain-code {
+  font-family: var(--brief-mono);
+  font-size: 0.75rem;
+  color: var(--pico-color);
+  min-width: 2.2rem;
+}
+
+.domain-check .domain-name {
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+}
+
+/* --- Control cards --- */
+.control-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.control-card {
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
+  padding: 0.15rem 1rem;
+}
+
+.control-card summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0.75rem 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.control-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.control-card .control-id {
+  font-family: var(--brief-mono);
+  font-size: 0.8rem;
+  color: var(--brief-accent);
+  min-width: 3.5rem;
+}
+
+.control-card .control-title {
+  font-weight: 600;
+  flex: 1 1 12rem;
+}
+
+.control-card .control-body {
+  padding-bottom: 1rem;
+  max-width: 65ch;
+}
+
+.control-card .control-body p {
+  margin-bottom: 0.75rem;
+}
+
+.control-card .control-guidance {
+  color: var(--pico-muted-color);
+  font-size: 0.9rem;
+}
+
+.control-card table {
+  font-size: 0.85rem;
+}
+
+.placeholder-note {
+  font-family: var(--brief-mono);
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+  padding: 2rem 0;
+}
+
+/* --- Decision-helper wizard --- */
+.wizard-progress {
+  display: block;
+  font-family: var(--brief-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brief-accent);
+  margin-bottom: 0.75rem;
+}
+
+.wizard-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0;
+  margin: 1.25rem 0;
+  list-style: none;
+}
+
+.wizard-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
+  padding: 0.85rem 1rem;
+  background: none;
+  color: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.wizard-option:hover {
+  border-color: var(--brief-accent);
+}
+
+.wizard-option:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 var(--pico-outline-width, 0.2rem) var(--pico-primary-focus);
+  border-color: var(--brief-accent);
+}
+
+.wizard-nav {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--brief-mono);
+  font-size: 0.85rem;
+}
+
+.wizard-result .nav-card {
+  margin-top: 1rem;
+}

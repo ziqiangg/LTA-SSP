@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Control Catalog &middot; SSP</title>
+<meta name="description" content="Browse and filter all 248 SSP controls by system type, control level, and domain.">
+<link rel="icon" type="image/png" href="../assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/pico.classless.min.css">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<main>
+  <section class="brief">
+    <span class="eyebrow">SSP &middot; Control Catalog</span>
+    <h1>Browse the controls</h1>
+    <p>
+      Pick a system type to see the controls that apply to it and at which level, or browse a whole
+      catalog to see every control regardless of type.
+    </p>
+  </section>
+
+  <form id="filters" class="filter-bar">
+    <fieldset>
+      <legend>System type</legend>
+      <select id="type-select" name="type">
+        <option value="">Loading&hellip;</option>
+      </select>
+    </fieldset>
+
+    <fieldset>
+      <legend>Control level</legend>
+      <div id="level-filter" class="check-list"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Search</legend>
+      <input type="search" id="search-input" name="q" placeholder="Search id, title, description&hellip;" aria-label="Search controls">
+    </fieldset>
+
+    <fieldset>
+      <legend>Domain</legend>
+      <div id="domain-filter" class="check-list domain-grid"></div>
+    </fieldset>
+  </form>
+
+  <p id="result-count" class="result-count" aria-live="polite"></p>
+
+  <ul id="control-list" class="control-list"></ul>
+
+  <p><a class="source-link" href="../">&larr; Back to SSP controls</a></p>
+</main>
+<script src="../assets/js/controls.js"></script>
+</body>
+</html>

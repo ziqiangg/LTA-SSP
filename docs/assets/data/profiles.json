@@ -1,0 +1,3154 @@
+{
+  "low-risk-cloud": [
+    {
+      "controlId": "AS-1",
+      "level": 1
+    },
+    {
+      "controlId": "AS-2",
+      "level": 1
+    },
+    {
+      "controlId": "AS-3",
+      "level": 1
+    },
+    {
+      "controlId": "AS-4",
+      "level": 1
+    },
+    {
+      "controlId": "AS-5",
+      "level": 1
+    },
+    {
+      "controlId": "AS-6",
+      "level": 1
+    },
+    {
+      "controlId": "AS-7",
+      "level": 1
+    },
+    {
+      "controlId": "AS-8",
+      "level": 1
+    },
+    {
+      "controlId": "AS-9",
+      "level": 1
+    },
+    {
+      "controlId": "AS-10",
+      "level": 2
+    },
+    {
+      "controlId": "AS-11",
+      "level": 1
+    },
+    {
+      "controlId": "AS-12",
+      "level": 2
+    },
+    {
+      "controlId": "AS-13",
+      "level": 2
+    },
+    {
+      "controlId": "AS-14",
+      "level": 2
+    },
+    {
+      "controlId": "AS-15",
+      "level": 1
+    },
+    {
+      "controlId": "SC-1",
+      "level": 1
+    },
+    {
+      "controlId": "SC-2",
+      "level": 2
+    },
+    {
+      "controlId": "SC-3",
+      "level": 1
+    },
+    {
+      "controlId": "SC-4",
+      "level": 1
+    },
+    {
+      "controlId": "SC-5",
+      "level": 1
+    },
+    {
+      "controlId": "SC-6",
+      "level": 1
+    },
+    {
+      "controlId": "SC-7",
+      "level": 2
+    },
+    {
+      "controlId": "SC-8",
+      "level": 2
+    },
+    {
+      "controlId": "SC-9",
+      "level": 2
+    },
+    {
+      "controlId": "ST-1",
+      "level": 1
+    },
+    {
+      "controlId": "ST-2",
+      "level": 1
+    },
+    {
+      "controlId": "ST-3",
+      "level": 1
+    },
+    {
+      "controlId": "ST-4",
+      "level": 1
+    },
+    {
+      "controlId": "ST-5",
+      "level": 1
+    },
+    {
+      "controlId": "NS-1",
+      "level": 1
+    },
+    {
+      "controlId": "NS-2",
+      "level": 1
+    },
+    {
+      "controlId": "NS-3",
+      "level": 1
+    },
+    {
+      "controlId": "NS-4",
+      "level": 1
+    },
+    {
+      "controlId": "NS-5",
+      "level": 1
+    },
+    {
+      "controlId": "NS-6",
+      "level": 1
+    },
+    {
+      "controlId": "NS-7",
+      "level": 1
+    },
+    {
+      "controlId": "NS-8",
+      "level": 1
+    },
+    {
+      "controlId": "BR-1",
+      "level": 1
+    },
+    {
+      "controlId": "BR-2",
+      "level": 2
+    },
+    {
+      "controlId": "BR-3",
+      "level": 1
+    },
+    {
+      "controlId": "DP-1",
+      "level": 0
+    },
+    {
+      "controlId": "DP-2",
+      "level": 1
+    },
+    {
+      "controlId": "DP-3",
+      "level": 1
+    },
+    {
+      "controlId": "DP-4",
+      "level": 1
+    },
+    {
+      "controlId": "LM-1",
+      "level": 1
+    },
+    {
+      "controlId": "LM-2",
+      "level": 1
+    },
+    {
+      "controlId": "LM-3",
+      "level": 1
+    },
+    {
+      "controlId": "LM-4",
+      "level": 1
+    },
+    {
+      "controlId": "LM-5",
+      "level": 2
+    },
+    {
+      "controlId": "LM-6",
+      "level": 1
+    },
+    {
+      "controlId": "LM-7",
+      "level": 1
+    },
+    {
+      "controlId": "LM-8",
+      "level": 1
+    },
+    {
+      "controlId": "LM-9",
+      "level": 1
+    },
+    {
+      "controlId": "LM-10",
+      "level": 1
+    },
+    {
+      "controlId": "LM-11",
+      "level": 2
+    },
+    {
+      "controlId": "LM-12",
+      "level": 0
+    },
+    {
+      "controlId": "LM-13",
+      "level": 2
+    },
+    {
+      "controlId": "LM-14",
+      "level": 2
+    },
+    {
+      "controlId": "LM-15",
+      "level": 2
+    },
+    {
+      "controlId": "LM-16",
+      "level": 2
+    },
+    {
+      "controlId": "LM-17",
+      "level": 2
+    },
+    {
+      "controlId": "LM-19",
+      "level": 2
+    },
+    {
+      "controlId": "AC-1",
+      "level": 1
+    },
+    {
+      "controlId": "AC-2",
+      "level": 1
+    },
+    {
+      "controlId": "AC-3",
+      "level": 1
+    },
+    {
+      "controlId": "AC-4",
+      "level": 1
+    },
+    {
+      "controlId": "AC-5",
+      "level": 1
+    },
+    {
+      "controlId": "AC-6",
+      "level": 1
+    },
+    {
+      "controlId": "AC-7",
+      "level": 1
+    },
+    {
+      "controlId": "AC-8",
+      "level": 1
+    },
+    {
+      "controlId": "AC-9",
+      "level": 1
+    },
+    {
+      "controlId": "AC-10",
+      "level": 2
+    },
+    {
+      "controlId": "AC-11",
+      "level": 2
+    },
+    {
+      "controlId": "AC-12",
+      "level": 1
+    },
+    {
+      "controlId": "AC-13",
+      "level": 2
+    },
+    {
+      "controlId": "AC-14",
+      "level": 1
+    },
+    {
+      "controlId": "CS-1",
+      "level": 2
+    },
+    {
+      "controlId": "CS-2",
+      "level": 2
+    },
+    {
+      "controlId": "CS-3",
+      "level": 1
+    },
+    {
+      "controlId": "CS-4",
+      "level": 1
+    },
+    {
+      "controlId": "CS-5",
+      "level": 2
+    },
+    {
+      "controlId": "CS-6",
+      "level": 2
+    },
+    {
+      "controlId": "CS-7",
+      "level": 1
+    },
+    {
+      "controlId": "CS-8",
+      "level": 2
+    },
+    {
+      "controlId": "CS-9",
+      "level": 1
+    },
+    {
+      "controlId": "CS-10",
+      "level": 1
+    },
+    {
+      "controlId": "CS-11",
+      "level": 2
+    },
+    {
+      "controlId": "PM-1",
+      "level": 1
+    },
+    {
+      "controlId": "PM-2",
+      "level": 1
+    },
+    {
+      "controlId": "PM-3",
+      "level": 0
+    },
+    {
+      "controlId": "PM-4",
+      "level": 0
+    },
+    {
+      "controlId": "PM-5",
+      "level": 0
+    },
+    {
+      "controlId": "PM-6",
+      "level": 1
+    },
+    {
+      "controlId": "IS-1",
+      "level": 1
+    },
+    {
+      "controlId": "IS-2",
+      "level": 1
+    },
+    {
+      "controlId": "IS-3",
+      "level": 1
+    },
+    {
+      "controlId": "IS-4",
+      "level": 1
+    },
+    {
+      "controlId": "IS-5",
+      "level": 1
+    },
+    {
+      "controlId": "IS-6",
+      "level": 1
+    },
+    {
+      "controlId": "IS-7",
+      "level": 1
+    },
+    {
+      "controlId": "IS-8",
+      "level": 2
+    },
+    {
+      "controlId": "IS-9",
+      "level": 1
+    },
+    {
+      "controlId": "IS-10",
+      "level": 1
+    },
+    {
+      "controlId": "IS-11",
+      "level": 0
+    },
+    {
+      "controlId": "IS-12",
+      "level": 2
+    },
+    {
+      "controlId": "IS-13",
+      "level": 2
+    },
+    {
+      "controlId": "IS-14",
+      "level": 0
+    },
+    {
+      "controlId": "SD-1",
+      "level": 1
+    },
+    {
+      "controlId": "SD-2",
+      "level": 1
+    },
+    {
+      "controlId": "SD-3",
+      "level": 2
+    },
+    {
+      "controlId": "SD-4",
+      "level": 1
+    },
+    {
+      "controlId": "SD-5",
+      "level": 1
+    },
+    {
+      "controlId": "SD-6",
+      "level": 1
+    },
+    {
+      "controlId": "SD-7",
+      "level": 1
+    },
+    {
+      "controlId": "SD-8",
+      "level": 1
+    },
+    {
+      "controlId": "CK-1",
+      "level": 2
+    },
+    {
+      "controlId": "CK-2",
+      "level": 2
+    }
+  ],
+  "low-risk-on-premises": [
+    {
+      "controlId": "AS-1",
+      "level": 1
+    },
+    {
+      "controlId": "AS-2",
+      "level": 1
+    },
+    {
+      "controlId": "AS-3",
+      "level": 1
+    },
+    {
+      "controlId": "AS-4",
+      "level": 1
+    },
+    {
+      "controlId": "AS-5",
+      "level": 1
+    },
+    {
+      "controlId": "AS-6",
+      "level": 1
+    },
+    {
+      "controlId": "AS-7",
+      "level": 1
+    },
+    {
+      "controlId": "AS-8",
+      "level": 1
+    },
+    {
+      "controlId": "AS-9",
+      "level": 1
+    },
+    {
+      "controlId": "AS-10",
+      "level": 2
+    },
+    {
+      "controlId": "AS-11",
+      "level": 1
+    },
+    {
+      "controlId": "AS-12",
+      "level": 2
+    },
+    {
+      "controlId": "AS-13",
+      "level": 2
+    },
+    {
+      "controlId": "AS-14",
+      "level": 2
+    },
+    {
+      "controlId": "AS-15",
+      "level": 1
+    },
+    {
+      "controlId": "SC-1",
+      "level": 1
+    },
+    {
+      "controlId": "SC-2",
+      "level": 2
+    },
+    {
+      "controlId": "SC-3",
+      "level": 1
+    },
+    {
+      "controlId": "SC-4",
+      "level": 1
+    },
+    {
+      "controlId": "SC-5",
+      "level": 1
+    },
+    {
+      "controlId": "SC-6",
+      "level": 1
+    },
+    {
+      "controlId": "SC-7",
+      "level": 2
+    },
+    {
+      "controlId": "SC-8",
+      "level": 2
+    },
+    {
+      "controlId": "SC-9",
+      "level": 2
+    },
+    {
+      "controlId": "ST-1",
+      "level": 1
+    },
+    {
+      "controlId": "ST-3",
+      "level": 1
+    },
+    {
+      "controlId": "ST-4",
+      "level": 1
+    },
+    {
+      "controlId": "ST-5",
+      "level": 1
+    },
+    {
+      "controlId": "NS-1",
+      "level": 1
+    },
+    {
+      "controlId": "NS-3",
+      "level": 1
+    },
+    {
+      "controlId": "NS-5",
+      "level": 1
+    },
+    {
+      "controlId": "NS-6",
+      "level": 1
+    },
+    {
+      "controlId": "NS-8",
+      "level": 1
+    },
+    {
+      "controlId": "NS-9",
+      "level": 1
+    },
+    {
+      "controlId": "NS-10",
+      "level": 1
+    },
+    {
+      "controlId": "NS-11",
+      "level": 2
+    },
+    {
+      "controlId": "BR-1",
+      "level": 1
+    },
+    {
+      "controlId": "BR-2",
+      "level": 2
+    },
+    {
+      "controlId": "BR-3",
+      "level": 1
+    },
+    {
+      "controlId": "DP-1",
+      "level": 0
+    },
+    {
+      "controlId": "DP-2",
+      "level": 1
+    },
+    {
+      "controlId": "DP-3",
+      "level": 1
+    },
+    {
+      "controlId": "DP-5",
+      "level": 1
+    },
+    {
+      "controlId": "DP-6",
+      "level": 2
+    },
+    {
+      "controlId": "LM-1",
+      "level": 1
+    },
+    {
+      "controlId": "LM-2",
+      "level": 1
+    },
+    {
+      "controlId": "LM-5",
+      "level": 2
+    },
+    {
+      "controlId": "LM-6",
+      "level": 1
+    },
+    {
+      "controlId": "LM-7",
+      "level": 1
+    },
+    {
+      "controlId": "LM-8",
+      "level": 1
+    },
+    {
+      "controlId": "LM-9",
+      "level": 1
+    },
+    {
+      "controlId": "LM-11",
+      "level": 2
+    },
+    {
+      "controlId": "LM-12",
+      "level": 0
+    },
+    {
+      "controlId": "LM-13",
+      "level": 2
+    },
+    {
+      "controlId": "LM-14",
+      "level": 2
+    },
+    {
+      "controlId": "LM-15",
+      "level": 2
+    },
+    {
+      "controlId": "LM-16",
+      "level": 2
+    },
+    {
+      "controlId": "LM-17",
+      "level": 2
+    },
+    {
+      "controlId": "LM-19",
+      "level": 2
+    },
+    {
+      "controlId": "AC-1",
+      "level": 1
+    },
+    {
+      "controlId": "AC-2",
+      "level": 1
+    },
+    {
+      "controlId": "AC-3",
+      "level": 1
+    },
+    {
+      "controlId": "AC-4",
+      "level": 1
+    },
+    {
+      "controlId": "AC-5",
+      "level": 1
+    },
+    {
+      "controlId": "AC-6",
+      "level": 1
+    },
+    {
+      "controlId": "AC-7",
+      "level": 1
+    },
+    {
+      "controlId": "AC-8",
+      "level": 1
+    },
+    {
+      "controlId": "AC-9",
+      "level": 1
+    },
+    {
+      "controlId": "AC-10",
+      "level": 2
+    },
+    {
+      "controlId": "AC-11",
+      "level": 2
+    },
+    {
+      "controlId": "AC-12",
+      "level": 1
+    },
+    {
+      "controlId": "AC-13",
+      "level": 2
+    },
+    {
+      "controlId": "AC-14",
+      "level": 1
+    },
+    {
+      "controlId": "PM-1",
+      "level": 1
+    },
+    {
+      "controlId": "PM-2",
+      "level": 1
+    },
+    {
+      "controlId": "PM-3",
+      "level": 0
+    },
+    {
+      "controlId": "PM-4",
+      "level": 0
+    },
+    {
+      "controlId": "PM-5",
+      "level": 0
+    },
+    {
+      "controlId": "PM-6",
+      "level": 1
+    },
+    {
+      "controlId": "IS-2",
+      "level": 1
+    },
+    {
+      "controlId": "IS-3",
+      "level": 1
+    },
+    {
+      "controlId": "IS-4",
+      "level": 1
+    },
+    {
+      "controlId": "IS-5",
+      "level": 1
+    },
+    {
+      "controlId": "IS-7",
+      "level": 1
+    },
+    {
+      "controlId": "IS-8",
+      "level": 2
+    },
+    {
+      "controlId": "IS-9",
+      "level": 1
+    },
+    {
+      "controlId": "IS-10",
+      "level": 1
+    },
+    {
+      "controlId": "IS-11",
+      "level": 0
+    },
+    {
+      "controlId": "IS-12",
+      "level": 2
+    },
+    {
+      "controlId": "IS-13",
+      "level": 2
+    },
+    {
+      "controlId": "IS-14",
+      "level": 0
+    },
+    {
+      "controlId": "SD-1",
+      "level": 1
+    },
+    {
+      "controlId": "SD-2",
+      "level": 1
+    },
+    {
+      "controlId": "SD-3",
+      "level": 2
+    },
+    {
+      "controlId": "SD-4",
+      "level": 1
+    },
+    {
+      "controlId": "SD-5",
+      "level": 1
+    },
+    {
+      "controlId": "SD-6",
+      "level": 1
+    },
+    {
+      "controlId": "SD-7",
+      "level": 1
+    },
+    {
+      "controlId": "SD-8",
+      "level": 1
+    },
+    {
+      "controlId": "DC-1",
+      "level": 1
+    },
+    {
+      "controlId": "DC-2",
+      "level": 1
+    },
+    {
+      "controlId": "CK-1",
+      "level": 2
+    },
+    {
+      "controlId": "CK-2",
+      "level": 2
+    }
+  ],
+  "medium-risk-cloud": [
+    {
+      "controlId": "AS-1",
+      "level": 0
+    },
+    {
+      "controlId": "AS-2",
+      "level": 1
+    },
+    {
+      "controlId": "AS-3",
+      "level": 0
+    },
+    {
+      "controlId": "AS-4",
+      "level": 1
+    },
+    {
+      "controlId": "AS-5",
+      "level": 1
+    },
+    {
+      "controlId": "AS-6",
+      "level": 1
+    },
+    {
+      "controlId": "AS-7",
+      "level": 0
+    },
+    {
+      "controlId": "AS-8",
+      "level": 0
+    },
+    {
+      "controlId": "AS-9",
+      "level": 1
+    },
+    {
+      "controlId": "AS-10",
+      "level": 2
+    },
+    {
+      "controlId": "AS-11",
+      "level": 1
+    },
+    {
+      "controlId": "AS-12",
+      "level": 2
+    },
+    {
+      "controlId": "AS-13",
+      "level": 2
+    },
+    {
+      "controlId": "AS-14",
+      "level": 2
+    },
+    {
+      "controlId": "AS-15",
+      "level": 1
+    },
+    {
+      "controlId": "SC-1",
+      "level": 1
+    },
+    {
+      "controlId": "SC-2",
+      "level": 2
+    },
+    {
+      "controlId": "SC-3",
+      "level": 1
+    },
+    {
+      "controlId": "SC-4",
+      "level": 1
+    },
+    {
+      "controlId": "SC-5",
+      "level": 1
+    },
+    {
+      "controlId": "SC-6",
+      "level": 1
+    },
+    {
+      "controlId": "SC-7",
+      "level": 2
+    },
+    {
+      "controlId": "SC-8",
+      "level": 2
+    },
+    {
+      "controlId": "SC-9",
+      "level": 2
+    },
+    {
+      "controlId": "ST-1",
+      "level": 0
+    },
+    {
+      "controlId": "ST-2",
+      "level": 1
+    },
+    {
+      "controlId": "ST-3",
+      "level": 0
+    },
+    {
+      "controlId": "ST-4",
+      "level": 0
+    },
+    {
+      "controlId": "ST-5",
+      "level": 1
+    },
+    {
+      "controlId": "NS-1",
+      "level": 0
+    },
+    {
+      "controlId": "NS-2",
+      "level": 1
+    },
+    {
+      "controlId": "NS-3",
+      "level": 1
+    },
+    {
+      "controlId": "NS-4",
+      "level": 1
+    },
+    {
+      "controlId": "NS-5",
+      "level": 0
+    },
+    {
+      "controlId": "NS-6",
+      "level": 1
+    },
+    {
+      "controlId": "NS-7",
+      "level": 1
+    },
+    {
+      "controlId": "NS-8",
+      "level": 1
+    },
+    {
+      "controlId": "BR-1",
+      "level": 0
+    },
+    {
+      "controlId": "BR-2",
+      "level": 1
+    },
+    {
+      "controlId": "BR-3",
+      "level": 1
+    },
+    {
+      "controlId": "DP-1",
+      "level": 0
+    },
+    {
+      "controlId": "DP-2",
+      "level": 1
+    },
+    {
+      "controlId": "DP-3",
+      "level": 1
+    },
+    {
+      "controlId": "DP-4",
+      "level": 1
+    },
+    {
+      "controlId": "LM-1",
+      "level": 1
+    },
+    {
+      "controlId": "LM-2",
+      "level": 1
+    },
+    {
+      "controlId": "LM-3",
+      "level": 0
+    },
+    {
+      "controlId": "LM-4",
+      "level": 0
+    },
+    {
+      "controlId": "LM-5",
+      "level": 1
+    },
+    {
+      "controlId": "LM-6",
+      "level": 0
+    },
+    {
+      "controlId": "LM-7",
+      "level": 1
+    },
+    {
+      "controlId": "LM-8",
+      "level": 1
+    },
+    {
+      "controlId": "LM-9",
+      "level": 0
+    },
+    {
+      "controlId": "LM-10",
+      "level": 1
+    },
+    {
+      "controlId": "LM-11",
+      "level": 2
+    },
+    {
+      "controlId": "LM-12",
+      "level": 0
+    },
+    {
+      "controlId": "LM-13",
+      "level": 2
+    },
+    {
+      "controlId": "LM-14",
+      "level": 2
+    },
+    {
+      "controlId": "LM-15",
+      "level": 2
+    },
+    {
+      "controlId": "LM-16",
+      "level": 2
+    },
+    {
+      "controlId": "LM-17",
+      "level": 2
+    },
+    {
+      "controlId": "LM-19",
+      "level": 1
+    },
+    {
+      "controlId": "AC-1",
+      "level": 1
+    },
+    {
+      "controlId": "AC-2",
+      "level": 0
+    },
+    {
+      "controlId": "AC-3",
+      "level": 0
+    },
+    {
+      "controlId": "AC-4",
+      "level": 1
+    },
+    {
+      "controlId": "AC-5",
+      "level": 0
+    },
+    {
+      "controlId": "AC-6",
+      "level": 0
+    },
+    {
+      "controlId": "AC-7",
+      "level": 1
+    },
+    {
+      "controlId": "AC-8",
+      "level": 1
+    },
+    {
+      "controlId": "AC-9",
+      "level": 1
+    },
+    {
+      "controlId": "AC-10",
+      "level": 2
+    },
+    {
+      "controlId": "AC-11",
+      "level": 2
+    },
+    {
+      "controlId": "AC-12",
+      "level": 1
+    },
+    {
+      "controlId": "AC-13",
+      "level": 2
+    },
+    {
+      "controlId": "AC-14",
+      "level": 1
+    },
+    {
+      "controlId": "CS-1",
+      "level": 2
+    },
+    {
+      "controlId": "CS-2",
+      "level": 2
+    },
+    {
+      "controlId": "CS-3",
+      "level": 1
+    },
+    {
+      "controlId": "CS-4",
+      "level": 1
+    },
+    {
+      "controlId": "CS-5",
+      "level": 2
+    },
+    {
+      "controlId": "CS-6",
+      "level": 2
+    },
+    {
+      "controlId": "CS-7",
+      "level": 1
+    },
+    {
+      "controlId": "CS-8",
+      "level": 1
+    },
+    {
+      "controlId": "CS-9",
+      "level": 1
+    },
+    {
+      "controlId": "CS-10",
+      "level": 1
+    },
+    {
+      "controlId": "CS-11",
+      "level": 2
+    },
+    {
+      "controlId": "PM-1",
+      "level": 1
+    },
+    {
+      "controlId": "PM-2",
+      "level": 1
+    },
+    {
+      "controlId": "PM-3",
+      "level": 0
+    },
+    {
+      "controlId": "PM-4",
+      "level": 0
+    },
+    {
+      "controlId": "PM-5",
+      "level": 0
+    },
+    {
+      "controlId": "PM-6",
+      "level": 1
+    },
+    {
+      "controlId": "IS-1",
+      "level": 1
+    },
+    {
+      "controlId": "IS-2",
+      "level": 1
+    },
+    {
+      "controlId": "IS-3",
+      "level": 1
+    },
+    {
+      "controlId": "IS-4",
+      "level": 1
+    },
+    {
+      "controlId": "IS-5",
+      "level": 1
+    },
+    {
+      "controlId": "IS-6",
+      "level": 1
+    },
+    {
+      "controlId": "IS-7",
+      "level": 1
+    },
+    {
+      "controlId": "IS-8",
+      "level": 2
+    },
+    {
+      "controlId": "IS-9",
+      "level": 1
+    },
+    {
+      "controlId": "IS-10",
+      "level": 1
+    },
+    {
+      "controlId": "IS-11",
+      "level": 0
+    },
+    {
+      "controlId": "IS-12",
+      "level": 1
+    },
+    {
+      "controlId": "IS-13",
+      "level": 1
+    },
+    {
+      "controlId": "IS-14",
+      "level": 0
+    },
+    {
+      "controlId": "SD-1",
+      "level": 1
+    },
+    {
+      "controlId": "SD-2",
+      "level": 1
+    },
+    {
+      "controlId": "SD-3",
+      "level": 1
+    },
+    {
+      "controlId": "SD-4",
+      "level": 1
+    },
+    {
+      "controlId": "SD-5",
+      "level": 1
+    },
+    {
+      "controlId": "SD-6",
+      "level": 1
+    },
+    {
+      "controlId": "SD-7",
+      "level": 1
+    },
+    {
+      "controlId": "SD-8",
+      "level": 0
+    },
+    {
+      "controlId": "CK-1",
+      "level": 1
+    },
+    {
+      "controlId": "CK-2",
+      "level": 1
+    }
+  ],
+  "high-risk-cloud": [
+    {
+      "controlId": "AS-1",
+      "level": 0
+    },
+    {
+      "controlId": "AS-2",
+      "level": 1
+    },
+    {
+      "controlId": "AS-3",
+      "level": 0
+    },
+    {
+      "controlId": "AS-4",
+      "level": 0
+    },
+    {
+      "controlId": "AS-5",
+      "level": 0
+    },
+    {
+      "controlId": "AS-6",
+      "level": 0
+    },
+    {
+      "controlId": "AS-7",
+      "level": 0
+    },
+    {
+      "controlId": "AS-8",
+      "level": 0
+    },
+    {
+      "controlId": "AS-9",
+      "level": 1
+    },
+    {
+      "controlId": "AS-10",
+      "level": 2
+    },
+    {
+      "controlId": "AS-11",
+      "level": 0
+    },
+    {
+      "controlId": "AS-12",
+      "level": 0
+    },
+    {
+      "controlId": "AS-13",
+      "level": 1
+    },
+    {
+      "controlId": "AS-14",
+      "level": 0
+    },
+    {
+      "controlId": "AS-15",
+      "level": 1
+    },
+    {
+      "controlId": "SC-1",
+      "level": 1
+    },
+    {
+      "controlId": "SC-2",
+      "level": 2
+    },
+    {
+      "controlId": "SC-3",
+      "level": 0
+    },
+    {
+      "controlId": "SC-4",
+      "level": 1
+    },
+    {
+      "controlId": "SC-5",
+      "level": 1
+    },
+    {
+      "controlId": "SC-6",
+      "level": 1
+    },
+    {
+      "controlId": "SC-7",
+      "level": 2
+    },
+    {
+      "controlId": "SC-8",
+      "level": 2
+    },
+    {
+      "controlId": "SC-9",
+      "level": 2
+    },
+    {
+      "controlId": "ST-1",
+      "level": 0
+    },
+    {
+      "controlId": "ST-2",
+      "level": 0
+    },
+    {
+      "controlId": "ST-3",
+      "level": 0
+    },
+    {
+      "controlId": "ST-4",
+      "level": 0
+    },
+    {
+      "controlId": "ST-5",
+      "level": 0
+    },
+    {
+      "controlId": "NS-1",
+      "level": 0
+    },
+    {
+      "controlId": "NS-2",
+      "level": 1
+    },
+    {
+      "controlId": "NS-3",
+      "level": 1
+    },
+    {
+      "controlId": "NS-4",
+      "level": 1
+    },
+    {
+      "controlId": "NS-5",
+      "level": 0
+    },
+    {
+      "controlId": "NS-6",
+      "level": 1
+    },
+    {
+      "controlId": "NS-7",
+      "level": 1
+    },
+    {
+      "controlId": "NS-8",
+      "level": 0
+    },
+    {
+      "controlId": "NS-9",
+      "level": 1
+    },
+    {
+      "controlId": "NS-10",
+      "level": 1
+    },
+    {
+      "controlId": "NS-11",
+      "level": 0
+    },
+    {
+      "controlId": "BR-1",
+      "level": 0
+    },
+    {
+      "controlId": "BR-2",
+      "level": 0
+    },
+    {
+      "controlId": "BR-3",
+      "level": 0
+    },
+    {
+      "controlId": "BR-4",
+      "level": 0
+    },
+    {
+      "controlId": "BR-5",
+      "level": 0
+    },
+    {
+      "controlId": "BR-6",
+      "level": 0
+    },
+    {
+      "controlId": "DP-1",
+      "level": 0
+    },
+    {
+      "controlId": "DP-2",
+      "level": 1
+    },
+    {
+      "controlId": "DP-3",
+      "level": 1
+    },
+    {
+      "controlId": "DP-4",
+      "level": 1
+    },
+    {
+      "controlId": "LM-1",
+      "level": 0
+    },
+    {
+      "controlId": "LM-2",
+      "level": 0
+    },
+    {
+      "controlId": "LM-3",
+      "level": 0
+    },
+    {
+      "controlId": "LM-4",
+      "level": 0
+    },
+    {
+      "controlId": "LM-5",
+      "level": 0
+    },
+    {
+      "controlId": "LM-6",
+      "level": 0
+    },
+    {
+      "controlId": "LM-7",
+      "level": 0
+    },
+    {
+      "controlId": "LM-8",
+      "level": 0
+    },
+    {
+      "controlId": "LM-9",
+      "level": 0
+    },
+    {
+      "controlId": "LM-10",
+      "level": 1
+    },
+    {
+      "controlId": "LM-11",
+      "level": 1
+    },
+    {
+      "controlId": "LM-12",
+      "level": 0
+    },
+    {
+      "controlId": "LM-13",
+      "level": 0
+    },
+    {
+      "controlId": "LM-14",
+      "level": 1
+    },
+    {
+      "controlId": "LM-15",
+      "level": 1
+    },
+    {
+      "controlId": "LM-16",
+      "level": 2
+    },
+    {
+      "controlId": "LM-17",
+      "level": 2
+    },
+    {
+      "controlId": "LM-19",
+      "level": 1
+    },
+    {
+      "controlId": "LM-21",
+      "level": 1
+    },
+    {
+      "controlId": "AC-1",
+      "level": 0
+    },
+    {
+      "controlId": "AC-2",
+      "level": 0
+    },
+    {
+      "controlId": "AC-3",
+      "level": 0
+    },
+    {
+      "controlId": "AC-4",
+      "level": 1
+    },
+    {
+      "controlId": "AC-5",
+      "level": 0
+    },
+    {
+      "controlId": "AC-6",
+      "level": 0
+    },
+    {
+      "controlId": "AC-7",
+      "level": 1
+    },
+    {
+      "controlId": "AC-8",
+      "level": 1
+    },
+    {
+      "controlId": "AC-9",
+      "level": 1
+    },
+    {
+      "controlId": "AC-10",
+      "level": 2
+    },
+    {
+      "controlId": "AC-11",
+      "level": 1
+    },
+    {
+      "controlId": "AC-12",
+      "level": 1
+    },
+    {
+      "controlId": "AC-13",
+      "level": 1
+    },
+    {
+      "controlId": "AC-14",
+      "level": 1
+    },
+    {
+      "controlId": "AC-16",
+      "level": 1
+    },
+    {
+      "controlId": "CS-1",
+      "level": 2
+    },
+    {
+      "controlId": "CS-2",
+      "level": 2
+    },
+    {
+      "controlId": "CS-3",
+      "level": 1
+    },
+    {
+      "controlId": "CS-4",
+      "level": 1
+    },
+    {
+      "controlId": "CS-5",
+      "level": 2
+    },
+    {
+      "controlId": "CS-6",
+      "level": 2
+    },
+    {
+      "controlId": "CS-7",
+      "level": 1
+    },
+    {
+      "controlId": "CS-8",
+      "level": 1
+    },
+    {
+      "controlId": "CS-9",
+      "level": 1
+    },
+    {
+      "controlId": "CS-10",
+      "level": 1
+    },
+    {
+      "controlId": "CS-11",
+      "level": 2
+    },
+    {
+      "controlId": "PM-1",
+      "level": 0
+    },
+    {
+      "controlId": "PM-2",
+      "level": 0
+    },
+    {
+      "controlId": "PM-3",
+      "level": 0
+    },
+    {
+      "controlId": "PM-4",
+      "level": 0
+    },
+    {
+      "controlId": "PM-5",
+      "level": 0
+    },
+    {
+      "controlId": "PM-6",
+      "level": 0
+    },
+    {
+      "controlId": "PM-9",
+      "level": 0
+    },
+    {
+      "controlId": "PM-10",
+      "level": 0
+    },
+    {
+      "controlId": "IS-1",
+      "level": 1
+    },
+    {
+      "controlId": "IS-2",
+      "level": 1
+    },
+    {
+      "controlId": "IS-3",
+      "level": 0
+    },
+    {
+      "controlId": "IS-4",
+      "level": 1
+    },
+    {
+      "controlId": "IS-5",
+      "level": 0
+    },
+    {
+      "controlId": "IS-6",
+      "level": 1
+    },
+    {
+      "controlId": "IS-7",
+      "level": 0
+    },
+    {
+      "controlId": "IS-8",
+      "level": 1
+    },
+    {
+      "controlId": "IS-9",
+      "level": 1
+    },
+    {
+      "controlId": "IS-10",
+      "level": 1
+    },
+    {
+      "controlId": "IS-11",
+      "level": 0
+    },
+    {
+      "controlId": "IS-12",
+      "level": 1
+    },
+    {
+      "controlId": "IS-13",
+      "level": 1
+    },
+    {
+      "controlId": "IS-14",
+      "level": 2
+    },
+    {
+      "controlId": "SD-1",
+      "level": 1
+    },
+    {
+      "controlId": "SD-2",
+      "level": 1
+    },
+    {
+      "controlId": "SD-3",
+      "level": 1
+    },
+    {
+      "controlId": "SD-4",
+      "level": 1
+    },
+    {
+      "controlId": "SD-5",
+      "level": 0
+    },
+    {
+      "controlId": "SD-6",
+      "level": 2
+    },
+    {
+      "controlId": "SD-7",
+      "level": 0
+    },
+    {
+      "controlId": "SD-8",
+      "level": 1
+    },
+    {
+      "controlId": "SD-9",
+      "level": 1
+    },
+    {
+      "controlId": "SD-10",
+      "level": 1
+    },
+    {
+      "controlId": "CK-1",
+      "level": 0
+    },
+    {
+      "controlId": "CK-2",
+      "level": 1
+    },
+    {
+      "controlId": "CK-3",
+      "level": 1
+    },
+    {
+      "controlId": "CK-4",
+      "level": 1
+    },
+    {
+      "controlId": "HR-1",
+      "level": 0
+    },
+    {
+      "controlId": "HR-2",
+      "level": 0
+    },
+    {
+      "controlId": "HR-3",
+      "level": 0
+    },
+    {
+      "controlId": "RS-1",
+      "level": 0
+    },
+    {
+      "controlId": "RS-2",
+      "level": 1
+    },
+    {
+      "controlId": "RS-3",
+      "level": 0
+    }
+  ],
+  "generative-ai": [
+    {
+      "controlId": "DP-8",
+      "level": 1
+    },
+    {
+      "controlId": "GA-1",
+      "level": 0
+    },
+    {
+      "controlId": "GA-2",
+      "level": 0
+    },
+    {
+      "controlId": "GA-3",
+      "level": 0
+    },
+    {
+      "controlId": "GA-4",
+      "level": 0
+    },
+    {
+      "controlId": "GA-5",
+      "level": 1
+    },
+    {
+      "controlId": "GA-6",
+      "level": 1
+    },
+    {
+      "controlId": "GA-7",
+      "level": 1
+    },
+    {
+      "controlId": "GA-8",
+      "level": 1
+    }
+  ],
+  "sandbox": [
+    {
+      "controlId": "AS-1",
+      "level": 2
+    },
+    {
+      "controlId": "AS-2",
+      "level": 2
+    },
+    {
+      "controlId": "AS-3",
+      "level": 2
+    },
+    {
+      "controlId": "AS-4",
+      "level": 2
+    },
+    {
+      "controlId": "AS-5",
+      "level": 2
+    },
+    {
+      "controlId": "AS-6",
+      "level": 2
+    },
+    {
+      "controlId": "AS-7",
+      "level": 2
+    },
+    {
+      "controlId": "AS-8",
+      "level": 2
+    },
+    {
+      "controlId": "AS-9",
+      "level": 2
+    },
+    {
+      "controlId": "AS-10",
+      "level": 2
+    },
+    {
+      "controlId": "AS-11",
+      "level": 2
+    },
+    {
+      "controlId": "AS-12",
+      "level": 2
+    },
+    {
+      "controlId": "AS-13",
+      "level": 2
+    },
+    {
+      "controlId": "AS-14",
+      "level": 2
+    },
+    {
+      "controlId": "AS-15",
+      "level": 2
+    },
+    {
+      "controlId": "SC-1",
+      "level": 2
+    },
+    {
+      "controlId": "SC-2",
+      "level": 2
+    },
+    {
+      "controlId": "SC-3",
+      "level": 2
+    },
+    {
+      "controlId": "SC-4",
+      "level": 2
+    },
+    {
+      "controlId": "SC-5",
+      "level": 2
+    },
+    {
+      "controlId": "SC-6",
+      "level": 2
+    },
+    {
+      "controlId": "SC-7",
+      "level": 2
+    },
+    {
+      "controlId": "SC-8",
+      "level": 2
+    },
+    {
+      "controlId": "SC-9",
+      "level": 2
+    },
+    {
+      "controlId": "ST-1",
+      "level": 2
+    },
+    {
+      "controlId": "ST-2",
+      "level": 2
+    },
+    {
+      "controlId": "ST-3",
+      "level": 2
+    },
+    {
+      "controlId": "ST-4",
+      "level": 2
+    },
+    {
+      "controlId": "ST-5",
+      "level": 2
+    },
+    {
+      "controlId": "NS-1",
+      "level": 2
+    },
+    {
+      "controlId": "NS-2",
+      "level": 2
+    },
+    {
+      "controlId": "NS-3",
+      "level": 2
+    },
+    {
+      "controlId": "NS-4",
+      "level": 2
+    },
+    {
+      "controlId": "NS-5",
+      "level": 2
+    },
+    {
+      "controlId": "NS-6",
+      "level": 2
+    },
+    {
+      "controlId": "NS-7",
+      "level": 2
+    },
+    {
+      "controlId": "NS-8",
+      "level": 2
+    },
+    {
+      "controlId": "BR-1",
+      "level": 2
+    },
+    {
+      "controlId": "BR-2",
+      "level": 2
+    },
+    {
+      "controlId": "BR-3",
+      "level": 2
+    },
+    {
+      "controlId": "DP-1",
+      "level": 2
+    },
+    {
+      "controlId": "DP-2",
+      "level": 2
+    },
+    {
+      "controlId": "DP-3",
+      "level": 2
+    },
+    {
+      "controlId": "DP-4",
+      "level": 2
+    },
+    {
+      "controlId": "LM-1",
+      "level": 2
+    },
+    {
+      "controlId": "LM-2",
+      "level": 2
+    },
+    {
+      "controlId": "LM-3",
+      "level": 2
+    },
+    {
+      "controlId": "LM-4",
+      "level": 2
+    },
+    {
+      "controlId": "LM-5",
+      "level": 2
+    },
+    {
+      "controlId": "LM-6",
+      "level": 2
+    },
+    {
+      "controlId": "LM-7",
+      "level": 2
+    },
+    {
+      "controlId": "LM-8",
+      "level": 2
+    },
+    {
+      "controlId": "LM-9",
+      "level": 2
+    },
+    {
+      "controlId": "LM-10",
+      "level": 2
+    },
+    {
+      "controlId": "LM-11",
+      "level": 2
+    },
+    {
+      "controlId": "LM-12",
+      "level": 2
+    },
+    {
+      "controlId": "LM-13",
+      "level": 2
+    },
+    {
+      "controlId": "LM-14",
+      "level": 2
+    },
+    {
+      "controlId": "LM-15",
+      "level": 2
+    },
+    {
+      "controlId": "LM-16",
+      "level": 2
+    },
+    {
+      "controlId": "LM-17",
+      "level": 2
+    },
+    {
+      "controlId": "LM-19",
+      "level": 2
+    },
+    {
+      "controlId": "AC-1",
+      "level": 2
+    },
+    {
+      "controlId": "AC-2",
+      "level": 2
+    },
+    {
+      "controlId": "AC-3",
+      "level": 2
+    },
+    {
+      "controlId": "AC-4",
+      "level": 2
+    },
+    {
+      "controlId": "AC-5",
+      "level": 2
+    },
+    {
+      "controlId": "AC-6",
+      "level": 2
+    },
+    {
+      "controlId": "AC-7",
+      "level": 2
+    },
+    {
+      "controlId": "AC-8",
+      "level": 2
+    },
+    {
+      "controlId": "AC-9",
+      "level": 2
+    },
+    {
+      "controlId": "AC-10",
+      "level": 2
+    },
+    {
+      "controlId": "AC-11",
+      "level": 2
+    },
+    {
+      "controlId": "AC-12",
+      "level": 2
+    },
+    {
+      "controlId": "AC-13",
+      "level": 2
+    },
+    {
+      "controlId": "AC-14",
+      "level": 2
+    },
+    {
+      "controlId": "CS-1",
+      "level": 2
+    },
+    {
+      "controlId": "CS-2",
+      "level": 2
+    },
+    {
+      "controlId": "CS-3",
+      "level": 2
+    },
+    {
+      "controlId": "CS-4",
+      "level": 2
+    },
+    {
+      "controlId": "CS-5",
+      "level": 2
+    },
+    {
+      "controlId": "CS-6",
+      "level": 2
+    },
+    {
+      "controlId": "CS-7",
+      "level": 2
+    },
+    {
+      "controlId": "CS-8",
+      "level": 2
+    },
+    {
+      "controlId": "CS-9",
+      "level": 2
+    },
+    {
+      "controlId": "CS-10",
+      "level": 2
+    },
+    {
+      "controlId": "CS-11",
+      "level": 2
+    },
+    {
+      "controlId": "PM-1",
+      "level": 2
+    },
+    {
+      "controlId": "PM-2",
+      "level": 2
+    },
+    {
+      "controlId": "PM-3",
+      "level": 0
+    },
+    {
+      "controlId": "PM-4",
+      "level": 0
+    },
+    {
+      "controlId": "PM-5",
+      "level": 0
+    },
+    {
+      "controlId": "PM-6",
+      "level": 2
+    },
+    {
+      "controlId": "IS-1",
+      "level": 2
+    },
+    {
+      "controlId": "IS-2",
+      "level": 2
+    },
+    {
+      "controlId": "IS-3",
+      "level": 2
+    },
+    {
+      "controlId": "IS-4",
+      "level": 2
+    },
+    {
+      "controlId": "IS-5",
+      "level": 2
+    },
+    {
+      "controlId": "IS-6",
+      "level": 2
+    },
+    {
+      "controlId": "IS-7",
+      "level": 2
+    },
+    {
+      "controlId": "IS-8",
+      "level": 2
+    },
+    {
+      "controlId": "IS-9",
+      "level": 2
+    },
+    {
+      "controlId": "IS-10",
+      "level": 2
+    },
+    {
+      "controlId": "IS-11",
+      "level": 2
+    },
+    {
+      "controlId": "IS-12",
+      "level": 2
+    },
+    {
+      "controlId": "IS-13",
+      "level": 2
+    },
+    {
+      "controlId": "IS-14",
+      "level": 2
+    },
+    {
+      "controlId": "SD-1",
+      "level": 2
+    },
+    {
+      "controlId": "SD-2",
+      "level": 2
+    },
+    {
+      "controlId": "SD-3",
+      "level": 2
+    },
+    {
+      "controlId": "SD-4",
+      "level": 2
+    },
+    {
+      "controlId": "SD-5",
+      "level": 2
+    },
+    {
+      "controlId": "SD-6",
+      "level": 2
+    },
+    {
+      "controlId": "SD-7",
+      "level": 2
+    },
+    {
+      "controlId": "SD-8",
+      "level": 2
+    },
+    {
+      "controlId": "CK-1",
+      "level": 2
+    },
+    {
+      "controlId": "CK-2",
+      "level": 2
+    }
+  ],
+  "digital-services-others": [
+    {
+      "controlId": "UU-1",
+      "level": 1
+    },
+    {
+      "controlId": "UU-2",
+      "level": 1
+    },
+    {
+      "controlId": "BD-1",
+      "level": 1
+    },
+    {
+      "controlId": "BD-2",
+      "level": 1
+    },
+    {
+      "controlId": "BD-3",
+      "level": 2
+    },
+    {
+      "controlId": "BD-4",
+      "level": 2
+    },
+    {
+      "controlId": "BD-5",
+      "level": 2
+    },
+    {
+      "controlId": "BD-6",
+      "level": 1
+    },
+    {
+      "controlId": "BD-7",
+      "level": 1
+    },
+    {
+      "controlId": "BD-8",
+      "level": 1
+    },
+    {
+      "controlId": "BD-9",
+      "level": 1
+    },
+    {
+      "controlId": "TX-1",
+      "level": 1
+    },
+    {
+      "controlId": "TX-2",
+      "level": 1
+    },
+    {
+      "controlId": "TX-3",
+      "level": 2
+    },
+    {
+      "controlId": "TX-4",
+      "level": 2
+    },
+    {
+      "controlId": "TX-5",
+      "level": 2
+    },
+    {
+      "controlId": "TX-6",
+      "level": 1
+    },
+    {
+      "controlId": "TX-7",
+      "level": 1
+    },
+    {
+      "controlId": "TX-8",
+      "level": 1
+    },
+    {
+      "controlId": "TX-9",
+      "level": 1
+    },
+    {
+      "controlId": "TX-10",
+      "level": 1
+    },
+    {
+      "controlId": "TX-11",
+      "level": 1
+    },
+    {
+      "controlId": "TX-12",
+      "level": 1
+    },
+    {
+      "controlId": "TX-13",
+      "level": 1
+    },
+    {
+      "controlId": "TX-14",
+      "level": 1
+    },
+    {
+      "controlId": "TX-15",
+      "level": 2
+    },
+    {
+      "controlId": "PR-1",
+      "level": 1
+    },
+    {
+      "controlId": "PR-2",
+      "level": 0
+    },
+    {
+      "controlId": "PR-3",
+      "level": 1
+    },
+    {
+      "controlId": "PR-4",
+      "level": 1
+    },
+    {
+      "controlId": "PR-5",
+      "level": 1
+    },
+    {
+      "controlId": "PR-6",
+      "level": 1
+    },
+    {
+      "controlId": "PR-7",
+      "level": 1
+    },
+    {
+      "controlId": "TL-1",
+      "level": 1
+    },
+    {
+      "controlId": "TL-2",
+      "level": 1
+    },
+    {
+      "controlId": "TL-3",
+      "level": 0
+    },
+    {
+      "controlId": "TL-4",
+      "level": 1
+    },
+    {
+      "controlId": "TL-5",
+      "level": 0
+    },
+    {
+      "controlId": "TL-6",
+      "level": 1
+    },
+    {
+      "controlId": "WP-1",
+      "level": 1
+    },
+    {
+      "controlId": "WP-2",
+      "level": 1
+    },
+    {
+      "controlId": "WP-3",
+      "level": 1
+    },
+    {
+      "controlId": "WP-4",
+      "level": 2
+    },
+    {
+      "controlId": "WP-5",
+      "level": 2
+    },
+    {
+      "controlId": "WP-6",
+      "level": 1
+    },
+    {
+      "controlId": "WP-7",
+      "level": 1
+    },
+    {
+      "controlId": "WP-8",
+      "level": 1
+    },
+    {
+      "controlId": "WP-9",
+      "level": 2
+    },
+    {
+      "controlId": "WP-10",
+      "level": 1
+    },
+    {
+      "controlId": "WP-11",
+      "level": 1
+    },
+    {
+      "controlId": "WP-12",
+      "level": 1
+    },
+    {
+      "controlId": "WP-13",
+      "level": 1
+    },
+    {
+      "controlId": "WP-14",
+      "level": 1
+    },
+    {
+      "controlId": "WP-15",
+      "level": 2
+    },
+    {
+      "controlId": "WP-16",
+      "level": 1
+    },
+    {
+      "controlId": "WP-17",
+      "level": 1
+    },
+    {
+      "controlId": "WP-18",
+      "level": 1
+    },
+    {
+      "controlId": "WP-19",
+      "level": 1
+    },
+    {
+      "controlId": "WO-1",
+      "level": 1
+    },
+    {
+      "controlId": "WO-2",
+      "level": 1
+    },
+    {
+      "controlId": "WO-3",
+      "level": 2
+    },
+    {
+      "controlId": "WO-4",
+      "level": 1
+    },
+    {
+      "controlId": "WO-5",
+      "level": 1
+    },
+    {
+      "controlId": "WO-6",
+      "level": 1
+    },
+    {
+      "controlId": "WO-7",
+      "level": 1
+    },
+    {
+      "controlId": "WO-8",
+      "level": 1
+    },
+    {
+      "controlId": "WO-9",
+      "level": 1
+    },
+    {
+      "controlId": "WO-10",
+      "level": 1
+    },
+    {
+      "controlId": "WO-11",
+      "level": 2
+    },
+    {
+      "controlId": "WO-12",
+      "level": 1
+    },
+    {
+      "controlId": "WO-13",
+      "level": 1
+    },
+    {
+      "controlId": "WO-14",
+      "level": 2
+    },
+    {
+      "controlId": "WO-15",
+      "level": 2
+    },
+    {
+      "controlId": "WO-16",
+      "level": 1
+    },
+    {
+      "controlId": "WO-17",
+      "level": 1
+    },
+    {
+      "controlId": "WO-18",
+      "level": 1
+    },
+    {
+      "controlId": "WU-1",
+      "level": 1
+    },
+    {
+      "controlId": "WU-2",
+      "level": 1
+    },
+    {
+      "controlId": "WU-3",
+      "level": 2
+    },
+    {
+      "controlId": "WU-4",
+      "level": 1
+    },
+    {
+      "controlId": "WU-5",
+      "level": 1
+    },
+    {
+      "controlId": "WU-6",
+      "level": 1
+    },
+    {
+      "controlId": "WU-7",
+      "level": 1
+    },
+    {
+      "controlId": "WU-8",
+      "level": 1
+    },
+    {
+      "controlId": "WU-9",
+      "level": 1
+    },
+    {
+      "controlId": "WU-10",
+      "level": 1
+    },
+    {
+      "controlId": "WU-11",
+      "level": 1
+    },
+    {
+      "controlId": "WU-12",
+      "level": 1
+    },
+    {
+      "controlId": "WU-13",
+      "level": 1
+    },
+    {
+      "controlId": "WU-14",
+      "level": 1
+    },
+    {
+      "controlId": "WR-1",
+      "level": 1
+    },
+    {
+      "controlId": "WR-2",
+      "level": 1
+    }
+  ],
+  "digital-services-high-impact": [
+    {
+      "controlId": "UU-1",
+      "level": 1
+    },
+    {
+      "controlId": "UU-2",
+      "level": 1
+    },
+    {
+      "controlId": "BD-1",
+      "level": 1
+    },
+    {
+      "controlId": "BD-2",
+      "level": 1
+    },
+    {
+      "controlId": "BD-3",
+      "level": 2
+    },
+    {
+      "controlId": "BD-4",
+      "level": 2
+    },
+    {
+      "controlId": "BD-5",
+      "level": 2
+    },
+    {
+      "controlId": "BD-6",
+      "level": 1
+    },
+    {
+      "controlId": "BD-7",
+      "level": 1
+    },
+    {
+      "controlId": "BD-8",
+      "level": 1
+    },
+    {
+      "controlId": "BD-9",
+      "level": 1
+    },
+    {
+      "controlId": "TX-1",
+      "level": 1
+    },
+    {
+      "controlId": "TX-2",
+      "level": 1
+    },
+    {
+      "controlId": "TX-3",
+      "level": 2
+    },
+    {
+      "controlId": "TX-4",
+      "level": 2
+    },
+    {
+      "controlId": "TX-5",
+      "level": 2
+    },
+    {
+      "controlId": "TX-6",
+      "level": 1
+    },
+    {
+      "controlId": "TX-7",
+      "level": 1
+    },
+    {
+      "controlId": "TX-8",
+      "level": 1
+    },
+    {
+      "controlId": "TX-9",
+      "level": 1
+    },
+    {
+      "controlId": "TX-10",
+      "level": 1
+    },
+    {
+      "controlId": "TX-11",
+      "level": 1
+    },
+    {
+      "controlId": "TX-12",
+      "level": 1
+    },
+    {
+      "controlId": "TX-13",
+      "level": 1
+    },
+    {
+      "controlId": "TX-14",
+      "level": 1
+    },
+    {
+      "controlId": "TX-15",
+      "level": 2
+    },
+    {
+      "controlId": "PR-1",
+      "level": 1
+    },
+    {
+      "controlId": "PR-2",
+      "level": 0
+    },
+    {
+      "controlId": "PR-3",
+      "level": 1
+    },
+    {
+      "controlId": "PR-4",
+      "level": 1
+    },
+    {
+      "controlId": "PR-5",
+      "level": 1
+    },
+    {
+      "controlId": "PR-6",
+      "level": 1
+    },
+    {
+      "controlId": "PR-7",
+      "level": 1
+    },
+    {
+      "controlId": "TL-1",
+      "level": 1
+    },
+    {
+      "controlId": "TL-2",
+      "level": 1
+    },
+    {
+      "controlId": "TL-3",
+      "level": 0
+    },
+    {
+      "controlId": "TL-4",
+      "level": 1
+    },
+    {
+      "controlId": "TL-5",
+      "level": 0
+    },
+    {
+      "controlId": "TL-6",
+      "level": 1
+    },
+    {
+      "controlId": "WP-1",
+      "level": 1
+    },
+    {
+      "controlId": "WP-2",
+      "level": 1
+    },
+    {
+      "controlId": "WP-3",
+      "level": 1
+    },
+    {
+      "controlId": "WP-4",
+      "level": 1
+    },
+    {
+      "controlId": "WP-5",
+      "level": 1
+    },
+    {
+      "controlId": "WP-6",
+      "level": 1
+    },
+    {
+      "controlId": "WP-7",
+      "level": 1
+    },
+    {
+      "controlId": "WP-8",
+      "level": 1
+    },
+    {
+      "controlId": "WP-9",
+      "level": 1
+    },
+    {
+      "controlId": "WP-10",
+      "level": 1
+    },
+    {
+      "controlId": "WP-11",
+      "level": 1
+    },
+    {
+      "controlId": "WP-12",
+      "level": 1
+    },
+    {
+      "controlId": "WP-13",
+      "level": 1
+    },
+    {
+      "controlId": "WP-14",
+      "level": 1
+    },
+    {
+      "controlId": "WP-15",
+      "level": 1
+    },
+    {
+      "controlId": "WP-16",
+      "level": 1
+    },
+    {
+      "controlId": "WP-17",
+      "level": 1
+    },
+    {
+      "controlId": "WP-18",
+      "level": 1
+    },
+    {
+      "controlId": "WP-19",
+      "level": 1
+    },
+    {
+      "controlId": "WO-1",
+      "level": 1
+    },
+    {
+      "controlId": "WO-2",
+      "level": 1
+    },
+    {
+      "controlId": "WO-3",
+      "level": 1
+    },
+    {
+      "controlId": "WO-4",
+      "level": 1
+    },
+    {
+      "controlId": "WO-5",
+      "level": 1
+    },
+    {
+      "controlId": "WO-6",
+      "level": 1
+    },
+    {
+      "controlId": "WO-7",
+      "level": 1
+    },
+    {
+      "controlId": "WO-8",
+      "level": 1
+    },
+    {
+      "controlId": "WO-9",
+      "level": 1
+    },
+    {
+      "controlId": "WO-10",
+      "level": 1
+    },
+    {
+      "controlId": "WO-11",
+      "level": 1
+    },
+    {
+      "controlId": "WO-12",
+      "level": 1
+    },
+    {
+      "controlId": "WO-13",
+      "level": 1
+    },
+    {
+      "controlId": "WO-14",
+      "level": 1
+    },
+    {
+      "controlId": "WO-15",
+      "level": 1
+    },
+    {
+      "controlId": "WO-16",
+      "level": 1
+    },
+    {
+      "controlId": "WO-17",
+      "level": 1
+    },
+    {
+      "controlId": "WO-18",
+      "level": 1
+    },
+    {
+      "controlId": "WU-1",
+      "level": 1
+    },
+    {
+      "controlId": "WU-2",
+      "level": 1
+    },
+    {
+      "controlId": "WU-3",
+      "level": 1
+    },
+    {
+      "controlId": "WU-4",
+      "level": 1
+    },
+    {
+      "controlId": "WU-5",
+      "level": 1
+    },
+    {
+      "controlId": "WU-6",
+      "level": 1
+    },
+    {
+      "controlId": "WU-7",
+      "level": 1
+    },
+    {
+      "controlId": "WU-8",
+      "level": 1
+    },
+    {
+      "controlId": "WU-9",
+      "level": 1
+    },
+    {
+      "controlId": "WU-10",
+      "level": 1
+    },
+    {
+      "controlId": "WU-11",
+      "level": 1
+    },
+    {
+      "controlId": "WU-12",
+      "level": 1
+    },
+    {
+      "controlId": "WU-13",
+      "level": 1
+    },
+    {
+      "controlId": "WU-14",
+      "level": 1
+    },
+    {
+      "controlId": "WR-1",
+      "level": 1
+    },
+    {
+      "controlId": "WR-2",
+      "level": 1
+    }
+  ]
+}
