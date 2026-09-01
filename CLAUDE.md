@@ -1,44 +1,76 @@
 # CLAUDE.md
 
 ## Project
-LTA-SSP: a browsing tool for Singapore's System Security Plan (SSP) controls framework —
-find your system type, browse the full control catalog, or read each system type's profile.
-Served via GitHub Pages as a *project* site at `ziqiangg.github.io/LTA-SSP/`.
-Plain HTML/CSS/vanilla JS. No build step, no framework, no package manager, no dependencies.
+**LTA-SSP** — Singapore's System Security Plan (SSP) controls framework, made discoverable.
+Upstream source of truth: <https://info.standards.tech.gov.sg/ssp/>.
 
-## Structure
-- Pages source: `docs/` folder on `main` branch, published under the `/LTA-SSP/` path prefix
-  (this is a GitHub Pages *project* site, not a `<user>.github.io` root site — every internal
-  link and asset reference must stay relative; never use root-absolute paths like `/assets/...`).
-- One folder per page, each with its own `index.html` (→ clean URLs like `/controls/`).
-- Shared assets in `docs/assets/{css,data,img,js}/`.
-- Root `docs/index.html` = the tool's landing page — this repo IS the SSP tool, there's no
-  separate portfolio section.
-- `docs/assets/data/*.json` (controls, domains, profiles, system-types) is fetched at runtime
-  by `docs/assets/js/controls.js`. `docs/assets/js/wizard.js` only produces links; it doesn't
-  fetch data.
+The repo has **two lanes**:
 
-## Rules
-- Do not introduce a build step, bundler, or framework unless explicitly asked.
-- Do not commit secrets, API keys, or analytics tokens directly in HTML/JS — this repo is fully public.
-- Keep HTML semantic; every page needs a `<title>`, meta description, and viewport meta tag.
-- Reuse `docs/assets/css/style.css` across pages — don't create per-page stylesheets.
-- Commit messages: short, imperative (`add projects page`, not `Added Projects Page`).
+| Lane | Path | What it is |
+|---|---|---|
+| **Site** | `docs/` | The shipped browsing tool. Vanilla HTML/CSS/JS, zero dependencies, served by GitHub Pages at `ziqiangg.github.io/LTA-SSP/`. |
+| **Research** | `research/` | Investigation into how to better help users find the controls relevant to their system. Python allowed. Not published. |
+
+Research exists to serve two ends: **improve the site**, and **inform a future classifier** that
+maps a free-text system description to relevant controls plus guidance. The classifier is not
+being built yet, but findings should be recorded in a form it could consume.
+
+Each lane has its own `CLAUDE.md` (`docs/CLAUDE.md`, `research/CLAUDE.md`) that loads only when
+you touch that lane. Don't duplicate their contents here.
+
+## Repo map
+```
+CLAUDE.md            # this router
+README.md
+docs/                # the site  → docs/CLAUDE.md
+  assets/{css,data,img,js}/
+  {controls,find-your-system-type,system-types/*}/index.html
+research/            # the research → research/CLAUDE.md
+.claude/{skills,agents,commands}/
+```
+
+## Data, in one paragraph
+`docs/assets/data/` holds 248 controls across 26 domains (17 cybersecurity + 9 Digital Service
+Standards) and 8 system types. A control has **no intrinsic level** — level is a property of the
+`(system type, control)` pair, stored in `profiles.json`. That join is the entire "which controls
+apply to me" mechanism today. Full schema and invariants: the **`ssp-corpus`** skill.
+
+## Hard rules (everywhere)
+- **No secrets, API keys, or tokens.** This repo is fully public.
+- **`docs/` stays dependency-free.** No build step, bundler, framework, or package manager there.
+  Python is confined to `research/`.
+- **`docs/assets/data/*.json` must stay a faithful reproduction of upstream, and changes only
+  through the ingest pipeline** — `research/scripts/{scrape,diff_corpus,promote}.py`. Never hand-
+  edit it, never reword it, never "fix" it to make a page or an analysis look better. If it looks
+  wrong, re-scrape and read the diff; if upstream itself is wrong, file a research finding.
+  (This was previously phrased as an assertion that the data *is* a faithful scrape. It wasn't —
+  most `guidance` text had been paraphrased. See F-008.)
+- Commit messages: short, imperative (`add controls filter`, not `Added Controls Filter`).
+- On this machine the interpreter is `python`, not `python3`.
+
+## Context-window discipline
+This is why the structure above exists — follow it:
+
+1. **Never read `controls.json` or `profiles.json` into the main context.** Query them with
+   `python research/scripts/corpus.py <subcommand>`, or delegate to the `corpus-analyst` agent.
+2. **All web searching and page-reading goes through the `literature-scout` agent.** Source cards
+   come back; raw pages don't.
+3. **Screenshots go through the `site-critic` agent** unless you need to see one yourself.
+4. `research/README.md` is the index — read it to orient, not the whole folder. `JOURNAL.md` is
+   append-only; read it by tail.
+5. Site work loads `docs/CLAUDE.md`; research work loads `research/CLAUDE.md`. Neither pays for
+   the other.
+
+## Router
+| Need to… | Use |
+|---|---|
+| Understand or query the SSP data | `ssp-corpus` skill |
+| Preview / screenshot / finish a page | `site-preview` skill, `site-critic` agent |
+| Write up a finding, ADR, or journal entry | `research-note` skill, `/research-log` |
+| Review external literature or prior art | `prior-art-review` skill → `literature-scout` agent |
+| Build or score a labelled eval set | `eval-set` skill |
+| Crunch numbers over the corpus | `corpus-analyst` agent |
 
 ## Workflow
-- Local preview steps: see `SKILLS.md`.
-- Push to `main` to deploy — no CI needed. GitHub Pages source: Deploy from a branch → `main` / `/docs`.
-
-## Design discipline (before calling any page "done")
-- Screenshot the page (chrome-devtools MCP) at desktop and mobile widths before saying a page is finished. Don't rely on markup alone.
-- Avoid default AI-generated look: no unstyled system fonts, no purple/violet gradient hero, no generic centered-card layout unless deliberately chosen.
-- Pick one distinctive element (typography, accent color, one signature layout choice) and keep everything else quiet around it.
-- Responsive down to mobile width, visible keyboard focus states, respect `prefers-reduced-motion`.
-- Self-critique against the screenshot before presenting: does this look templated, or intentional?
-- Never let color alone carry a meaning (WCAG 1.4.1) — selection state especially: use a native checked/unchecked control (checkbox) or an icon/text change, not just a color/opacity shift on a button.
-
-## Domain color palette
-The 26 SSP control domains (17 cybersecurity + 9 Digital Service Standards) each get a `--domain-<CODE>` custom property in `docs/assets/css/style.css` (light values in `:root`, dark values in the `prefers-color-scheme: dark` block, same pattern as `--pico-primary`).
-- Colors are the **dataviz skill's validated 8-hue categorical theme** (blue, orange, aqua, yellow, magenta, green, violet, red — see the skill's `references/palette.md`), round-robin assigned across the 26 domains in `docs/assets/data/domains.json` order. Validated against this site's actual light (`#ffffff`) and dark (`#13171f`) backgrounds — all hard gates pass; 3 light-mode hues (aqua/yellow/magenta) sit below 3:1 contrast by design, which is why the mitigation below is load-bearing, not optional.
-- **8 hues cannot give 26 pairwise-distinct colors** — no ordering of a full 8-hue set clears the all-pairs CVD floor, so a 26-color set can't either. Color here is a **supplementary scanning aid, never a unique identifier** — every colored swatch/badge always sits directly next to its 2-letter code, and everywhere but the space-constrained control-card badge, next to the full domain name too. Don't extend this to "give every domain a truly unique color" — it isn't achievable accessibly; add domains to the existing round-robin instead.
-- To change the palette: substitute the dataviz skill's `references/palette.md` categorical values (or your own, validated against contrast) and regenerate the round-robin assignment — don't hand-pick replacement hex values.
+- Deploy: push to `main`. GitHub Pages source is `main` / `/docs`. No CI.
+- Local preview and the "is this page done?" checklist: `site-preview` skill.

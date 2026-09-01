@@ -342,8 +342,23 @@
     if (c.citations && c.citations.length) {
       var cite = document.createElement("p");
       cite.className = "control-guidance";
-      cite.textContent =
-        "References: " + c.citations.map(function (ci) { return ci.standard + (ci.reference ? " (" + ci.reference + ")" : ""); }).join(", ");
+      cite.appendChild(document.createTextNode("References: "));
+      c.citations.forEach(function (ci, i) {
+        if (i) cite.appendChild(document.createTextNode(", "));
+        var label = ci.standard + (ci.reference ? " (" + ci.reference + ")" : "");
+        // Citations scraped from an upstream hyperlink carry the real href; ones
+        // recovered from prose don't, and stay as plain text.
+        if (ci.url) {
+          var a = document.createElement("a");
+          a.href = ci.url;
+          a.textContent = label;
+          a.rel = "noopener noreferrer";
+          a.target = "_blank";
+          cite.appendChild(a);
+        } else {
+          cite.appendChild(document.createTextNode(label));
+        }
+      });
       body.appendChild(cite);
     }
 

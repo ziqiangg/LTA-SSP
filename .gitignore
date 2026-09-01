@@ -2,3 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# Python (research/ only — docs/ stays dependency-free)
+__pycache__/
+*.pyc
+.venv/
+venv/
+research/corpus/raw/
