@@ -40,6 +40,13 @@ high-risk cloud separable only by CII designation.
 classified as *fixable in the tree* / *needs a different interaction model* / *blocked upstream by
 the standard*.
 
+**Direction set 2026-09-01 (ADR-001, proposed):** composite-system unreachability (F-004 issue 1)
+and no-persistence (issue 4) are now classified *needs a different interaction model* —
+tick-all-that-apply plus high-water-mark composition, per the ADR. On-premises never reaching a
+sensitivity question (issue 2) stays *blocked upstream* (the standard defines only one on-prem
+profile). This doesn't itself answer RQ-2 — issues 3 and 5 still need their own classification —
+but the ADR fixes the target model the remaining failure modes get classified against.
+
 ---
 
 ## RQ-3 — Which signals in a free-text description determine the type?

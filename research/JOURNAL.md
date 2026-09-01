@@ -238,3 +238,24 @@ Entries record **what happened**; findings record **what is true**. Use `/resear
 - Open: `domains.json` still only spot-checked, not run through the full pipeline (no
   `diff_domains.py` exists). `corpus-verifier` needs a fresh session before its first real use.
   ADR-001, ADR-002, and site work remain, per the handover.
+
+## 2026-09-01 (session 4, continued) — ADR-001 drafted
+
+- **`research/decisions/ADR-001-baseline-then-tailor-with-visible-tailoring.md` written**, `status:
+  proposed`. Decision: serve baseline-then-tailor, not risk-first from scratch — the site's data is
+  genuinely baseline-shaped (F-005's nesting) — but make the tailoring step real: (1) compute a
+  starting baseline via tick-all-that-apply plus high-water-mark (`min()`) composition instead of
+  the single-outcome tree, (2) render every control with a status and a reason rather than a
+  filtered list (F-007's convergent prior-art recommendation), (3) treat that baseline as a draft,
+  adjustable via a documented override step mirroring FIPS 199 and ISO's Statement of
+  Applicability. Step 3's implementation shape is deliberately left open — direction only.
+- Grounded in a direct re-read of F-007/F-004/F-005 (not just summaries) plus a direct read of
+  `wizard.js` and the relevant `controls.js` filtering logic (`workingControls()`), to check the
+  decision against real code rather than description. Finding worth carrying into site work: the
+  "show every control with a status" half is a smaller lift than expected — catalog mode already
+  renders unfiltered lists — but the "reason" text for excluded controls has **no backing data
+  anywhere**, upstream or local; it must be authored, with SP 800-53B §2.4 as a starting
+  vocabulary, not derived from a scrape.
+- Not yet done: implementing any of the three decision points, and ADR-002 (the guidance schema
+  split). `status: proposed` — needs the project owner's sign-off before site work treats it as
+  settled.

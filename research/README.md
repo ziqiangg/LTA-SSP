@@ -61,9 +61,10 @@ paraphrased sensitivity text ("Security sensitivity level designated as…") tha
 note describes. Synced to match the corrected `classificationText` (one line, presentation only —
 no data change). No other system-type page carried the stale phrasing.
 
-**Decisions waiting on an ADR:** (1) the F-001 guidance-recovery route — re-scrape vs OSCAL import
-vs hybrid; (2) whether this tool serves risk-first (ISO) or baseline-then-tailor (NIST) selection,
-which F-007 shows the standard and our wizard currently answer differently.
+**Decisions:** [ADR-001](decisions/ADR-001-baseline-then-tailor-with-visible-tailoring.md) —
+baseline-then-tailor, with the tailoring step made real, visible, and recorded (**proposed**,
+2026-09-01, not yet owner-accepted). Still waiting on an ADR: the F-001 guidance-recovery route —
+re-scrape vs OSCAL import vs hybrid.
 
 Prior-art cards: `prior-art/PA-001..PA-013`, indexed in F-007. Read F-007 rather than the cards.
 
