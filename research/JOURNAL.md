@@ -185,6 +185,12 @@ Entries record **what happened**; findings record **what is true**. Use `/resear
   signal.
 - Fixed a stale field name in the `eval-set` skill (`acceptable_types` → `acceptable_answers`,
   left over from before F-010 renamed the schema).
+- **F-002 closed.** The handover asked this session to treat the owner's already-recorded
+  "permitted but not required" answer as confirmation and close it out — done: `status` → confirmed,
+  `confidence` → high, and the Digital-Services open question resolved the same way (the owner's
+  answer covered both templates, not just GenAI). `site_issue: deferred` is unchanged — the wizard
+  fix itself still isn't built, only the underlying question is settled. Updated README, QUESTIONS
+  (RQ-5).
 - Open, unchanged from the handover: ingest pipeline (`corpus-ingest` skill, `corpus-verifier`
   agent, `system-types.json`/`level-definitions.json` diffs), ADR-001 and ADR-002, and all site work
   gated on ADR-001.

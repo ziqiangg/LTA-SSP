@@ -5,20 +5,24 @@ date: 2026-09-01
 updated: 2026-09-01
 rq: [RQ-5, RQ-2]
 implications: [data, site, classifier]
-confidence: medium
-status: open
+confidence: high
+status: confirmed
 site_issue: deferred
 ---
 
-> **Revised twice (2026-09-01).**
+> **Revised twice, then confirmed (2026-09-01).**
 > *First* — after upstream verification: the standard does not state the template is additive; it
 > frames GenAI exactly like the standalone types.
 > *Second* — after domain confirmation from the project owner: composition **is permitted but not
 > required**. An agency may adopt the GenAI or Digital Services template alongside a hosting SSP,
 > or may judge it sufficient alone.
+> *Third* — **closed 2026-09-01 (session 4).** The owner's answer was re-confirmed per the session-3
+> handover instruction to "treat this as confirmation and close F-002, settling the classifier's
+> output scheme." No further desk research or GovTech follow-up is pending; `status` moves to
+> `confirmed` and `confidence` to `high`. `site_issue: deferred` is unaffected — the wizard fix
+> itself is still not implemented, only the underlying question is settled.
 > This retires the "materially unsafe" framing I originally used. The wizard is **incomplete**, not
 > wrong: it cannot express a legitimate combination. That is a usability defect, not a safety one.
-> Confidence, title, and implications revised accordingly.
 
 > **Known site issue, deliberately deferred (2026-09-01).** Answering "yes" at wizard q3 terminates
 > with 9 controls and no hosting profile, and the wizard offers no way to say "GenAI *and*
@@ -129,9 +133,10 @@ F-007).
 
 ## Open questions
 
-- The Digital Services types have *even less* textual support than GenAI for the composition
-  reading: their pages scope themselves purely by traffic volume, with no outward pointer at all,
-  not even a GA-4 equivalent. Optionality is assumed to apply to them equally — worth confirming.
+- ~~The Digital Services types have *even less* textual support than GenAI for the composition
+  reading... Optionality is assumed to apply to them equally — worth confirming.~~ **Confirmed
+  2026-09-01 (session 4):** the owner's "permitted but not required" answer was given for "the
+  GenAI and Digital Services templates" together, not GenAI alone — this applies equally.
 - Is there guidance anywhere on *when* an agency should combine rather than stand alone? That
   judgement is exactly what the site could help with, and nothing published addresses it.
 - Does the NIST talk "Adapting OSCAL for the Singapore Government's Tech Standards"

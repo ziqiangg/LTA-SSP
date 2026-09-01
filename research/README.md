@@ -39,7 +39,7 @@ you should do".
 | id | title | implications | confidence | status |
 |---|---|---|---|---|
 | [F-001](findings/F-001-guidance-gaps-cluster-by-domain.md) | Missing `guidance` is four whole domains — a scrape failure, recoverable | data | high | **confirmed** |
-| [F-002](findings/F-002-generative-ai-profile-standalone-or-overlay.md) | `generative-ai` is 9 controls and upstream never says whether it stands alone | data, site, classifier | medium | open |
+| [F-002](findings/F-002-generative-ai-profile-standalone-or-overlay.md) | `generative-ai` is 9 controls and upstream never says whether it stands alone | data, site, classifier | high | **confirmed** |
 | [F-003](findings/F-003-level-definitions-dead-and-contradicted.md) | `level-definitions.json` is dead data and the UI contradicts it | data, site | high | open |
 | [F-004](findings/F-004-wizard-tree-reachability-gaps.md) | The wizard tree has unreachable and forced outcomes | site, classifier | high | open |
 | [F-005](findings/F-005-profiles-are-nested.md) | Profiles nest, and OSCAL confirms it is deliberate | classifier, site | high | **confirmed** |
@@ -49,10 +49,6 @@ you should do".
 | [F-009](findings/F-009-system-type-pages-linked-to-404.md) | All 8 system-type pages linked their main CTA to a 404 | site | high | **actioned** |
 | [F-010](findings/F-010-eval-pilot-no-case-has-one-answer.md) | Blind eval pilot: no realistic description had a single correct answer | classifier, site | medium | open |
 | [F-011](findings/F-011-eval-answer-set-homogeneity.md) | 6 of 15 pilot cases share one identical hosting-unknown answer pair | classifier | medium | open |
-
-**Needs a human, not more desk research:** ask GovTech whether the GenAI and Digital Services
-templates are meant to be adopted *alongside* a hosting SSP (F-002). No published material answers
-it, and the answer changes both the site's advice and the classifier's output schema.
 
 **Biggest open item:** F-008 — `docs/assets/data/*.json` claims `status: "scraped"` but most
 `guidance` text was paraphrased. A verified re-scrape is ready in `research/corpus/scraped/`; see
