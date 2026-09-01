@@ -10,10 +10,11 @@ deliberately does not pre-filter to docs/assets/data/'s schema.
 Usage:
   python research/scripts/scrape.py controls [--domain LM] [--no-cache]
   python research/scripts/scrape.py types
+  python research/scripts/scrape.py level-definitions
   python research/scripts/scrape.py all
   python research/scripts/scrape.py selftest
 
-Output:  research/corpus/scraped/{controls,system-types}.json
+Output:  research/corpus/scraped/{controls,system-types,level-definitions}.json
 Cache:   research/corpus/raw/*.html   (gitignored; delete or pass --no-cache to refetch)
 
 Design notes
@@ -55,15 +56,20 @@ CYBER = ["ac", "as", "br", "ck", "cs", "dc", "dp", "ga", "hr", "is",
 DSS = ["bd", "pr", "tl", "tx", "uu", "wo", "wp", "wr", "wu"]
 
 SYSTEM_TYPES = [
-    ("low-risk-cloud", "low-risk-cloud"),
-    ("low-risk-on-premises", "low-risk-on-premises"),
-    ("medium-risk-cloud", "medium-risk-cloud"),
-    ("high-risk-cloud", "high-risk-cloud"),
-    ("generative-ai", "gen-ai"),
-    ("sandbox", "sandbox"),
-    ("digital-services-others", "dss-others"),
-    ("digital-services-high-impact", "dss-high"),
+    ("low-risk-cloud", "low-risk-cloud", "cybersecurity"),
+    ("low-risk-on-premises", "low-risk-on-premises", "cybersecurity"),
+    ("medium-risk-cloud", "medium-risk-cloud", "cybersecurity"),
+    ("high-risk-cloud", "high-risk-cloud", "cybersecurity"),
+    ("generative-ai", "gen-ai", "cybersecurity"),
+    ("sandbox", "sandbox", "cybersecurity"),
+    ("digital-services-others", "dss-others", "dss"),
+    ("digital-services-high-impact", "dss-high", "dss"),
 ]
+
+NAME_RE = re.compile(r"^Name:\s*(.+)$")
+DESC_RE = re.compile(r"^Description:\s*(.+)$")
+SENSITIVITY_RE = re.compile(r"^Security Sensitivity Level:\s*(.+)$")
+DOMAIN_COUNT_RE = re.compile(r"^([A-Z]{2}): .+\(\d+\)$")
 
 INLINE = {"a", "b", "strong", "i", "em", "span", "code", "sup", "sub",
           "u", "small", "abbr", "mark", "cite", "q", "time", "label"}
@@ -287,17 +293,163 @@ def scrape_domain(code, catalog, use_cache=True):
     return controls
 
 
-def scrape_system_type(type_id, slug, use_cache=True):
+def normalize_heading(s):
+    return re.sub(r"[^a-z0-9]", "", (s or "").lower())
+
+
+def blurb_landmark_texts(landing_blocks):
+    """Map each type's normalized display heading to its landing-page description paragraph.
+
+    The page lists each type as a (name-heading, blurb) pair after "The various types are
+    listed below:", but NOT in SYSTEM_TYPES' order — Sandbox is listed last upstream, not
+    6th (found by running this: naive positional zip() silently paired Sandbox's slot with
+    the Digital Services (Others) blurb and vice versa). Match by normalized heading text
+    instead of position; normalized because upstream's heading text has its own small
+    inconsistencies (e.g. "Low-Risk On Premises" vs. our "Low-Risk On-Premises").
+    """
+    texts = [b["text"] for b in landing_blocks]
+    try:
+        i = texts.index("The various types are listed below:") + 1
+    except ValueError:
+        raise RuntimeError(
+            "PARSE FAILURE: 'The various types are listed below:' landmark not found on the "
+            "SSP landing page. Check whether the page structure changed.")
+    blurbs = {}
+    while i + 1 < len(texts) and len(blurbs) < len(SYSTEM_TYPES):
+        heading, blurb = texts[i], texts[i + 1]
+        blurbs[normalize_heading(heading)] = blurb
+        i += 2
+    if len(blurbs) != len(SYSTEM_TYPES):
+        raise RuntimeError(
+            "PARSE FAILURE: expected %d type blurbs on the SSP landing page, got %d." %
+            (len(SYSTEM_TYPES), len(blurbs)))
+    return blurbs
+
+
+def scrape_system_type(type_id, slug, catalog, landing_blurbs, use_cache=True):
+    """Scrape one system-type page.
+
+    Structural note (found by running this against the live pages): "System
+    Characteristics" appears twice — once as a nav placeholder immediately followed by the
+    domain-count inventory, once again immediately before the Name:/Description:/Security
+    Sensitivity Level: block. This mirrors the "Group:" TOC-then-body double-listing
+    scrape_domain() already works around. Parsing stops at the first "Group: <name>"
+    landmark (rendered as one merged block on these pages, unlike the two-block split on
+    cybersecurity control-catalog pages), which is where the page starts repeating
+    per-control content controls.json already owns.
+    """
     url = "%s/ssp/%s/" % (BASE, slug)
     blocks = blocks_of(url, use_cache)
-    rec = {"id": type_id, "slug": slug, "sourceUrl": url,
-           "retrievedAt": date.today().isoformat(),
-           "blocks": [b["text"] for b in blocks if len(b["text"]) > 25][:80]}
-    for n, b in enumerate(blocks):
-        if b["text"].startswith("Security Sensitivity Level"):
-            rec["sensitivity"] = b["text"]
-        if b["text"] == "System Characteristics" and n + 1 < len(blocks):
-            rec["characteristics"] = blocks[n + 1]["text"]
+    texts = [b["text"] for b in blocks]
+
+    try:
+        home_i = texts.index("Home")
+    except ValueError:
+        raise RuntimeError("PARSE FAILURE: 'Home' nav landmark not found on %s" % url)
+    if home_i + 2 >= len(texts):
+        raise RuntimeError("PARSE FAILURE: no heading block after 'Home' on %s" % url)
+    heading = texts[home_i + 2]
+    landing_blurb = landing_blurbs.get(normalize_heading(heading))
+    if landing_blurb is None:
+        raise RuntimeError(
+            "PARSE FAILURE: no landing-page blurb matched heading %r for %s" % (heading, url))
+
+    stop = next((i for i, t in enumerate(texts) if t.startswith("Group:")), None)
+    if stop is None:
+        raise RuntimeError(
+            "PARSE FAILURE: no 'Group:' landmark found on %s — page structure may have "
+            "changed." % url)
+    try:
+        sc1 = texts.index("System Characteristics")
+    except ValueError:
+        raise RuntimeError("PARSE FAILURE: 'System Characteristics' not found on %s" % url)
+
+    domains = []
+    i = sc1 + 1
+    while i < stop and DOMAIN_COUNT_RE.match(texts[i]):
+        domains.append(texts[i].split(":", 1)[0])
+        i += 1
+
+    # "Name:" here is a filled-in template EXAMPLE for what a real SSP document would call
+    # its system ("Low-Risk Cloud System"), not the type's own display name — that's the H1
+    # heading captured above as `heading` ("Low-Risk Cloud"), which is what shipped `name`
+    # actually matches. Both are kept: `heading` as the authoritative name, `templateName`
+    # as the example, for the record.
+    template_name = description = sensitivity = None
+    for t in texts[i:stop]:
+        m = NAME_RE.match(t)
+        if m:
+            template_name = m.group(1)
+        m = DESC_RE.match(t)
+        if m:
+            description = m.group(1)
+        m = SENSITIVITY_RE.match(t)
+        if m:
+            sensitivity = m.group(1)
+    if not domains or not template_name or not description or not sensitivity:
+        raise RuntimeError(
+            "PARSE FAILURE: incomplete System Characteristics block on %s "
+            "(domains=%d templateName=%r description=%r sensitivity=%r). Refusing to emit a "
+            "partial result." % (url, len(domains), template_name, description, sensitivity))
+
+    last_updated = next(
+        (t[len("Last updated "):] for t in texts[:sc1] if t.startswith("Last updated ")), None)
+
+    return {
+        "id": type_id,
+        "slug": slug,
+        "catalog": catalog,
+        "name": heading,
+        "templateName": template_name,
+        "description": description,
+        "sensitivity": sensitivity,
+        "domainsUsed": domains,
+        "landingBlurb": landing_blurb,
+        "lastUpdated": last_updated,
+        "sourceUrl": url,
+        "retrievedAt": date.today().isoformat(),
+        "blocks": texts[sc1:stop],
+    }
+
+
+def scrape_level_definitions(use_cache=True):
+    """Scrape the Level 0/1/2 definitions and selection-guidance sentence from /ssp/.
+
+    This page has no repeating per-record structure to key on the way controls or system
+    types do — just one "Control Levels" heading followed by a fixed run of Level N /
+    description pairs. Confirmed by running blocks_of() against the live page: the
+    structure is thin but stable, so this keys on that heading plus each "Level N" label
+    rather than hardcoding block indices.
+    """
+    url = BASE + "/ssp/"
+    blocks = blocks_of(url, use_cache)
+    texts = [b["text"] for b in blocks]
+
+    try:
+        ci = texts.index("Control Levels")
+    except ValueError:
+        raise RuntimeError(
+            "PARSE FAILURE: 'Control Levels' heading not found on %s — page structure may "
+            "have changed." % url)
+
+    rec = {"sourceUrl": url, "retrievedAt": date.today().isoformat()}
+    for lvl in ("0", "1", "2"):
+        label = "Level %s" % lvl
+        try:
+            i = texts.index(label, ci)
+        except ValueError:
+            raise RuntimeError(
+                "PARSE FAILURE: %r not found after 'Control Levels' on %s" % (label, url))
+        if i + 1 >= len(texts):
+            raise RuntimeError(
+                "PARSE FAILURE: no description block after %r on %s" % (label, url))
+        rec[lvl] = texts[i + 1]
+
+    guidance = next((t for t in texts if "assess the risks and threats" in t), None)
+    if not guidance:
+        raise RuntimeError(
+            "PARSE FAILURE: selection-guidance sentence not found on %s" % url)
+    rec["selectionGuidance"] = guidance
     return rec
 
 
@@ -325,16 +477,29 @@ def cmd_controls(args):
 
 def cmd_types(args):
     OUT.mkdir(parents=True, exist_ok=True)
-    recs = [scrape_system_type(t, s, not args.no_cache) for t, s in SYSTEM_TYPES]
+    landing = blocks_of(BASE + "/ssp/", not args.no_cache)
+    blurb_map = blurb_landmark_texts(landing)
+    recs = [scrape_system_type(t, s, cat, blurb_map, not args.no_cache)
+            for t, s, cat in SYSTEM_TYPES]
     path = OUT / "system-types.json"
     path.write_text(json.dumps(recs, indent=2, ensure_ascii=False), encoding="utf-8")
     print("%d system types -> %s" % (len(recs), path))
     return recs
 
 
+def cmd_level_definitions(args):
+    OUT.mkdir(parents=True, exist_ok=True)
+    rec = scrape_level_definitions(not args.no_cache)
+    path = OUT / "level-definitions.json"
+    path.write_text(json.dumps(rec, indent=2, ensure_ascii=False), encoding="utf-8")
+    print("level definitions -> %s" % path)
+    return rec
+
+
 def cmd_all(args):
     cmd_controls(args)
     cmd_types(args)
+    cmd_level_definitions(args)
 
 
 def cmd_selftest(args):
@@ -393,6 +558,7 @@ def main():
     sub = p.add_subparsers(dest="cmd")
     sp = sub.add_parser("controls"); sp.add_argument("--domain")
     sub.add_parser("types")
+    sub.add_parser("level-definitions")
     sub.add_parser("all")
     sub.add_parser("selftest")
     args = p.parse_args()
@@ -401,9 +567,12 @@ def main():
         sys.exit(1)
     if not hasattr(args, "domain"):
         args.domain = None
-    rc = {"controls": cmd_controls, "types": cmd_types,
-          "all": cmd_all, "selftest": cmd_selftest}[args.cmd](args)
-    sys.exit(rc or 0)
+    result = {"controls": cmd_controls, "types": cmd_types,
+              "level-definitions": cmd_level_definitions,
+              "all": cmd_all, "selftest": cmd_selftest}[args.cmd](args)
+    # Only selftest's return value IS an exit code; the others return scraped data, which
+    # sys.exit() would otherwise print to stderr as an "error" and exit 1 on success.
+    sys.exit(result if args.cmd == "selftest" else 0)
 
 
 if __name__ == "__main__":

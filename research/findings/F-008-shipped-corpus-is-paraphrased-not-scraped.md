@@ -25,8 +25,21 @@ supersedes_assumption: "docs/assets/data/*.json is a faithful scrape"
 > (an assertion that was false) to *"the data must reproduce upstream and changes only through the
 > ingest pipeline"* (a requirement to maintain).
 >
-> Scope: `controls.json` only. `domains.json`, `system-types.json` and `level-definitions.json`
-> were **not** rebuilt — see Open questions.
+> Scope at first promotion: `controls.json` only. `domains.json`, `system-types.json` and
+> `level-definitions.json` were not yet rebuilt.
+>
+> **Extended 2026-09-01 (session 4).** `system-types.json` and `level-definitions.json` were run
+> through the same pipeline (`corpus-ingest` skill; `diff_system_types.py`,
+> `diff_level_definitions.py`). Result: **one more paraphrase instance found and corrected** —
+> `sandbox`'s `classificationText` read "Security sensitivity level designated as Restricted,
+> Sensitive Normal.", where all 5 other cybersecurity types (and the live page itself, confirmed
+> independently via a Chrome DOM read) use the literal upstream label "Security Sensitivity
+> Level: …". This is the same defect class as the `guidance` paraphrase — an editorial rewording
+> of upstream's own field label — just a single instance rather than systemic across this file:
+> the other 7 types' `classificationText` and all of `level-definitions.json` matched upstream
+> exactly, verbatim (the latter including the Level-1 risk-impacts sentence). `domains.json`
+> remains only spot-checked (see Open questions below) — not run through the full pipeline this
+> round.
 
 ## Observation
 
@@ -142,7 +155,10 @@ project's own rules rest on.
   800-61), just without a hyperlink. They were preserved on promotion, without an invented `url`.
 - **Partially checked:** `domains.json` is largely faithful — 5 of 6 sampled descriptions appear
   verbatim upstream. `AC` ("Controls governing account lifecycle management…") does not, and looks
-  authored. `system-types.json` and `level-definitions.json` are still undiffed, and
-  `level-definitions.json` matters most since F-003 shows it holds the only `selectionGuidance`.
+  authored. Still not run through the full ingest pipeline (no `diff_domains.py` exists yet) —
+  worth doing if `corpus-ingest` is extended further.
+- **Resolved 2026-09-01:** `system-types.json` and `level-definitions.json` were diffed and
+  promoted (see the header note above). `level-definitions.json` — the file F-003 flagged as
+  mattering most, since it holds the only `selectionGuidance` — reproduces upstream exactly.
 - Is an archived upstream snapshot available (Wayback) to separate paraphrase from revision on the
   ~143 non-spelling cases? Worth one attempt, not more — the conclusion no longer depends on it.

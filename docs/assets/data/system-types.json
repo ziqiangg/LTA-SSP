@@ -128,7 +128,7 @@
     "id": "sandbox",
     "name": "Sandbox",
     "catalog": "cybersecurity",
-    "classificationText": "A generic pilot sandbox system. Security sensitivity level designated as Restricted, Sensitive Normal.",
+    "classificationText": "A generic pilot sandbox system. Security Sensitivity Level: Restricted, Sensitive Normal.",
     "domainsUsed": [
       "AS",
       "SC",

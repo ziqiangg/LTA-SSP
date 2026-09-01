@@ -194,3 +194,47 @@ Entries record **what happened**; findings record **what is true**. Use `/resear
 - Open, unchanged from the handover: ingest pipeline (`corpus-ingest` skill, `corpus-verifier`
   agent, `system-types.json`/`level-definitions.json` diffs), ADR-001 and ADR-002, and all site work
   gated on ADR-001.
+
+## 2026-09-01 (session 4, continued) — ingest pipeline finished
+
+- **`corpus-ingest` skill and `corpus-verifier` agent built.** The skill states the fetch → parse →
+  diff → verify → promote procedure once, covering all three targets. The agent can't be exercised
+  this session — custom agents only register at session start — so its first real run is next
+  session's job; verification below was done directly instead.
+- **Extended `scrape.py`, `promote.py`, and added `diff_system_types.py` /
+  `diff_level_definitions.py`.** `scrape_system_type()` was rewritten, not just re-capped: it was
+  truncating mid-domain-list on both DSS pages before hitting a real bug. Two real bugs caught by
+  actually running it, not by writing it:
+  - The landing page lists Sandbox **last**, not 6th where `SYSTEM_TYPES` has it — a first-pass
+    positional zip() of type ↔ blurb silently swapped Sandbox's blurb with Digital Services
+    (Others)'s. Fixed by matching on normalized heading text instead of position.
+  - The System Characteristics `Name:` field ("Low-Risk Cloud **System**") is a filled-in template
+    example, not the type's display name — the real name is the page's own H1 heading, which is
+    what shipped `name` actually matches (7/8 exactly). Would have shown a false 8/8 name mismatch
+    if not caught.
+  - Also fixed a latent bug in `scrape.py`'s `main()`: subcommands other than `selftest` return
+    scraped data, which `sys.exit(data)` was printing to stderr as a fake "error" on every success.
+- **Ran the pipeline for real.** `system-types.json`: one genuine correction —
+  `sandbox`'s `classificationText` was paraphrased ("Security sensitivity level designated as…"
+  vs. upstream's literal "Security Sensitivity Level: …" label, which all 5 other cybersecurity
+  types and the live page itself use). Same defect class as F-008, smaller scope — folded into
+  that finding rather than filed separately. `level-definitions.json`: verified byte-for-byte
+  identical to upstream, including the Level-1 risk-impacts sentence — no promotion needed, but
+  now evidenced rather than assumed. One non-fix, deliberately: `low-risk-on-premises`'s own page
+  heading is missing a hyphen upstream ("Low-Risk On Premises") — a live upstream typo, not
+  promoted, reported in the diff for the record.
+- **Verified independently via Chrome**, since `corpus-verifier` wasn't callable yet: navigated to
+  the live landing page, `/ssp/sandbox/`, and `/ssp/dss-others/` and read the accessibility tree
+  directly (not through the Python parser). Confirmed the sandbox correction is accurate (the live
+  label really is "Security Sensitivity Level:"), the level-definitions content matches exactly,
+  the on-premises hyphen typo is real (not a parsing artifact), and the DSS page's `Name:`/
+  `Description:`/`Security Sensitivity Level:` landmarks match what the parser expects.
+- **Found and synced the drift `docs/CLAUDE.md` warns about, live:** `docs/system-types/sandbox/
+  index.html` hardcoded the now-corrected paraphrased text. One-line presentation fix to match
+  `system-types.json`'s `classificationText` — no other system-type page carried the stale phrasing.
+- Small additions along the way: `corpus.py levels` subcommand (level-definitions was previously
+  only visible inside `gaps`); `research/CLAUDE.md` and the `ssp-corpus` skill now point at
+  `corpus-ingest` for the procedure instead of restating it.
+- Open: `domains.json` still only spot-checked, not run through the full pipeline (no
+  `diff_domains.py` exists). `corpus-verifier` needs a fresh session before its first real use.
+  ADR-001, ADR-002, and site work remain, per the handover.

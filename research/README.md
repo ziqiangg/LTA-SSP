@@ -45,14 +45,21 @@ you should do".
 | [F-005](findings/F-005-profiles-are-nested.md) | Profiles nest, and OSCAL confirms it is deliberate | classifier, site | high | **confirmed** |
 | [F-006](findings/F-006-official-oscal-source-exists-but-partial.md) | An official OSCAL source exists, but is half-coverage and stale | data, site, classifier | high | open |
 | [F-007](findings/F-007-prior-art-synthesis-control-discovery.md) | Prior art solves selection *after* typing — nobody types from a description | site, classifier | high | open |
-| [F-008](findings/F-008-shipped-corpus-is-paraphrased-not-scraped.md) | **The shipped corpus is not a faithful scrape — most guidance was paraphrased** | data, site, classifier | high | open |
+| [F-008](findings/F-008-shipped-corpus-is-paraphrased-not-scraped.md) | **The shipped corpus is not a faithful scrape — most guidance was paraphrased** | data, site, classifier | high | **actioned** |
 | [F-009](findings/F-009-system-type-pages-linked-to-404.md) | All 8 system-type pages linked their main CTA to a 404 | site | high | **actioned** |
 | [F-010](findings/F-010-eval-pilot-no-case-has-one-answer.md) | Blind eval pilot: no realistic description had a single correct answer | classifier, site | medium | open |
 | [F-011](findings/F-011-eval-answer-set-homogeneity.md) | 6 of 15 pilot cases share one identical hosting-unknown answer pair | classifier | medium | open |
 
-**Biggest open item:** F-008 — `docs/assets/data/*.json` claims `status: "scraped"` but most
-`guidance` text was paraphrased. A verified re-scrape is ready in `research/corpus/scraped/`; see
-`research/corpus/scrape-diff-2026-09-01-before-promotion.md` before promoting anything.
+**F-008 was promoted 2026-09-01 (session 3, then extended session 4).** `controls.json`,
+`system-types.json` and `level-definitions.json` all now reproduce upstream exactly (or, for
+`system-types.json`'s `name` field, differ from upstream by one confirmed live typo — see F-008's
+header note). `domains.json` remains only spot-checked, not run through the full pipeline.
+
+**Known drift, since fixed:** `docs/system-types/sandbox/index.html` hardcoded the pre-correction
+paraphrased sensitivity text ("Security sensitivity level designated as…") that
+`system-types.json` no longer carries — exactly the risk `docs/CLAUDE.md`'s "Known drift risk"
+note describes. Synced to match the corrected `classificationText` (one line, presentation only —
+no data change). No other system-type page carried the stale phrasing.
 
 **Decisions waiting on an ADR:** (1) the F-001 guidance-recovery route — re-scrape vs OSCAL import
 vs hybrid; (2) whether this tool serves risk-first (ISO) or baseline-then-tailor (NIST) selection,
@@ -85,7 +92,8 @@ python research/scripts/corpus.py gaps      # corpus defects
 python research/scripts/corpus.py --help
 ```
 
-Skills: `ssp-corpus`, `research-note`, `prior-art-review`, `eval-set`.
-Agents: `corpus-analyst` (data crunching), `literature-scout` (all web reading).
+Skills: `ssp-corpus`, `corpus-ingest`, `research-note`, `prior-art-review`, `eval-set`.
+Agents: `corpus-analyst` (data crunching), `literature-scout` (all web reading), `corpus-verifier`
+(independent Chrome cross-check before promoting a scrape).
 
 `research/` is committed and public, but is **not** served by GitHub Pages — only `docs/` is.

@@ -118,6 +118,20 @@ def cmd_types(c, args):
         print()
 
 
+# -------------------------------------------------------------------------- levels
+def cmd_levels(c, args):
+    levels = c["levels"]
+    for k in ("0", "1", "2"):
+        print("L%s: %s" % (k, levels[k]))
+    print()
+    print("selectionGuidance: %s" % levels["selectionGuidance"])
+    print("sourceUrl: %s" % levels.get("sourceUrl"))
+    note = levels.get("note")
+    if note:
+        print()
+        print("note: %s" % note)
+
+
 # ------------------------------------------------------------------------- domains
 def cmd_domains(c, args):
     print("%-4s %-14s %4s  name" % ("id", "catalog", "n"))
@@ -337,6 +351,7 @@ def main():
 
     sub.add_parser("stats", help="counts, coverage, and integrity checks")
     sub.add_parser("types", help="the 8 system types with classification text")
+    sub.add_parser("levels", help="the L0/L1/L2 definitions and selectionGuidance")
 
     sp = sub.add_parser("domains", help="all 26 domains")
     sp.add_argument("--catalog", choices=["cybersecurity", "dss"])
@@ -368,7 +383,7 @@ def main():
         p.print_help()
         sys.exit(1)
     c = corpus()
-    {"stats": cmd_stats, "types": cmd_types, "domains": cmd_domains,
+    {"stats": cmd_stats, "types": cmd_types, "levels": cmd_levels, "domains": cmd_domains,
      "profile": cmd_profile, "diff": cmd_diff, "domain": cmd_domain,
      "control": cmd_control, "grep": cmd_grep, "gaps": cmd_gaps}[args.cmd](c, args)
 

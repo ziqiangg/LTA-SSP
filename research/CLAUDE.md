@@ -10,17 +10,12 @@ them.
 ## Non-negotiables
 
 - **Never hand-edit `docs/assets/data/*.json`.** Its value is that it matches upstream, and the
-  only sanctioned way it changes is the ingest pipeline:
-
-  ```
-  python research/scripts/scrape.py all          # fetch + parse, fails loudly
-  python research/scripts/diff_corpus.py         # review report — READ IT
-  python research/scripts/promote.py --dry-run   # then --apply
-  ```
-
-  Read the diff before promoting. Never reword the data, and never adjust it so a page or an
-  analysis comes out better. If upstream itself is wrong or ambiguous, that is a finding with
-  `implications: [data]`, not an edit.
+  only sanctioned way it changes is the ingest pipeline — fetch → parse → diff → verify →
+  promote, covering all three targets (`controls`, `system-types`, `level-definitions`). The
+  **`corpus-ingest`** skill states the full procedure once; load it before running any of
+  `scrape.py`/`diff_*.py`/`promote.py`. Read the diff before promoting, always. Never reword the
+  data, and never adjust it so a page or an analysis comes out better. If upstream itself is wrong
+  or ambiguous, that is a finding with `implications: [data]`, not an edit.
 
   > Historical note: this rule used to assert the shipped JSON *was* a faithful scrape. It was
   > not — 156 of 198 `guidance` fields had been paraphrased, with American spellings in a British-
@@ -59,8 +54,13 @@ leak into `docs/`.
 ## Skills and agents for this lane
 
 - `ssp-corpus` — schema, invariants, and `corpus.py`. Load before touching the data.
+- `corpus-ingest` — the fetch → parse → diff → verify → promote procedure. Load before running
+  `scrape.py`/`diff_*.py`/`promote.py`.
 - `research-note` — templates for findings, ADRs, and journal entries.
 - `prior-art-review` — the literature workflow.
 - `eval-set` — building and scoring labelled eval data.
 - `corpus-analyst` agent — delegate bulk data crunching.
 - `literature-scout` agent — delegate all web searching and reading.
+- `corpus-verifier` agent — independent Chrome cross-check of a scrape against the live DOM.
+  Call before any `promote.py --apply`. (New this session — custom agents only register at
+  session start, so it isn't callable until the next launch.)

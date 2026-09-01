@@ -27,6 +27,7 @@ enough to read directly when you genuinely need their prose.
 |---|---|
 | `stats` | Counts, catalog split, field coverage, per-profile level distribution, plus integrity checks |
 | `types` | The 8 system types with `classificationText`, domains, levels |
+| `levels` | The L0/L1/L2 definitions and `selectionGuidance`, printed directly |
 | `domains [--catalog cybersecurity\|dss]` | All 26 domains with control counts |
 | `profile <type> [--level N] [--domain XX]` | Every control applying to a system type, with its level |
 | `diff <type-a> <type-b>` | Added / removed / level-changed controls between two profiles |
@@ -123,13 +124,8 @@ Sometimes: `parameters` (42), `citations` (36).
 it**, and never adjust it so an analysis or a page comes out better — that is how the corpus
 drifted into paraphrase before (F-008).
 
-The only sanctioned way it changes:
-
-```
-python research/scripts/scrape.py all          # fetch + parse, fails loudly
-python research/scripts/diff_corpus.py         # review report — read it
-python research/scripts/promote.py --dry-run   # then --apply
-```
+The only sanctioned way it changes is the ingest pipeline — see the **`corpus-ingest`** skill for
+the full fetch → parse → diff → verify → promote procedure, stated once there (not repeated here).
 
 If upstream itself is wrong, ambiguous, or missing something, that is a finding with
 `implications: [data]` (see `research-note`), not an edit. `corpus.py gaps` generates the
