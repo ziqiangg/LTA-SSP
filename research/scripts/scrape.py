@@ -9,12 +9,13 @@ deliberately does not pre-filter to docs/assets/data/'s schema.
 
 Usage:
   python research/scripts/scrape.py controls [--domain LM] [--no-cache]
+  python research/scripts/scrape.py domains [--domain LM] [--no-cache]
   python research/scripts/scrape.py types
   python research/scripts/scrape.py level-definitions
   python research/scripts/scrape.py all
   python research/scripts/scrape.py selftest
 
-Output:  research/corpus/scraped/{controls,system-types,level-definitions}.json
+Output:  research/corpus/scraped/{controls,domains,system-types,level-definitions}.json
 Cache:   research/corpus/raw/*.html   (gitignored; delete or pass --no-cache to refetch)
 
 Design notes
@@ -293,6 +294,62 @@ def scrape_domain(code, catalog, use_cache=True):
     return controls
 
 
+def scrape_domain_meta(code, catalog, blocks):
+    """Parse a domain's name/description off its own control-catalog landing page.
+
+    Layout (confirmed against cached HTML for both a cybersecurity and a dss page):
+    'Home', 'Control Catalog', <catalog display name>, <domain name (breadcrumb)>,
+    <domain name (H1, duplicate)>, <description>, 'Last updated <date>', 'On this page', ...
+    Same double-listing pattern as 'Group:' on control pages and the heading on system-type
+    pages — the breadcrumb repeats immediately before the H1 renders it again.
+    """
+    texts = [b["text"] for b in blocks]
+    url = "%s/control-catalog/%s/%s/" % (BASE, catalog, code)
+    try:
+        home_i = texts.index("Home")
+    except ValueError:
+        raise RuntimeError("PARSE FAILURE: 'Home' nav landmark not found on %s" % url)
+    if home_i + 6 >= len(texts):
+        raise RuntimeError("PARSE FAILURE: domain page for %s too short after 'Home'" % url)
+    name, name2, description, updated = texts[home_i + 3:home_i + 7]
+    if name != name2:
+        raise RuntimeError(
+            "PARSE FAILURE: breadcrumb/H1 domain name mismatch on %s (%r vs %r)" %
+            (url, name, name2))
+    if not name or not description:
+        raise RuntimeError(
+            "PARSE FAILURE: incomplete domain heading block on %s (name=%r description=%r)" %
+            (url, name, description))
+    last_updated = updated[len("Last updated "):] if updated.startswith("Last updated ") else None
+    return name, description, last_updated
+
+
+def scrape_domains(use_cache=True, domain=None):
+    todo = [(d, "cybersecurity") for d in CYBER] + [(d, "dss") for d in DSS]
+    if domain:
+        want = domain.lower()
+        todo = [t for t in todo if t[0] == want]
+        if not todo:
+            sys.exit("unknown domain %r" % domain)
+    recs = []
+    for code, catalog in todo:
+        url = "%s/control-catalog/%s/%s/" % (BASE, catalog, code)
+        blocks = blocks_of(url, use_cache)
+        name, description, last_updated = scrape_domain_meta(code, catalog, blocks)
+        controls = scrape_domain(code, catalog, use_cache)
+        recs.append({
+            "id": code.upper(),
+            "name": name,
+            "catalog": catalog,
+            "description": description,
+            "sourceUrl": url,
+            "controlCount": len(controls),
+            "lastUpdated": last_updated,
+            "retrievedAt": date.today().isoformat(),
+        })
+    return recs
+
+
 def normalize_heading(s):
     return re.sub(r"[^a-z0-9]", "", (s or "").lower())
 
@@ -475,6 +532,20 @@ def cmd_controls(args):
     return allc
 
 
+def cmd_domains(args):
+    OUT.mkdir(parents=True, exist_ok=True)
+    recs = scrape_domains(not args.no_cache, args.domain)
+    for r in recs:
+        print("%-4s %-14s %3d controls" % (r["id"], r["catalog"], r["controlCount"]))
+    path = OUT / "domains.json"
+    if not args.domain:
+        path.write_text(json.dumps(recs, indent=2, ensure_ascii=False), encoding="utf-8")
+        print("\n%d domains -> %s" % (len(recs), path))
+    else:
+        print(json.dumps(recs, indent=2, ensure_ascii=False)[:2000])
+    return recs
+
+
 def cmd_types(args):
     OUT.mkdir(parents=True, exist_ok=True)
     landing = blocks_of(BASE + "/ssp/", not args.no_cache)
@@ -498,6 +569,7 @@ def cmd_level_definitions(args):
 
 def cmd_all(args):
     cmd_controls(args)
+    cmd_domains(args)
     cmd_types(args)
     cmd_level_definitions(args)
 
@@ -557,6 +629,7 @@ def main():
     p.add_argument("--no-cache", action="store_true", help="refetch instead of using research/corpus/raw/")
     sub = p.add_subparsers(dest="cmd")
     sp = sub.add_parser("controls"); sp.add_argument("--domain")
+    sp = sub.add_parser("domains"); sp.add_argument("--domain")
     sub.add_parser("types")
     sub.add_parser("level-definitions")
     sub.add_parser("all")
@@ -567,7 +640,7 @@ def main():
         sys.exit(1)
     if not hasattr(args, "domain"):
         args.domain = None
-    result = {"controls": cmd_controls, "types": cmd_types,
+    result = {"controls": cmd_controls, "domains": cmd_domains, "types": cmd_types,
               "level-definitions": cmd_level_definitions,
               "all": cmd_all, "selftest": cmd_selftest}[args.cmd](args)
     # Only selftest's return value IS an exit code; the others return scraped data, which

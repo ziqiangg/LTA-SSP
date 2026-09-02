@@ -40,6 +40,29 @@ supersedes_assumption: "docs/assets/data/*.json is a faithful scrape"
 > exactly, verbatim (the latter including the Level-1 risk-impacts sentence). `domains.json`
 > remains only spot-checked (see Open questions below) — not run through the full pipeline this
 > round.
+>
+> **Extended 2026-09-02 (session 8).** `domains.json` was finally run through the full pipeline —
+> a `scrape_domain_meta()` scraper, `diff_domains.py`, and a `build_domains()` promoter were added
+> (`corpus-ingest` skill and its five-step table updated to a fourth column). Result: **6
+> field-level differences, promoted.** The open suspicion about `AC`'s description was confirmed
+> and fixed — shipped read "Controls governing account lifecycle management…" (authored); upstream
+> reads "Controls to protect against unauthorised access to agency systems." (verbatim). A second,
+> previously unsampled description was also found and fixed: `UU` read "…validating designs with
+> them through user research and usability testing." (authored) vs. upstream's "Controls to ensure
+> services are informed by real user needs and behaviors." Separately, `name` differed on all 4
+> WCAG-prefixed domains: shipped used a hyphen ("WCAG - Operable"), upstream consistently uses a
+> colon ("WCAG : Operable") across all 4 pages and the per-control breadcrumb — confirmed live via
+> the `corpus-verifier` agent, plain ASCII, no hidden unicode substitution. Unlike system-types'
+> `name` field, this WAS auto-promoted: the system-types exception exists because ONE upstream page
+> contradicts the other 7 (a genuine typo), whereas here upstream is self-consistent across all 4
+> WCAG domains — it's shipped's hyphen that was the one-off normalization. `controlCount`,
+> `catalog`, and `sourceUrl` all matched exactly on all 26 domains; membership was 26/26 both
+> sides. Verified live (5 sampled pages, including a clean-diff positive control) before promoting.
+> Two static site pages hardcoding the old hyphenated WCAG names
+> (`docs/system-types/digital-services-{high-impact,others}/index.html` — the same "Known drift
+> risk" `docs/CLAUDE.md` already documents for `system-types.json`/`profiles.json`) were updated to
+> match. Full reports: `research/corpus/domains-diff-2026-09-02-before-promotion.md` and
+> `-after.md`.
 
 ## Observation
 
@@ -154,10 +177,9 @@ project's own rules rest on.
   `CK-2`, `CK-3`, `PM-1`) are **not fabricated** — each names its standard in upstream prose
   (NIST SP 800-63B, OWASP, AWS KMS / Azure Key Vault, NIST SP 800-57 / ISO-IEC 27017, NIST SP
   800-61), just without a hyperlink. They were preserved on promotion, without an invented `url`.
-- **Partially checked:** `domains.json` is largely faithful — 5 of 6 sampled descriptions appear
-  verbatim upstream. `AC` ("Controls governing account lifecycle management…") does not, and looks
-  authored. Still not run through the full ingest pipeline (no `diff_domains.py` exists yet) —
-  worth doing if `corpus-ingest` is extended further.
+- **Resolved 2026-09-02:** `domains.json` was diffed and promoted (see the header note above).
+  The `AC` suspicion from the original spot-check was confirmed and fixed, and a second
+  description defect (`UU`) plus 4 WCAG-domain `name` corrections were found along the way.
 - **Resolved 2026-09-01:** `system-types.json` and `level-definitions.json` were diffed and
   promoted (see the header note above). `level-definitions.json` — the file F-003 flagged as
   mattering most, since it holds the only `selectionGuidance` — reproduces upstream exactly.

@@ -51,10 +51,11 @@ you should do".
 | [F-011](findings/F-011-eval-answer-set-homogeneity.md) | 6 of 15 pilot cases share one identical hosting-unknown answer pair | classifier | medium | open |
 | [F-012](findings/F-012-sandbox-is-a-ladder-rung.md) | `sandbox` shares low/medium-risk-cloud's exact control set — it's a fourth ladder rung, not a flag | site, classifier | high | open |
 
-**F-008 was promoted 2026-09-01 (session 3, then extended session 4).** `controls.json`,
-`system-types.json` and `level-definitions.json` all now reproduce upstream exactly (or, for
-`system-types.json`'s `name` field, differ from upstream by one confirmed live typo — see F-008's
-header note). `domains.json` remains only spot-checked, not run through the full pipeline.
+**F-008 was promoted 2026-09-01 (session 3, then extended sessions 4 and 8).** All four shipped
+corpus files — `controls.json`, `system-types.json`, `level-definitions.json`, and now
+`domains.json` — have been run through the full fetch → parse → diff → verify → promote pipeline
+and reproduce upstream exactly (or, for `system-types.json`'s `name` field, differ from upstream
+by one confirmed live typo — see F-008's header note).
 
 **Known drift, since fixed:** `docs/system-types/sandbox/index.html` hardcoded the pre-correction
 paraphrased sensitivity text ("Security sensitivity level designated as…") that

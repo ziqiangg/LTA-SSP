@@ -4,233 +4,259 @@
     "name": "Access Control",
     "catalog": "cybersecurity",
     "description": "Controls to protect against unauthorised access to agency systems.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/ac/",
-    "controlCount": 16
+    "controlCount": 16,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "AS",
     "name": "Application Security",
     "catalog": "cybersecurity",
     "description": "Controls to prevent application vulnerabilities caused by insecure coding.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/as/",
-    "controlCount": 15
+    "controlCount": 15,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "BR",
     "name": "Backup and Recovery",
     "catalog": "cybersecurity",
     "description": "Controls to support backup and disaster recovery.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/br/",
-    "controlCount": 6
+    "controlCount": 6,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "CK",
     "name": "Cryptography, Encryption and Key Management",
     "catalog": "cybersecurity",
     "description": "Controls to secure cryptographic protocols.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/ck/",
-    "controlCount": 4
+    "controlCount": 4,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "CS",
     "name": "Container Security",
     "catalog": "cybersecurity",
     "description": "Controls to secure container building, distribution, and deployment.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/cs/",
-    "controlCount": 11
+    "controlCount": 11,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "DC",
     "name": "Datacentre",
     "catalog": "cybersecurity",
     "description": "Controls to secure datacentre system components.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/dc/",
-    "controlCount": 2
+    "controlCount": 2,
+    "lastUpdated": "5 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "DP",
     "name": "Data Protection",
     "catalog": "cybersecurity",
     "description": "Controls to protect the data of a system.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/dp/",
-    "controlCount": 8
+    "controlCount": 8,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "GA",
     "name": "Generative AI",
     "catalog": "cybersecurity",
     "description": "Controls for the use of generative AI/LLMs within applications.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/ga/",
-    "controlCount": 8
+    "controlCount": 8,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "HR",
     "name": "Human Resource",
     "catalog": "cybersecurity",
     "description": "Controls for human resources.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/hr/",
-    "controlCount": 3
+    "controlCount": 3,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "IS",
     "name": "Infrastructure Security",
     "catalog": "cybersecurity",
     "description": "Controls to secure infrastructure that host applications, services, and data.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/is/",
-    "controlCount": 14
+    "controlCount": 14,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "LM",
     "name": "Logging and Monitoring",
     "catalog": "cybersecurity",
     "description": "Controls to support detection and response to security and operations incidents.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/lm/",
-    "controlCount": 21
+    "controlCount": 21,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "NS",
     "name": "Network Security",
     "catalog": "cybersecurity",
     "description": "Controls to secure the network boundaries of a system.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/ns/",
-    "controlCount": 11
+    "controlCount": 11,
+    "lastUpdated": "5 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "PM",
     "name": "Security Programme Management",
     "catalog": "cybersecurity",
     "description": "Controls to implement cybersecurity governance, risk, and compliance processes and policies.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/pm/",
-    "controlCount": 10
+    "controlCount": 10,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "RS",
     "name": "Resiliency",
     "catalog": "cybersecurity",
     "description": "Controls for resiliency.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/rs/",
-    "controlCount": 3
+    "controlCount": 3,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "SC",
     "name": "Software Supply Chain",
     "catalog": "cybersecurity",
     "description": "Controls to prevent tampering and improve the integrity of the software supply chain.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/sc/",
-    "controlCount": 9
+    "controlCount": 9,
+    "lastUpdated": "4 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "SD",
     "name": "Secure Development",
     "catalog": "cybersecurity",
     "description": "Controls to secure the development pipeline and perform source code quality assurance.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/sd/",
-    "controlCount": 10
+    "controlCount": 10,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "ST",
     "name": "Security Testing",
     "catalog": "cybersecurity",
     "description": "Controls to validate the security of a system via internal and external testing.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/cybersecurity/st/",
-    "controlCount": 5
+    "controlCount": 5,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "BD",
     "name": "Baseline Design Practices",
     "catalog": "dss",
     "description": "Controls based on foundational design principles.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/dss/bd/",
-    "controlCount": 9
+    "controlCount": 9,
+    "lastUpdated": "5 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "PR",
     "name": "Performance and Reliability",
     "catalog": "dss",
     "description": "Controls to ensure consistent system performance and dependability.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/dss/pr/",
-    "controlCount": 7
+    "controlCount": 7,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "TL",
     "name": "Trust and Legitimacy",
     "catalog": "dss",
     "description": "Controls to establish credibility and build user trust in digital services.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/dss/tl/",
-    "controlCount": 6
+    "controlCount": 6,
+    "lastUpdated": "5 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "TX",
     "name": "Transactions and Payments",
     "catalog": "dss",
     "description": "Controls to enhance and simplify the payments and transactions experience.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/dss/tx/",
-    "controlCount": 15
+    "controlCount": 15,
+    "lastUpdated": "5 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "UU",
     "name": "Understand Users",
     "catalog": "dss",
     "description": "Controls to ensure services are informed by real user needs and behaviors.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/dss/uu/",
-    "controlCount": 2
+    "controlCount": 2,
+    "lastUpdated": "24 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "WO",
     "name": "WCAG : Operable",
     "catalog": "dss",
     "description": "Controls to make interface elements easy to operate for all users.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/dss/wo/",
-    "controlCount": 18
+    "controlCount": 18,
+    "lastUpdated": "5 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "WP",
     "name": "WCAG : Perceivable",
     "catalog": "dss",
     "description": "Controls that ensure users can perceive the content in various forms.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/dss/wp/",
-    "controlCount": 19
+    "controlCount": 19,
+    "lastUpdated": "5 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "WR",
     "name": "WCAG : Robust",
     "catalog": "dss",
     "description": "Controls to ensure content remains accessible across various technologies and assistive tools.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/dss/wr/",
-    "controlCount": 2
+    "controlCount": 2,
+    "lastUpdated": "5 March 2026",
+    "retrievedAt": "2026-09-02"
   },
   {
     "id": "WU",
     "name": "WCAG : Understandable",
     "catalog": "dss",
     "description": "Controls to ensure content and user interfaces are clear and comprehensible.",
-    "status": "scraped",
     "sourceUrl": "https://info.standards.tech.gov.sg/control-catalog/dss/wu/",
-    "controlCount": 14
+    "controlCount": 14,
+    "lastUpdated": "5 March 2026",
+    "retrievedAt": "2026-09-02"
   }
 ]

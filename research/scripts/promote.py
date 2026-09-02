@@ -9,6 +9,7 @@ promote procedure, stated once there.
 Usage:
   python research/scripts/promote.py [controls] --dry-run     # report what would change
   python research/scripts/promote.py [controls] --apply       # write the file
+  python research/scripts/promote.py domains --dry-run|--apply
   python research/scripts/promote.py system-types --dry-run|--apply
   python research/scripts/promote.py level-definitions --dry-run|--apply
 
@@ -66,6 +67,26 @@ identical to what was already shipped (this file predates the scrape pipeline an
 apparently transcribed correctly by hand originally) — this is expected to be a no-op, but
 runs through the same mechanism rather than being trusted on the strength of that one
 manual check.
+
+domains — rebuilds `name`, `description`, `controlCount` and `sourceUrl` in `domains.json`
+from `research/corpus/scraped/domains.json`:
+
+  name         <- the domain page's own breadcrumb/H1 heading, verbatim. Unlike
+                  system-types' `name`, this IS auto-promoted here: the 4 WCAG domains'
+                  upstream heading ("WCAG : Operable", colon-separated) is self-consistent
+                  across all 4 pages, not a one-off contradiction against the rest of
+                  upstream the way the system-types on-premises hyphen typo is — so there's
+                  no reason to withhold it. F-008 also flagged `AC`'s shipped description as
+                  authored, not scraped; the same could be true of a hand-typed `name`.
+  description  <- the domain page's own description paragraph, verbatim. This is where
+                  F-008's flagged AC defect (and any others like it) actually gets fixed.
+  controlCount <- len(controls scraped for that domain), cross-checked against
+                  `scrape.py controls`'s own per-domain counts.
+  sourceUrl    <- new: per-domain provenance, matches existing shipped value
+
+  `status` and `id`/`catalog` are preserved from shipped untouched — `catalog` is an input
+  to the scrape (from `scrape.py`'s CYBER/DSS code lists), not something scraped off the
+  page, so it can't legitimately "correct" itself.
 """
 
 import argparse
@@ -77,11 +98,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 SCRAPED = {
     "controls": ROOT / "research" / "corpus" / "scraped" / "controls.json",
+    "domains": ROOT / "research" / "corpus" / "scraped" / "domains.json",
     "system-types": ROOT / "research" / "corpus" / "scraped" / "system-types.json",
     "level-definitions": ROOT / "research" / "corpus" / "scraped" / "level-definitions.json",
 }
 SHIPPED = {
     "controls": ROOT / "docs" / "assets" / "data" / "controls.json",
+    "domains": ROOT / "docs" / "assets" / "data" / "domains.json",
     "system-types": ROOT / "docs" / "assets" / "data" / "system-types.json",
     "level-definitions": ROOT / "docs" / "assets" / "data" / "level-definitions.json",
 }
@@ -262,8 +285,47 @@ def build_level_definitions():
     return [rec], changes  # wrapped in a list only so main()'s reporting stays uniform
 
 
+def build_domains():
+    up = {d["id"]: d for d in json.loads(SCRAPED["domains"].read_text(encoding="utf-8"))}
+    lo_list = json.loads(SHIPPED["domains"].read_text(encoding="utf-8"))
+    lo = {d["id"]: d for d in lo_list}
+    if set(up) != set(lo):
+        raise SystemExit("REFUSING: scraped and shipped domain ids differ. Investigate "
+                         "before promoting.")
+
+    out, changes = [], Counter()
+    for s in lo_list:  # shipped file's own order, not id-sorted or scrape order
+        did = s["id"]
+        u = up[did]
+        rec = dict(s)  # preserves id/catalog/status untouched
+
+        new_name = norm(u["name"])
+        if new_name != norm(s.get("name")):
+            changes["name corrected"] += 1
+            rec["name"] = new_name
+
+        new_desc = norm(u["description"])
+        if new_desc != norm(s.get("description")):
+            changes["description corrected"] += 1
+            rec["description"] = new_desc
+
+        if u["controlCount"] != s.get("controlCount"):
+            changes["controlCount corrected"] += 1
+            rec["controlCount"] = u["controlCount"]
+
+        if u["sourceUrl"] != s.get("sourceUrl"):
+            changes["sourceUrl corrected"] += 1
+            rec["sourceUrl"] = u["sourceUrl"]
+
+        out.append(rec)
+
+    assert len(out) == 26, "expected 26 domains, got %d" % len(out)
+    return out, changes
+
+
 BUILDERS = {
     "controls": build_controls,
+    "domains": build_domains,
     "system-types": build_system_types,
     "level-definitions": build_level_definitions,
 }

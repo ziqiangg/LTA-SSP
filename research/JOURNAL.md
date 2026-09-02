@@ -487,3 +487,25 @@ Entries record **what happened**; findings record **what is true**. Use `/resear
   majority-class floor against the existing 15 cases, not a 120-160 set. `evals/README.md`'s
   stale "v1 — not yet built" section corrected (15 cases already exist, from session 2) and updated
   to record the deferral. `instructions.md`'s "what's next" list updated to drop this item.
+
+## 2026-09-02 (session 8) — domains.json ingest pipeline extended
+
+- Extended `corpus-ingest` to a fourth target per `instructions.md`'s top "what's next" item:
+  added `scrape_domain_meta()`/`scrape_domains()`/`cmd_domains` to `scrape.py`, wrote
+  `research/scripts/diff_domains.py`, and added `build_domains()` to `promote.py`. Domain
+  name/description are scraped off the same control-catalog landing page `scrape_domain()`
+  already fetches for `controls.json` (a `"Home"`-anchored landmark block, same pattern as
+  `scrape_system_type()`), so no new page fetch was needed.
+- Ran the full pipeline: `diff_domains.py` found 6 differences (2 descriptions, 4 names),
+  `corpus-verifier` confirmed all 6 live plus a clean-diff positive control, then
+  `promote.py domains --apply`. Filed as an extension to **F-008** rather than a new finding —
+  same defect class (authored text under a `status: "scraped"` label). Reports:
+  `research/corpus/domains-diff-2026-09-02-{before-promotion,after}.md`.
+- Fixed two static pages that had drifted out from under the promoted data:
+  `docs/system-types/digital-services-{high-impact,others}/index.html` hardcoded the old
+  hyphenated WCAG domain names in their domain-chip markup (the same class of drift risk
+  `docs/CLAUDE.md` already documents for `system-types.json`/`profiles.json`).
+- `.claude/skills/corpus-ingest/SKILL.md` and `research/README.md` updated: all four corpus
+  targets now state-of-the-art, none left un-piped.
+- Open: none for this item — it's closed. Next session should pick up `instructions.md`'s
+  remaining item, RQ-6 (score the wizard-tree baseline against the 15-case eval set).

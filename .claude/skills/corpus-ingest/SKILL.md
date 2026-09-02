@@ -14,20 +14,20 @@ had been silently paraphrased before the 2026-09-01 rebuild). This skill is the 
 
 ## The five steps, per target
 
-Three targets share one pipeline shape. Run them independently — a scrape of one does not
+Four targets share one pipeline shape. Run them independently — a scrape of one does not
 require re-promoting the others.
 
-| Step | controls | system-types | level-definitions |
-|---|---|---|---|
-| **Fetch + parse** | `python research/scripts/scrape.py controls` | `python research/scripts/scrape.py types` | `python research/scripts/scrape.py level-definitions` |
-| **Diff** | `python research/scripts/diff_corpus.py` | `python research/scripts/diff_system_types.py` | `python research/scripts/diff_level_definitions.py` |
-| **Read the report** | `research/corpus/scrape-diff-<date>.md` | `research/corpus/system-types-diff-<date>.md` | `research/corpus/level-definitions-diff-<date>.md` |
-| **Verify** | delegate to **`corpus-verifier`** | delegate to **`corpus-verifier`** | delegate to **`corpus-verifier`** |
-| **Promote** | `python research/scripts/promote.py --dry-run` then `--apply` | `python research/scripts/promote.py system-types --dry-run` then `--apply` | `python research/scripts/promote.py level-definitions --dry-run` then `--apply` |
+| Step | controls | domains | system-types | level-definitions |
+|---|---|---|---|---|
+| **Fetch + parse** | `python research/scripts/scrape.py controls` | `python research/scripts/scrape.py domains` | `python research/scripts/scrape.py types` | `python research/scripts/scrape.py level-definitions` |
+| **Diff** | `python research/scripts/diff_corpus.py` | `python research/scripts/diff_domains.py` | `python research/scripts/diff_system_types.py` | `python research/scripts/diff_level_definitions.py` |
+| **Read the report** | `research/corpus/scrape-diff-<date>.md` | `research/corpus/domains-diff-<date>.md` | `research/corpus/system-types-diff-<date>.md` | `research/corpus/level-definitions-diff-<date>.md` |
+| **Verify** | delegate to **`corpus-verifier`** | delegate to **`corpus-verifier`** | delegate to **`corpus-verifier`** | delegate to **`corpus-verifier`** |
+| **Promote** | `python research/scripts/promote.py --dry-run` then `--apply` | `python research/scripts/promote.py domains --dry-run` then `--apply` | `python research/scripts/promote.py system-types --dry-run` then `--apply` | `python research/scripts/promote.py level-definitions --dry-run` then `--apply` |
 
-`python research/scripts/scrape.py all` runs all three fetch+parse steps in one call. There is no
+`python research/scripts/scrape.py all` runs all four fetch+parse steps in one call. There is no
 combined diff/promote command — read each report on its own; they cover different fields and a
-clean controls diff says nothing about system-types.
+clean controls diff says nothing about domains or system-types.
 
 Always `--dry-run` before `--apply`. Never skip reading the diff report first, and never promote
 on the strength of "it looked fine last time" — the parser keys on text landmarks against a
@@ -62,6 +62,12 @@ currently carries is the point, so omissions surface in the diff rather than sta
   `retrievedAt`, a small `blocks[]` sample (the pre-per-control-detail summary section only, for
   quick human/agent spot checks — not the full page).
 - **`level-definitions.json`** — `sourceUrl`, `retrievedAt`, `"0"`/`"1"`/`"2"`, `selectionGuidance`.
+- **`domains.json`** — per domain: `id`, `name`, `catalog`, `description`, `sourceUrl`,
+  `controlCount` (derived from `scrape.py domains`'s own per-domain control count, not a
+  textual field upstream), `lastUpdated`, `retrievedAt`. Scraped off the same control-catalog
+  landing page `scrape_domain()` already fetches for `controls.json` — the domain name and
+  description sit in the leading blocks before the first control, via the same `"Home"` +
+  fixed-offset landmark pattern `scrape_system_type()` uses.
 
 ## Invariants — get these wrong and a promotion is wrong
 
