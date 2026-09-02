@@ -66,9 +66,15 @@ no data change). No other system-type page carried the stale phrasing.
 - [ADR-001](decisions/ADR-001-baseline-then-tailor-with-visible-tailoring.md) — baseline-then-tailor,
   with the tailoring step made real, visible, and recorded (**accepted**, 2026-09-01, after revision
   during owner review to add a formal baseline-resolution table, a status/reason taxonomy, and a
-  scoped-down minimal tailoring record — see F-012).
+  scoped-down minimal tailoring record — see F-012). **Steps 1 and 2 implemented 2026-09-02**: the
+  wizard is now tick-all-that-apply (`docs/assets/js/wizard.js`), and the controls browser renders
+  every catalog control with a mechanical `in-profile`/`not-in-profile` status
+  (`docs/assets/js/controls.js`). **Step 3 (the minimal tailoring record) is not built** — no
+  per-control override UI or persistence exists yet.
 - [ADR-002](decisions/ADR-002-split-guidance-into-recommendations-and-risk.md) — split the composed
-  `guidance` field into `recommendations` and `risk`/`rationale` (**accepted**, 2026-09-01).
+  `guidance` field into `recommendations` and `risk`/`rationale` (**accepted**, 2026-09-01,
+  **implemented 2026-09-02** — `controls.json` reshipped via `promote.py`, `diff_corpus.py` and
+  `corpus.py` updated, `controls.js` renders the two fields as separate paragraphs).
 
 Still waiting on an ADR: the F-001 guidance-recovery route — re-scrape vs OSCAL import vs hybrid
 (implicitly resolved via re-scrape at the F-008 rebuild, but never formally recorded as a decision).

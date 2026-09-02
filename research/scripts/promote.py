@@ -14,13 +14,17 @@ Usage:
 
 What each target does
 ----------------------
-controls — rebuilds `controls.json` from `research/corpus/scraped/controls.json`, keeping
-the shipped schema so `docs/assets/js/controls.js` needs no change:
+controls — rebuilds `controls.json` from `research/corpus/scraped/controls.json`. Per
+ADR-002, `guidance` no longer exists as a shipped field — the upstream sections it used to
+concatenate are shipped separately:
 
-  description  <- upstream `statement`, verbatim
-  guidance     <- cybersecurity: `recommendations + " Risk: " + risk`
-                  dss:           `rationale`
-                  (this is how the upstream website itself composes the field)
+  description     <- upstream `statement`, verbatim
+  recommendations <- upstream `recommendations`, verbatim
+  risk             <- cybersecurity only: upstream `risk`, verbatim
+  rationale        <- dss only:           upstream `rationale`, verbatim
+                       (a control carries exactly one of `risk`/`rationale`, matching
+                       its `catalog`; this is how upstream itself sections the page —
+                       Risk Statement for cybersecurity, Rationale for dss)
   title        <- upstream, verbatim (restores sentence case on 4 DSS controls)
   citations    <- upstream hyperlinks where present, carrying the real href;
                   otherwise the existing prose-derived entry is preserved.
@@ -29,8 +33,7 @@ the shipped schema so `docs/assets/js/controls.js` needs no change:
   sourceUrl    <- new: per-control provenance
   retrievedAt  <- new: provenance timestamp
 
-  Deliberately NOT done here (each wants its own decision):
-    - splitting `guidance` into separate statement/recommendations/risk fields
+  Deliberately NOT done here:
     - rewriting parameter placeholders; upstream renders `[ insert: param, x ]` and
       faithfulness beats prettiness at the data layer. Presentation belongs in controls.js.
 
@@ -83,8 +86,9 @@ SHIPPED = {
     "level-definitions": ROOT / "docs" / "assets" / "data" / "level-definitions.json",
 }
 
-FIELD_ORDER = ["id", "domainId", "catalog", "title", "description", "guidance",
-               "parameters", "citations", "sourceUrl", "retrievedAt", "status"]
+FIELD_ORDER = ["id", "domainId", "catalog", "title", "description", "recommendations",
+               "risk", "rationale", "parameters", "citations", "sourceUrl", "retrievedAt",
+               "status"]
 
 
 def norm(s):
@@ -94,26 +98,6 @@ def norm(s):
 def sort_key(cid):
     m = re.match(r"^([A-Za-z]+)-(\d+)$", cid)
     return (m.group(1), int(m.group(2))) if m else (cid, 0)
-
-
-def compose_guidance(u):
-    """Compose the guidance block from the upstream sections.
-
-    Every control has Control Recommendations, plus a third section that differs by
-    catalog: Risk Statement (cybersecurity) or Rationale (dss).
-
-    Both are kept. The previous shipped corpus stored only the Rationale for DSS and
-    silently dropped the recommendations — losing real content on all 92 DSS controls,
-    including BD-2's "Not required for…" exemptions. Do not reintroduce that.
-    """
-    rec = norm(u.get("recommendations", ""))
-    if u.get("catalog") == "dss":
-        tail, label = norm(u.get("rationale", "")), "Rationale: "
-    else:
-        tail, label = norm(u.get("risk", "")), "Risk: "
-    if rec and tail:
-        return "%s %s%s" % (rec, label, tail)
-    return rec or tail
 
 
 def build_citations(u, shipped):
@@ -162,11 +146,15 @@ def build_controls():
             "catalog": u["catalog"],
             "title": norm(u["title"]),
             "description": norm(u["statement"]),
-            "guidance": compose_guidance(u),
+            "recommendations": norm(u.get("recommendations", "")),
             "sourceUrl": u["sourceUrl"],
             "retrievedAt": u["retrievedAt"],
             "status": "scraped",
         }
+        if u["catalog"] == "dss":
+            rec["rationale"] = norm(u.get("rationale", ""))
+        else:
+            rec["risk"] = norm(u.get("risk", ""))
         if u.get("parameters"):
             rec["parameters"] = u["parameters"]
         cits = build_citations(u, s)
@@ -177,10 +165,15 @@ def build_controls():
             changes["title corrected"] += 1
         if rec["description"] != norm(s.get("description")):
             changes["description corrected"] += 1
-        if not s.get("guidance"):
-            changes["guidance recovered (was empty)"] += 1
-        elif rec["guidance"] != norm(s["guidance"]):
-            changes["guidance corrected"] += 1
+        if not s.get("recommendations"):
+            changes["recommendations recovered (was empty)"] += 1
+        elif rec["recommendations"] != norm(s["recommendations"]):
+            changes["recommendations corrected"] += 1
+        tail_field = "rationale" if u["catalog"] == "dss" else "risk"
+        if not s.get(tail_field):
+            changes["%s recovered (was empty)" % tail_field] += 1
+        elif rec[tail_field] != norm(s.get(tail_field)):
+            changes["%s corrected" % tail_field] += 1
         if cits and not s.get("citations"):
             changes["citations added"] += 1
         elif cits and s.get("citations") and cits != s["citations"]:
@@ -190,8 +183,10 @@ def build_controls():
 
     # invariants
     assert len(out) == 248, "expected 248 controls, got %d" % len(out)
-    missing = [c["id"] for c in out if not c.get("guidance")]
-    assert not missing, "controls still without guidance: %s" % missing[:5]
+    missing = [c["id"] for c in out if not c.get("recommendations")]
+    assert not missing, "controls still without recommendations: %s" % missing[:5]
+    no_tail = [c["id"] for c in out if not (c.get("risk") or c.get("rationale"))]
+    assert not no_tail, "controls still without risk/rationale: %s" % no_tail[:5]
     return out, changes
 
 

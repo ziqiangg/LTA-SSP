@@ -323,3 +323,58 @@ Entries record **what happened**; findings record **what is true**. Use `/resear
 - `instructions.md` (the session-5 scratch handover) is now fully spent: its blocking condition
   (§3) is resolved and its ingest-pipeline/eval items (§1, §2) were already done. Not deleted yet —
   left for the user to remove.
+
+## 2026-09-02 (session 6, continued) — README §4 site work: wizard, status+reason, ADR-002 migration
+
+- **ADR-002 schema migration applied.** `promote.py`'s `compose_guidance()` removed; `controls.json`
+  now ships `recommendations` plus exactly one of `risk`/`rationale` per control instead of a
+  composed `guidance` string. Ran `promote.py --dry-run` then `--apply` against the existing
+  2026-09-01 scraped cache (no re-scrape needed — this was a shape decision, not new content).
+  `diff_corpus.py` updated to compare the split fields directly (no more `compose_guidance` import
+  coupling for controls); confirmed zero differences post-migration. `corpus.py`'s 9 `guidance`-
+  keyed spots (stats, grep --field, control detail, domain flag, gaps) now use a shared
+  `has_guidance()`/`tail_field()` helper. `ssp-corpus` and `corpus-ingest` skill docs updated to
+  match the new schema.
+- **`controls.js` rendering split**: `renderControlCard()` now renders `recommendations` and the
+  risk/rationale half as two paragraphs, the second with a bold inline "Risk: "/"Rationale: " label
+  — handover item 5, sequenced after ADR-002 as planned.
+- **Status+reason rendering (ADR-001 step 2) built.** `workingControls()` no longer `.filter()`s
+  out-of-profile controls — it returns every control in the active catalog(s), tagged
+  `status: "in-profile"` or `"not-in-profile"`. Not-in-profile controls get a dashed "Not in
+  profile" chip, sort after in-profile ones, and show an italic reason line first when expanded.
+  Scoped to the mechanical half only — the `scoped-out:*` human-override taxonomy from the ADR
+  belongs to the tailoring record (step 3), not built this session, so nothing here fabricates a
+  per-control reason beyond "not part of the computed baseline."
+- **Tick-all-that-apply wizard (ADR-001 step 1) built**, replacing the old 7-question linear tree.
+  `wizard.js` is now a single-page form (hosting radio, conditional sensitivity-rung checkboxes,
+  GenAI checkbox, digital-service radio) that resolves ticks to a list of system-type ids and hands
+  them to `controls.js` as a comma-joined `type` param — composition (union + high-water-mark level
+  merge) happens entirely in `controls.js`'s existing `workingControls()`, reused rather than
+  duplicated. The two ADR-flagged conflict cases are surfaced as blocking messages, not silently
+  resolved: on-premises + any cloud rung, and sandbox + high/CII (F-012's "no CII sandbox" gap). A
+  GenAI+high combination shows an advisory note (classification-ceiling mismatch) but still
+  composes. Standalone GenAI/digital-service selection (no hosting tick) is allowed, matching F-002's
+  "permitted but not required."
+- `controls.js`'s `type` URL param now accepts a comma-joined list of system-type ids for a
+  composite baseline (e.g. `?type=high-risk-cloud,generative-ai`) — verified working across a
+  same-catalog composite (high-risk-cloud + generative-ai, 141 in-profile / 15 not-in-profile) and a
+  cross-catalog composite (low-risk-cloud + digital-services-others, 200 in-profile / 48
+  not-in-profile, spanning both catalogs' 248 controls). The `type-select` dropdown itself stays
+  single-select — composite selection is wizard-only for now, a deliberate scope cut.
+- Manually exercised both pages in Chrome (all three README §4 items) before handing off to
+  `site-critic` for the formal desktop/mobile design+accessibility pass; not yet reported back as
+  of this entry.
+- Not done this session (deliberately out of scope per the user's ask): the minimal tailoring
+  record (ADR-001 step 3), and per-control `scoped-out:*` authoring.
+- **`site-critic` review landed, 2 fixes applied.** Both pages passed the full docs/CLAUDE.md
+  checklist (both widths, focus visibility, reduced motion, 1.4.1, semantics, clean console) with
+  one blocking and one non-blocking finding: (1) blocking — the `type-select` dropdown showed its
+  blank placeholder for a composite URL (`?type=a,b`) even though the page had correctly filtered,
+  giving a sighted or screen-reader user no indication a filter was active; fixed by synthesizing a
+  "Combined: X + Y" `<option>` matching the composite value so the select always reflects true
+  state. (2) non-blocking — the whole-card `opacity: 0.7` dimming on not-in-profile cards quietly
+  pushed the "Not in profile" chip's own text under AA contrast (~3.0:1, opacity compounds with an
+  ancestor and can't be undone by a child's own opacity), even though the reason line stayed legible
+  throughout; fixed by dropping the opacity rule entirely — chip text, sort-after placement, and the
+  reason line already carry the status without needing a dimming effect that cost contrast on the
+  one element carrying it. Both fixes verified live in Chrome after the pass.

@@ -64,36 +64,75 @@
     return state.type.indexOf("catalog:") === 0;
   }
 
-  function activeCatalog() {
-    if (isCatalogMode()) return state.type.slice("catalog:".length);
-    var t = systemTypesById[state.type];
-    return t ? t.catalog : null;
+  // A type can be a composite baseline — a comma-joined list of system-type ids the
+  // wizard assembled from tick-all-that-apply selections (ADR-001 step 1), e.g.
+  // "high-risk-cloud,generative-ai". Every function below that used to assume a single
+  // type id now operates over this list and unions/merges across it.
+  function typeIds() {
+    if (isCatalogMode() || !state.type) return [];
+    return state.type.split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+  }
+
+  function isComposite() {
+    return typeIds().length > 1;
+  }
+
+  function activeTypeNames() {
+    return typeIds()
+      .map(function (id) { var t = systemTypesById[id]; return t ? t.name : id; })
+      .join(" + ");
+  }
+
+  function activeCatalogs() {
+    if (isCatalogMode()) return [state.type.slice("catalog:".length)];
+    var cats = {};
+    typeIds().forEach(function (id) {
+      var t = systemTypesById[id];
+      if (t) cats[t.catalog] = true;
+    });
+    return Object.keys(cats);
   }
 
   function levelsAvailable() {
     if (isCatalogMode() || !state.type) return [];
-    var t = systemTypesById[state.type];
-    return t ? t.levelsAvailable : [];
+    var avail = {};
+    typeIds().forEach(function (id) {
+      var t = systemTypesById[id];
+      if (t) t.levelsAvailable.forEach(function (l) { avail[l] = true; });
+    });
+    return Object.keys(avail).map(Number);
   }
 
   function domainsUsed() {
-    var catalog = activeCatalog();
-    if (!catalog) return [];
+    var cats = activeCatalogs();
+    if (!cats.length) return [];
     if (isCatalogMode()) {
-      return domains.filter(function (d) { return d.catalog === catalog; }).map(function (d) { return d.id; });
+      return domains.filter(function (d) { return cats.indexOf(d.catalog) !== -1; }).map(function (d) { return d.id; });
     }
-    var t = systemTypesById[state.type];
-    return t ? t.domainsUsed : [];
+    var used = {};
+    typeIds().forEach(function (id) {
+      var t = systemTypesById[id];
+      if (t) t.domainsUsed.forEach(function (d) { used[d] = true; });
+    });
+    return Object.keys(used);
   }
 
-  function defaultLevelsFor(typeId) {
-    var t = systemTypesById[typeId];
-    if (!t) return new Set();
-    var defaults = t.levelsAvailable.filter(function (l) { return l === 0 || l === 1; });
-    if (!defaults.length) defaults = t.levelsAvailable.slice();
+  function defaultLevelsForIds(ids) {
+    var avail = {};
+    ids.forEach(function (id) {
+      var t = systemTypesById[id];
+      if (t) t.levelsAvailable.forEach(function (l) { avail[l] = true; });
+    });
+    var defaults = Object.keys(avail).map(Number).filter(function (l) { return l === 0 || l === 1; });
+    if (!defaults.length) defaults = Object.keys(avail).map(Number);
     return new Set(defaults);
   }
 
+  // ADR-001 step 2: every catalog control is rendered, tagged with a status, never
+  // silently dropped. `status` is mechanical only here — "in-profile" (the composed
+  // baseline includes it) or "not-in-profile" (it doesn't). The `scoped-out:*` human-
+  // override taxonomy from the ADR belongs to the tailoring record (step 3), not yet
+  // built; nothing here fabricates a per-control reason beyond the mechanical one.
   function workingControls() {
     if (!state.type) return [];
     if (isCatalogMode()) {
@@ -102,19 +141,37 @@
         .filter(function (c) { return c.catalog === catalog; })
         .map(function (c) { return Object.assign({}, c, { level: null }); });
     }
-    var profile = profiles[state.type];
-    if (!profile) return [];
+    var ids = typeIds();
     var levelById = {};
-    profile.forEach(function (e) { levelById[e.controlId] = e.level; });
+    ids.forEach(function (tid) {
+      var profile = profiles[tid];
+      if (!profile) return;
+      profile.forEach(function (e) {
+        // High-water-mark composition (ADR-001): where the same control appears in more
+        // than one selected profile, the numerically lower (more mandatory) level wins.
+        if (!Object.prototype.hasOwnProperty.call(levelById, e.controlId) || e.level < levelById[e.controlId]) {
+          levelById[e.controlId] = e.level;
+        }
+      });
+    });
+    var cats = activeCatalogs();
     return controls
-      .filter(function (c) { return Object.prototype.hasOwnProperty.call(levelById, c.id); })
-      .map(function (c) { return Object.assign({}, c, { level: levelById[c.id] }); });
+      .filter(function (c) { return cats.indexOf(c.catalog) !== -1; })
+      .map(function (c) {
+        var inProfile = Object.prototype.hasOwnProperty.call(levelById, c.id);
+        return Object.assign({}, c, {
+          level: inProfile ? levelById[c.id] : null,
+          status: inProfile ? "in-profile" : "not-in-profile"
+        });
+      });
   }
 
   function applyFilters() {
     var list = workingControls();
     if (!isCatalogMode() && state.levels.size) {
-      list = list.filter(function (c) { return state.levels.has(c.level); });
+      // The level filter only narrows the in-profile half — "not-in-profile" controls
+      // have no level to filter by, and hiding them here would silently drop them again.
+      list = list.filter(function (c) { return c.status !== "in-profile" || state.levels.has(c.level); });
     }
     if (state.domains.size) {
       list = list.filter(function (c) { return state.domains.has(c.domainId); });
@@ -129,7 +186,10 @@
         );
       });
     }
-    list.sort(function (a, b) { return a.id.localeCompare(b.id, undefined, { numeric: true }); });
+    list.sort(function (a, b) {
+      if (a.status !== b.status) return a.status === "in-profile" ? -1 : 1;
+      return a.id.localeCompare(b.id, undefined, { numeric: true });
+    });
     return list;
   }
 
@@ -159,6 +219,17 @@
       catalogGroup.appendChild(opt);
     });
     typeSelect.appendChild(catalogGroup);
+
+    // A composite selection (from the wizard) has no matching option above — without
+    // this, the select falls back to its blank placeholder even though a real filter is
+    // active, which tells a sighted or screen-reader user nothing is selected. Synthesize
+    // one so the control always reflects true state.
+    if (isComposite()) {
+      var comboOpt = document.createElement("option");
+      comboOpt.value = state.type;
+      comboOpt.textContent = "Combined: " + activeTypeNames();
+      typeSelect.insertBefore(comboOpt, typeSelect.firstChild.nextSibling);
+    }
 
     typeSelect.value = state.type;
   }
@@ -225,9 +296,9 @@
   function renderDomainFilter() {
     domainFilter.innerHTML = "";
     if (!state.type) return;
-    var catalog = activeCatalog();
+    var cats = activeCatalogs();
     var used = new Set(domainsUsed());
-    var catalogDomains = domains.filter(function (d) { return d.catalog === catalog; });
+    var catalogDomains = domains.filter(function (d) { return cats.indexOf(d.catalog) !== -1; });
     catalogDomains.forEach(function (d) {
       var id = "domain-check-" + d.id;
       var label = document.createElement("label");
@@ -279,6 +350,11 @@
     return '<span class="level-chip" data-level="' + level + '">L' + level + "</span>";
   }
 
+  function statusChipHtml(c) {
+    if (c.status !== "not-in-profile") return "";
+    return '<span class="level-chip status-chip" data-status="not-in-profile">Not in profile</span>';
+  }
+
   function domainTagHtml(domainId, catalog) {
     var d = domainsById[domainId];
     var name = d ? d.name : domainId;
@@ -307,21 +383,42 @@
       '<span class="control-id">' + c.id + "</span>" +
       '<span class="control-title">' + escapeHtml(c.title) + "</span>" +
       levelChipHtml(c.level) +
+      statusChipHtml(c) +
       domainTagHtml(c.domainId, c.catalog);
     details.appendChild(summary);
 
     var body = document.createElement("div");
     body.className = "control-body";
 
+    if (c.status === "not-in-profile") {
+      var reason = document.createElement("p");
+      reason.className = "control-status-reason";
+      reason.textContent =
+        "Not in profile — not part of the computed baseline for " +
+        (activeTypeNames() || "the selected system type") + ".";
+      body.appendChild(reason);
+    }
+
     var desc = document.createElement("p");
     desc.textContent = c.description || "";
     body.appendChild(desc);
 
-    if (c.guidance) {
-      var guidance = document.createElement("p");
-      guidance.className = "control-guidance";
-      guidance.textContent = c.guidance;
-      body.appendChild(guidance);
+    if (c.recommendations) {
+      var rec = document.createElement("p");
+      rec.className = "control-guidance";
+      rec.textContent = c.recommendations;
+      body.appendChild(rec);
+    }
+
+    var tailText = c.risk || c.rationale;
+    if (tailText) {
+      var risk = document.createElement("p");
+      risk.className = "control-risk";
+      var label = document.createElement("strong");
+      label.textContent = c.risk ? "Risk: " : "Rationale: ";
+      risk.appendChild(label);
+      risk.appendChild(document.createTextNode(tailText));
+      body.appendChild(risk);
     }
 
     if (c.parameters && c.parameters.length) {
@@ -374,7 +471,11 @@
       return;
     }
     var filtered = applyFilters();
-    resultCount.textContent = filtered.length + " control" + (filtered.length === 1 ? "" : "s");
+    var countText = filtered.length + " control" + (filtered.length === 1 ? "" : "s");
+    if (!isCatalogMode() && isComposite()) {
+      countText += " — combined baseline: " + activeTypeNames();
+    }
+    resultCount.textContent = countText;
     var frag = document.createDocumentFragment();
     filtered.forEach(function (c) { frag.appendChild(renderControlCard(c)); });
     controlList.appendChild(frag);
@@ -383,7 +484,7 @@
   function onTypeChange() {
     state.type = typeSelect.value;
     state.domains = new Set();
-    state.levels = isCatalogMode() || !state.type ? new Set() : defaultLevelsFor(state.type);
+    state.levels = isCatalogMode() || !state.type ? new Set() : defaultLevelsForIds(typeIds());
     renderLevelFilter();
     renderDomainFilter();
     renderResults();
@@ -417,7 +518,7 @@
 
         parseInitialState();
         if (!state.levels.size && state.type && !isCatalogMode() && !new URLSearchParams(location.search).get("level")) {
-          state.levels = defaultLevelsFor(state.type);
+          state.levels = defaultLevelsForIds(typeIds());
         }
 
         renderTypeOptions();

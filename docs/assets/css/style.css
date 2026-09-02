@@ -273,6 +273,15 @@ body > header {
   opacity: 0.35;
 }
 
+/* Status chip (ADR-001 step 2): "not in profile" is informational, not disabled — full
+   opacity, own dashed-outline treatment, distinct from the disabled/is-unavailable look
+   used on filter checkboxes for options that can't be picked at all. */
+.level-chip.status-chip {
+  background: none;
+  color: var(--pico-muted-color);
+  border: 1.5px dashed var(--pico-muted-border-color);
+}
+
 /* --- Domain tags: read-only badge (control cards, profile-page domain
    rows). Colored via a per-domain custom property set inline by whatever
    renders it (--tag-color), never the sole signal - code text always sits
@@ -467,6 +476,27 @@ body > header {
   font-size: 0.9rem;
 }
 
+/* Risk/Rationale gets its own line and a labelled lead-in (ADR-002 handover item 5) —
+   same body copy weight as .control-guidance, distinguished by the bold inline label
+   rather than by color alone. */
+.control-card .control-risk {
+  color: var(--pico-muted-color);
+  font-size: 0.9rem;
+}
+
+.control-card .control-risk strong {
+  color: var(--pico-color);
+}
+
+/* Reason line shown on a control outside the computed baseline (ADR-001 step 2) — sits
+   first in the expanded body, so "why this doesn't apply" is the first thing read. */
+.control-card .control-status-reason {
+  font-family: var(--brief-mono);
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--pico-muted-color);
+}
+
 .control-card table {
   font-size: 0.85rem;
 }
@@ -478,47 +508,57 @@ body > header {
   padding: 2rem 0;
 }
 
-/* --- Decision-helper wizard --- */
-.wizard-progress {
-  display: block;
-  font-family: var(--brief-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--brief-accent);
-  margin-bottom: 0.75rem;
-}
-
-.wizard-options {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+/* --- Decision-helper wizard: tick-all-that-apply (ADR-001 step 1) --- */
+#wizard-app fieldset {
+  border: none;
   padding: 0;
-  margin: 1.25rem 0;
-  list-style: none;
+  margin: 0 0 1.5rem;
 }
 
-.wizard-option {
-  display: block;
-  width: 100%;
-  text-align: left;
-  border: 1px solid var(--pico-muted-border-color);
+#wizard-app legend {
+  font-weight: 600;
+  padding: 0 0 0.5rem;
+}
+
+/* Shared with .level-check/.domain-check's row treatment (hover, disabled dimming) so
+   radio and checkbox choices in the wizard read consistently with the controls-browser
+   filters — selection state is always the native checked/unchecked control, never color
+   alone (docs/CLAUDE.md WCAG 1.4.1 rule). */
+.choice-option {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.4rem;
   border-radius: var(--pico-border-radius);
-  padding: 0.85rem 1rem;
-  background: none;
-  color: inherit;
-  font-size: 1rem;
   cursor: pointer;
 }
 
-.wizard-option:hover {
-  border-color: var(--brief-accent);
+.choice-option:hover {
+  background: var(--pico-muted-border-color);
 }
 
-.wizard-option:focus-visible {
-  outline: 0;
-  box-shadow: 0 0 0 var(--pico-outline-width, 0.2rem) var(--pico-primary-focus);
-  border-color: var(--brief-accent);
+.choice-option input {
+  margin: 0;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.choice-hint {
+  font-size: 0.8rem;
+  color: var(--pico-muted-color);
+}
+
+.wizard-result-box {
+  border-top: 1px solid var(--pico-muted-border-color);
+  padding-top: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.wizard-conflict {
+  border: 1.5px solid var(--brief-accent);
+  border-radius: var(--pico-border-radius);
+  padding: 0.85rem 1rem;
+  font-size: 0.9rem;
 }
 
 .wizard-nav {
@@ -526,6 +566,7 @@ body > header {
   justify-content: space-between;
   font-family: var(--brief-mono);
   font-size: 0.85rem;
+  margin-top: 1.5rem;
 }
 
 .wizard-result .nav-card {

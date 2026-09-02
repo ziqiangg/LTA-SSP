@@ -33,14 +33,15 @@ enough to read directly when you genuinely need their prose.
 | `diff <type-a> <type-b>` | Added / removed / level-changed controls between two profiles |
 | `domain <ID>` | One domain's controls and which profiles use them at what level |
 | `control <ID> [...]` | Full detail for specific controls, including which profiles use them |
-| `grep <term> [--field ...]` | Substring search across title/description/guidance |
+| `grep <term> [--field ...]` | Substring search across title/description/recommendations/risk/rationale |
 | `gaps` | Corpus defects worth filing as findings |
 
 ## Schema
 
-**`controls.json`** — array of 248 objects. Rebuilt from a verified scrape on 2026-09-01 (F-008).
-Always: `id`, `domainId`, `catalog`, `title`, `description`, `guidance`, `sourceUrl`,
-`retrievedAt`, `status`.
+**`controls.json`** — array of 248 objects. Rebuilt from a verified scrape on 2026-09-01 (F-008);
+`guidance` split into separate fields on 2026-09-02 (ADR-002).
+Always: `id`, `domainId`, `catalog`, `title`, `description`, `recommendations`, `sourceUrl`,
+`retrievedAt`, `status`, plus exactly one of `risk` (cybersecurity) or `rationale` (dss).
 Sometimes: `parameters` (42), `citations` (36).
 
 - `id` is `<DOMAIN>-<n>` (`AC-1`, `WU-9`). Sort numerically, not lexically — `AC-2` before `AC-11`.
@@ -48,9 +49,10 @@ Sometimes: `parameters` (42), `citations` (36).
 - `description` embeds parameter placeholders **verbatim as upstream renders them** —
   `[ insert: param, ac-11_prm_1 ]`, not `[ac-11_prm_1]` — resolved by `parameters[]`
   (`{id, type, description}`). Prettier rendering is a `controls.js` job, not a data job.
-- `guidance` for cybersecurity is implementation advice then a trailing `Risk: ...` clause; that
-  clause is the closest thing the corpus has to a rationale. For DSS it is the upstream *Rationale*
-  section and has **no** `Risk:` clause — don't write a parser that assumes one.
+- `recommendations` is implementation advice, shipped as its own field for every control.
+  `risk` (cybersecurity, 156 controls) is the closest thing the corpus has to a rationale for why
+  the control matters; `rationale` (dss, 92 controls) is upstream's own *Rationale* section — a
+  control never carries both. There is no more composed `guidance` field to fall back to.
 - `citations[]` entries are `{standard, url?}` when scraped from an upstream hyperlink (36 controls
   now carry citations), or `{standard, reference?}` when recovered from prose with no link. Test
   for `url` before rendering a link.
@@ -99,21 +101,22 @@ Sometimes: `parameters` (42), `citations` (36).
   overlay on a hosting profile is **genuinely unresolved**: upstream frames it standalone but gives
   it contents that cannot work standalone, and the official OSCAL source has no gen-ai profile at
   all. Do not assert either reading as fact. See F-002.
-- **`guidance` is now complete and faithful.** All 248 controls carry it. The former 50-control
-  gap (the whole of IS/LM/PM/ST) was a scrape failure and was recovered on 2026-09-01. Older
-  analyses that used a denominator of 198 are stale — redo them. See F-001, F-008.
-- **Most `guidance` text was previously paraphrased**, not scraped: only 42 of 198 matched upstream
+- **Guidance is now complete and faithful.** All 248 controls carry both `recommendations` and
+  their `risk`/`rationale` half. The former 50-control gap (the whole of IS/LM/PM/ST) was a scrape
+  failure and was recovered on 2026-09-01. Older analyses that used a denominator of 198, or that
+  read a `guidance` field, are stale — redo them. See F-001, F-008.
+- **Most guidance text was previously paraphrased**, not scraped: only 42 of 198 matched upstream
   before the rebuild. Any vocabulary, embedding, or retrieval work done on the corpus before
   2026-09-01 was operating on rewritten text and should be redone. See F-008.
 - **An official OSCAL source exists** (`GovTechSG/tech-standards`) but covers only ~half this
   corpus — no GA, no DSS/WCAG, only low/medium-risk profiles — and is stale. Do not treat it as a
   drop-in. See F-006.
-- **`guidance` is a composed field, and the two catalogs compose differently.** Upstream publishes
-  a control as *Control Statement* + *Control Recommendations* + a third section — **Risk
-  Statement** for cybersecurity (156 controls), **Rationale** for DSS (92). Our `description` is
-  the statement; our `guidance` is `recommendations + " Risk: " + risk` for cybersecurity and
-  `rationale` for DSS, matching how the upstream site itself renders them. Splitting these into
-  separate fields is a pending schema decision, not done.
+- **`recommendations`/`risk`/`rationale` ship as separate fields (ADR-002, 2026-09-02)**, not
+  concatenated. Upstream itself publishes a control as *Control Statement* + *Control
+  Recommendations* + a third section — **Risk Statement** for cybersecurity, **Rationale** for
+  DSS — and the shipped schema now mirrors that three-way split instead of composing a `guidance`
+  string. `docs/assets/js/controls.js` renders `recommendations` and the risk/rationale half as two
+  labelled paragraphs.
 - **Medium- and high-risk cloud share identical sensitivity wording** in `classificationText`
   ("Confidential, Sensitive High") — CII designation is the only textual differentiator. Low-risk
   cloud and on-premises likewise share wording. This is the central ambiguity any classifier faces.

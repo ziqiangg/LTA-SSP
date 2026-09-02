@@ -53,6 +53,11 @@ of `low-risk-cloud`/`medium-risk-cloud` and is a strict subset of `high-risk-clo
 laxest rung of the same ladder, not a different kind of question. Classified *needs a different
 interaction model*, folded into the same tick-all-that-apply/`min()` fix as issues 1 and 4.
 
+**Built 2026-09-02:** the tick-all-that-apply model is now live in `docs/assets/js/wizard.js`,
+resolving issues 1, 4, and the F-012 sandbox reframing in code, not just in the ADR. RQ-2 stays
+*in-progress* — issues 3 and 5 (per F-004) still need their own classification against the new
+model, and a rule-based-baseline score (RQ-6) hasn't been run against it yet.
+
 ---
 
 ## RQ-3 — Which signals in a free-text description determine the type?

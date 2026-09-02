@@ -50,8 +50,9 @@ currently carries is the point, so omissions surface in the diff rather than sta
 
 - **`controls.json`** — per control: `id`, `domainId`, `catalog`, `title`, `sourceUrl`,
   `retrievedAt`, `statement`, `recommendations`, `risk` (cybersecurity) or `rationale` (dss),
-  `group`, `parameters[]`, `links[]` (real hrefs). `guidance` does not exist at this stage — it's
-  composed on promotion, see Invariants.
+  `group`, `parameters[]`, `links[]` (real hrefs). Since ADR-002 (2026-09-02) these ship
+  straight through to `controls.json` as `description`/`recommendations`/`risk-or-rationale` —
+  no `guidance` composition step exists any more (`statement` still renames to `description`).
 - **`system-types.json`** — per type: `id`, `slug`, `catalog`, `name` (the page's own H1 heading —
   this **is** what shipped `name` matches), `templateName` (the System Characteristics `Name:`
   field — a filled-in example like "Low-Risk Cloud **System**", not the type's display name; kept
@@ -64,11 +65,13 @@ currently carries is the point, so omissions surface in the diff rather than sta
 
 ## Invariants — get these wrong and a promotion is wrong
 
-1. **`compose_guidance` and `compose_classification_text` live in `promote.py` and nowhere else.**
-   `diff_corpus.py` and `diff_system_types.py` both `import` them rather than restating the
-   composition rule. This is deliberate: if someone changes how a field is composed in one place
-   only, the diff reports clean while the shipped data is wrong — a false clean diff is worse than
-   an honest dirty one. Keep the coupling; do not "simplify" it away.
+1. **`compose_classification_text` lives in `promote.py` and nowhere else.**
+   `diff_system_types.py` `import`s it rather than restating the composition rule. This is
+   deliberate: if someone changes how a field is composed in one place only, the diff reports
+   clean while the shipped data is wrong — a false clean diff is worse than an honest dirty one.
+   Keep the coupling; do not "simplify" it away. (`compose_guidance` no longer exists — ADR-002
+   removed the composed `guidance` field entirely, so `diff_corpus.py` now compares
+   `recommendations`/`risk`/`rationale` directly with no composition step to keep in sync.)
 2. **`levelsAvailable`, `totalControls`, `levelCounts` are not upstream-scrapeable.** No type page
    carries a "Level N (n)" breakdown in any textual form (confirmed 2026-09-01 by grepping the
    full scraped blocks for both DSS types). They are correctly derived from `profiles.json` today

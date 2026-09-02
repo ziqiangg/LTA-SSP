@@ -12,7 +12,7 @@ Usage:
   python research/scripts/corpus.py diff <type-a> <type-b>
   python research/scripts/corpus.py domain <DOMAIN-ID>
   python research/scripts/corpus.py control <CONTROL-ID> [...]
-  python research/scripts/corpus.py grep <term> [--field all|title|description|guidance]
+  python research/scripts/corpus.py grep <term> [--field all|title|description|recommendations|risk|rationale]
   python research/scripts/corpus.py gaps
 
 Stdlib only, by design. Read-only: this script never writes to docs/.
@@ -53,6 +53,16 @@ def sort_key(cid):
     return (m.group(1), int(m.group(2))) if m else (cid, 0)
 
 
+def tail_field(ctl):
+    """Which of risk/rationale a control carries, by catalog (ADR-002)."""
+    return "rationale" if ctl.get("catalog") == "dss" else "risk"
+
+
+def has_guidance(ctl):
+    """True if a control carries both recommendations and its risk/rationale half."""
+    return bool(ctl.get("recommendations")) and bool(ctl.get(tail_field(ctl)))
+
+
 def rule(width=78):
     print("-" * width)
 
@@ -71,8 +81,8 @@ def cmd_stats(c, args):
     print("catalog split:", dict(Counter(x["catalog"] for x in controls)))
     print("field coverage:",
           dict(sorted(Counter(k for x in controls for k in x).items())))
-    missing = [x["id"] for x in controls if not x.get("guidance")]
-    print("controls without guidance: %d" % len(missing))
+    missing = [x["id"] for x in controls if not has_guidance(x)]
+    print("controls without full guidance (recommendations + risk/rationale): %d" % len(missing))
     orphans = sorted({x["domainId"] for x in controls} - {d["id"] for d in domains})
     if orphans:
         print("!! controls referencing unknown domains: %s" % orphans)
@@ -237,7 +247,7 @@ def cmd_domain(c, args):
                       key=lambda x: sort_key(x["id"])):
         used = inprofile.get(ctl["id"], [])
         tags = ",".join("%s:L%d" % (t, l) for t, l in used) or "(in no profile)"
-        flag = "" if ctl.get("guidance") else "  [no guidance]"
+        flag = "" if has_guidance(ctl) else "  [no guidance]"
         print("%-9s %-52s%s" % (ctl["id"], ctl["title"][:52], flag))
         print("%-9s %s" % ("", tags))
 
@@ -258,7 +268,9 @@ def cmd_control(c, args):
         print("%s - %s  [%s / %s]"
               % (ctl["id"], ctl["title"], ctl["domainId"], ctl["catalog"]))
         print("  desc:     %s" % ctl["description"])
-        print("  guidance: %s" % (ctl.get("guidance") or "(none)"))
+        print("  recs:     %s" % (ctl.get("recommendations") or "(none)"))
+        tf = tail_field(ctl)
+        print("  %-9s %s" % (tf + ":", ctl.get(tf) or "(none)"))
         for p in ctl.get("parameters", []):
             print("  param:    %s (%s) - %s" % (p["id"], p["type"], p["description"]))
         for cit in ctl.get("citations", []):
@@ -272,7 +284,7 @@ def cmd_control(c, args):
 # ---------------------------------------------------------------------------- grep
 def cmd_grep(c, args):
     term = args.term.lower()
-    fields = (["title", "description", "guidance"]
+    fields = (["title", "description", "recommendations", "risk", "rationale"]
               if args.field == "all" else [args.field])
     hits = []
     for ctl in c["controls"]:
@@ -300,8 +312,8 @@ def cmd_gaps(c, args):
     types = c["system_types"]
     cmap = by_id(controls)
 
-    print("== controls with no guidance ==")
-    missing = [x for x in controls if not x.get("guidance")]
+    print("== controls with no guidance (recommendations + risk/rationale) ==")
+    missing = [x for x in controls if not has_guidance(x)]
     print("%d of %d" % (len(missing), len(controls)))
     print("by domain:", dict(sorted(Counter(x["domainId"] for x in missing).items())))
     print()
@@ -374,7 +386,7 @@ def main():
     sp = sub.add_parser("grep", help="substring search across control text")
     sp.add_argument("term")
     sp.add_argument("--field", default="all",
-                    choices=["all", "title", "description", "guidance"])
+                    choices=["all", "title", "description", "recommendations", "risk", "rationale"])
 
     sub.add_parser("gaps", help="corpus defects worth filing as findings")
 

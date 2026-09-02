@@ -42,12 +42,6 @@ def sort_key(cid):
     return (m.group(1), int(m.group(2))) if m else (cid, 0)
 
 
-# Single source of truth for how the shipped `guidance` field is composed. Importing
-# it (rather than restating it) keeps this diff honest: if promote.py changes how it
-# composes guidance, the diff must change with it or it reports false positives.
-from promote import compose_guidance as rebuild_guidance  # noqa: E402
-
-
 def build(out):
     up = {c["id"]: c for c in load(SCRAPED)}
     lo = {c["id"]: c for c in load(SHIPPED)}
@@ -87,8 +81,9 @@ def build(out):
     L("|---|---|---|---|")
     mapping = {
         "statement": "= shipped `description`",
-        "recommendations": "first half of shipped `guidance`",
-        "risk": "second half of shipped `guidance`, after `Risk: `",
+        "recommendations": "= shipped `recommendations`",
+        "risk": "= shipped `risk` (cybersecurity controls)",
+        "rationale": "= shipped `rationale` (dss controls)",
         "links": "shipped `citations` was derived from these; upstream carries real hrefs",
         "group": "domain name; shipped keeps only `domainId`",
         "sourceUrl": "**not in shipped schema** — per-control provenance",
@@ -100,13 +95,21 @@ def build(out):
     L("")
 
     # ------------------------------------------------------------ guidance gaps
-    L("## 3. The 50 missing-guidance controls (F-001)")
+    L("## 3. Controls missing recommendations or risk/rationale")
     L("")
-    gaps = sorted([cid for cid, c in lo.items() if not c.get("guidance")], key=sort_key)
+
+    def tail_field(rec):
+        return "rationale" if rec.get("catalog") == "dss" else "risk"
+
+    gaps = sorted([cid for cid, c in lo.items()
+                   if not c.get("recommendations") or not c.get(tail_field(c))],
+                  key=sort_key)
     recovered = [cid for cid in gaps
-                 if norm(up.get(cid, {}).get("recommendations")) or norm(up.get(cid, {}).get("risk"))]
-    L("Shipped controls with no `guidance`: **%d**" % len(gaps))
-    L("Of those, upstream now supplies recommendations and/or risk text: **%d**"
+                 if norm(up.get(cid, {}).get("recommendations"))
+                 or norm(up.get(cid, {}).get(tail_field(up.get(cid, {}))))]
+    L("Shipped controls missing `recommendations` and/or their `risk`/`rationale`: **%d**"
+      % len(gaps))
+    L("Of those, upstream now supplies recommendations and/or risk/rationale text: **%d**"
       % len(recovered))
     L("")
     by_dom = defaultdict(lambda: [0, 0])
@@ -121,17 +124,18 @@ def build(out):
     L("")
     if recovered:
         cid = recovered[0]
+        tf = tail_field(up[cid])
         L("Sample recovery — `%s`:" % cid)
         L("")
         L("> **Recommendations:** %s" % norm(up[cid].get("recommendations"))[:400])
         L("> ")
-        L("> **Risk:** %s" % norm(up[cid].get("risk"))[:300])
+        L("> **%s:** %s" % (tf.capitalize(), norm(up[cid].get(tf))[:300]))
         L("")
 
     # --------------------------------------------------------- text differences
     L("## 4. Text differences on controls that already had content")
     L("")
-    diffs = {"description": [], "guidance": [], "title": []}
+    diffs = {"description": [], "recommendations": [], "risk-or-rationale": [], "title": []}
     casing_only = []
     placeholder_only = []
     for cid in sorted(set(up) & set(lo), key=sort_key):
@@ -148,10 +152,11 @@ def build(out):
             if re.sub(r"\[\s*insert:\s*param,\s*([a-z0-9_\-]+)\s*\]", r"[\1]", us) == \
                re.sub(r"\[\s*insert:\s*param,\s*([a-z0-9_\-]+)\s*\]", r"[\1]", ss):
                 placeholder_only.append(cid)
-        if s.get("guidance"):
-            rebuilt = rebuild_guidance(u)
-            if norm(rebuilt) != norm(s["guidance"]):
-                diffs["guidance"].append(cid)
+        if norm(u.get("recommendations")) != norm(s.get("recommendations")):
+            diffs["recommendations"].append(cid)
+        tf = tail_field(u)
+        if norm(u.get(tf)) != norm(s.get(tf)):
+            diffs["risk-or-rationale"].append(cid)
     for field, ids in diffs.items():
         L("- **%s**: %d differ" % (field, len(ids)))
         if ids:
@@ -170,9 +175,8 @@ def build(out):
           "to `[ac-3_prm_3]` but not all. That inconsistency is itself a defect."
           % (len(diffs["description"]), len(placeholder_only)))
         L("")
-    L("`guidance` is composed by `promote.compose_guidance`, imported here so the two cannot "
-      "drift: `recommendations` followed by `Risk: <risk>` for cybersecurity or "
-      "`Rationale: <rationale>` for dss.")
+    L("`recommendations` and `risk`/`rationale` ship as separate fields (ADR-002) — compared "
+      "directly against upstream here, no composition step to keep in sync.")
     L("")
 
     # ------------------------------------------------------------- parameters
@@ -199,17 +203,15 @@ def build(out):
     total = sum(len(v) for v in diffs.values())
     if not only_up and not only_lo and total == 0 and not gaps:
         L("**The shipped corpus reproduces upstream exactly.** Same 248 ids, and zero "
-          "differences in title, description or guidance. Nothing to promote.")
+          "differences in title, description, recommendations, or risk/rationale. "
+          "Nothing to promote.")
     elif not only_up and not only_lo and total == 0:
-        L("No text differences remain, but %d control(s) still lack `guidance`." % len(gaps))
+        L("No text differences remain, but %d control(s) still lack full guidance "
+          "(recommendations and/or risk/rationale)." % len(gaps))
     else:
-        L("**%d text difference(s) and %d missing-guidance control(s).** Review sections 1 and 4 "
+        L("**%d text difference(s) and %d control(s) missing guidance.** Review sections 1 and 4 "
           "before promoting — see the `corpus-ingest` procedure in `research/CLAUDE.md`."
           % (total, len(gaps)))
-    L("")
-    L("Note the shipped schema still concatenates `recommendations` and the risk/rationale "
-      "section into one `guidance` field. Splitting them into separate fields remains an open "
-      "schema decision (F-008).")
     return out
 
 
