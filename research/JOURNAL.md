@@ -425,3 +425,65 @@ Entries record **what happened**; findings record **what is true**. Use `/resear
   guidance/risk fields) — that's ADR-002's job, already accepted and implemented.
 - `research/README.md` (decisions list, removed the stale "still waiting on an ADR" line),
   `QUESTIONS.md` (RQ-5's remaining-items list), and `instructions.md` all updated to match.
+
+## 2026-09-02 (session 7, continued) — RQ-2 issues 3 and 5 reclassified and fixed; RQ-2 answered
+
+- Reclassified F-004 issues 3 and 5 against the shipped tick-all-that-apply `wizard.js`, per
+  instructions.md's "what's next" item. Two parallel investigations read the current code and
+  `system-types.json` directly rather than trusting the old classification (made against the
+  retired 7-question tree): both issues survive, in a new shape. Issue 3 — the new wizard has no
+  separate CII question, but CII is still welded into the "High / CII" rung's single checkbox,
+  and that checkbox's own hint asserts a CII fact that isn't even in `high-risk-cloud`'s own
+  `classificationText` (medium and high share byte-for-byte identical `classificationText`; only
+  the corpus's `name` field and control content actually differ). Issue 5 — confirmed `wizard.js`
+  has zero `fetch()` calls; every rung/overlay hint is a hardcoded literal duplicating a
+  `classificationText` fact, one of which (the CII claim above) had already silently drifted.
+- Traced `docs/CLAUDE.md`'s "wizard.js doesn't fetch data" line via `git log --follow`: it was
+  written in the pre-ADR-001 corpus-rebuild commit (`ec0a3cc`, 2026-09-01), and the ADR-001 wizard
+  rewrite (`e7ef7a1`, 2026-09-02) never touched `docs/CLAUDE.md` — confirmed by diffing the two
+  commits. The line describes the old hardcoded tree's architecture, not a deliberately preserved
+  constraint on the new one; nobody revisited it when the rewrite introduced real data duplication.
+- **Filed ADR-005**, amending ADR-001's baseline-resolution table: CII designation becomes a fifth,
+  independent characteristic (tri-state: not-CII / CII-designated / unanswered-hedges-to-both),
+  and the `medium`/`high` sensitivity rungs merge into one "Confidential, Sensitive High" band,
+  since sensitivity alone can't distinguish them. Unanswered CII composes both `medium-risk-cloud`
+  and `high-risk-cloud` with a disclosed note, rather than forcing a third click — F-010 found 0/15
+  realistic descriptions state CII, so "unsure" is the common case, not an edge one.
+- **Implemented in `docs/assets/js/wizard.js`:** now fetches `system-types.json` once at load
+  (mirroring `controls.js`'s `fetch`/`Promise`-then pattern, same relative path depth) and derives
+  every rung/GenAI/digital-service hint from live `classificationText` instead of hardcoded
+  strings — `TYPE_NAMES` removed entirely in favor of `systemTypesById[id].name`. Added the CII
+  fieldset (conditionally rendered once the merged sensitivity band is ticked), new `cii` URL
+  param, and rewrote `resolve()`'s cloud-tier logic to compute the resolved type list first and
+  check the F-012 sandbox conflict against it — which now also correctly catches the
+  unanswered-CII hedge case, a correctness improvement the old rung-based check missed.
+  `node --check` passed; manually exercised all CII/sandbox/hosting paths in Chrome.
+- `docs/CLAUDE.md` updated: the Structure note now describes `wizard.js`'s `system-types.json`
+  fetch; the "Known drift risk" note gets one added line naming a related, deliberately
+  out-of-scope problem found along the way — the 8 `docs/system-types/*/index.html` pages also
+  hardcode `classificationText` verbatim into static markup, a third copy not previously named.
+- F-004's header note records all five issues' final classification; `status` → `actioned`.
+  `QUESTIONS.md`'s RQ-2 → **answered**. `research/README.md` updated (ADR-005 listed, F-004 status).
+  `instructions.md`'s "what's next" list updated to drop the now-done item.
+- **`site-critic` review found and fixed a real blocking bug**, unrelated to the CII/fetch changes
+  themselves but exposed by them: `render()` tears down and rebuilds the whole fieldset tree on
+  every tick (true since the ADR-001 rewrite), which drops keyboard focus to `<body>` on every
+  single interaction — worst right after ticking the sensitivity band, since that's exactly when
+  the new CII fieldset appears and a keyboard user needs to reach it. Fixed by stashing
+  `document.activeElement`'s id before `app.innerHTML = ""` and restoring it after render()
+  completes (input ids are deterministic — `name + "-" + value` — and stable across re-renders, so
+  this is a targeted fix, not a rewrite of the render architecture). Also hid the CII fieldset's
+  "not sure?" helper note once an answer is actually given (non-blocking finding, same review).
+  Verified directly via `document.activeElement` checks in Chrome (not just visually) that focus
+  now survives a click through hosting → sensitivity rung → CII radio.
+
+## 2026-09-02 (session 7, continued) — eval scaling to 120-160 cases deferred
+
+- **Deferred indefinitely**, on the owner's direction: settle with the current 15-case pilot rather
+  than scaling `evals/v1/` to ~120-160 cases (F-010/F-011's original recommendation). F-010's and
+  F-011's findings from the pilot are unaffected and still stand — they describe defects observed
+  in the 15 cases, not a case for scaling being a prerequisite to scoring a baseline at all.
+- `QUESTIONS.md`'s RQ-6 "answered when" bar lowered to match: score the wizard-tree baseline and
+  majority-class floor against the existing 15 cases, not a 120-160 set. `evals/README.md`'s
+  stale "v1 — not yet built" section corrected (15 cases already exist, from session 2) and updated
+  to record the deferral. `instructions.md`'s "what's next" list updated to drop this item.

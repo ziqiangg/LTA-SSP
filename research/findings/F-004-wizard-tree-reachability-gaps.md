@@ -5,8 +5,24 @@ date: 2026-09-01
 rq: [RQ-2, RQ-3]
 implications: [site, classifier]
 confidence: high
-status: open
+status: actioned
 ---
+
+> **Issues 1, 2 and 4 resolved 2026-09-02** by the ADR-001 tick-all-that-apply rewrite
+> (`docs/assets/js/wizard.js`): composite systems compose, on-premises's single-profile limit is
+> disclosed rather than silently forced, and answer state persists to the URL.
+>
+> **Issues 3 and 5 reclassified against the new model and resolved 2026-09-02 —
+> [ADR-005](../decisions/ADR-005-cii-as-independent-baseline-characteristic.md).** The new wizard
+> had re-introduced issue 3 in a new shape — CII designation was still welded to the top
+> sensitivity rung's "High / CII" checkbox, asserting a fact (`high-risk-cloud`'s own
+> `classificationText` never mentions CII) the corpus itself doesn't state for that type. ADR-005
+> splits CII into its own tri-state question (not-CII / CII-designated / unanswered-hedges), and
+> merges the old `medium`/`high` rungs into one sensitivity band, since their `classificationText`
+> is identical and only CII distinguishes them. Issue 5 (question text duplicated, not derived) is
+> resolved by `wizard.js` now fetching `system-types.json` at runtime and sourcing every rung/
+> overlay hint from `classificationText` directly — see `docs/CLAUDE.md`'s updated Structure note.
+> All five issues now have a final classification; **RQ-2 → answered.**
 
 ## Observation
 

@@ -25,11 +25,15 @@ descriptions and the labels come from the same source. Therefore:
 State this limitation in every results file. An unqualified accuracy figure from v1 will be
 misread the moment it leaves this folder.
 
-## v1 — not yet built
+## v1 — 15-case pilot, scaling deferred
 
-`v1/cases.jsonl` will hold ~120-160 cases. Before writing any, read the `eval-set` skill: the
-record shape matters more than the volume, particularly `acceptable_types` (multiple correct
-answers are real here) and the `ambiguity` tags.
+`v1/cases.jsonl` holds 15 pilot cases (spot-checked 2026-09-01, see `v1/spot-check-2026-09-01.md`).
+Scaling to ~120-160 cases was the original target but is **deferred indefinitely as of
+2026-09-02** — settling with the current 15 rather than generating more (see `QUESTIONS.md`'s
+RQ-6). F-010's and F-011's findings from the pilot still stand and still bound what these 15 cases
+can claim. If scaling is picked back up later, read the `eval-set` skill first: the record shape
+matters more than the volume, particularly `acceptable_answers` (multiple correct answers are real
+here) and the `ambiguity` tags.
 
 Two constraints established during setup, both from findings:
 

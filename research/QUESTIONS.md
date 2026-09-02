@@ -29,7 +29,7 @@ under RQ-6.
 ---
 
 ## RQ-2 — Where does the current wizard give wrong or unhelpful answers?
-**Implications:** site · **Status:** in-progress · **Findings:** F-004, F-012
+**Implications:** site · **Status:** **answered** 2026-09-02 · **Findings:** F-004, F-012, ADR-005
 
 The 7-node tree in `wizard.js` returns exactly one type, with no ranking and no way to express a
 composite system. Known suspects are catalogued in F-004: composite systems (GenAI + digital
@@ -54,9 +54,16 @@ laxest rung of the same ladder, not a different kind of question. Classified *ne
 interaction model*, folded into the same tick-all-that-apply/`min()` fix as issues 1 and 4.
 
 **Built 2026-09-02:** the tick-all-that-apply model is now live in `docs/assets/js/wizard.js`,
-resolving issues 1, 4, and the F-012 sandbox reframing in code, not just in the ADR. RQ-2 stays
-*in-progress* — issues 3 and 5 (per F-004) still need their own classification against the new
-model, and a rule-based-baseline score (RQ-6) hasn't been run against it yet.
+resolving issues 1, 4, and the F-012 sandbox reframing in code, not just in the ADR.
+
+**Answered 2026-09-02.** Issues 3 and 5 reclassified against the shipped model: both had survived
+in a new shape (CII was still welded to the top sensitivity rung; question text was still
+hardcoded and had already drifted from `classificationText` on the CII point specifically) —
+[ADR-005](decisions/ADR-005-cii-as-independent-baseline-characteristic.md) splits CII into its own
+tri-state question and has `wizard.js` fetch `system-types.json` to source hint text live. All five
+F-004 issues now carry a final classification: 1 & 4 fixed via the tick-all-that-apply rewrite; 2
+blocked upstream, disclosed; 3 & 5 fixed via ADR-005. A rule-based-baseline score (RQ-6) still
+hasn't been run against the current model.
 
 ---
 
@@ -140,8 +147,15 @@ not yet owner-accepted).**
 Nothing can be claimed about semantic or LLM approaches until the rule-based baseline — today's
 wizard tree, mechanically applied — is measured on a labelled set.
 
-*Answered when:* `evals/v1/` holds ~120-160 labelled cases with an ambiguity-tag breakdown, and
-the wizard-tree baseline plus the majority-class floor are both scored and written up.
+**Scaling deferred 2026-09-02.** Scaling `evals/v1/` to ~120-160 cases is deferred indefinitely —
+settling with the current 15-case pilot rather than generating more. F-010's and F-011's findings
+(no case has one answer; the `hosting-unknown` fork is under-diversified) still stand and still
+constrain what the 15-case set can claim; scaling was how this ADR-free decision proposed to
+address F-011's specific homogeneity risk, not a prerequisite for scoring a baseline at all.
+
+*Answered when:* `evals/v1/` (currently 15 labelled cases) has an ambiguity-tag breakdown, and the
+wizard-tree baseline plus the majority-class floor are both scored and written up against it. The
+120-160 target is no longer the bar — see the deferral note above.
 
 *Run via:* `eval-set` skill.
 

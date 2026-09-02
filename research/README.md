@@ -41,7 +41,7 @@ you should do".
 | [F-001](findings/F-001-guidance-gaps-cluster-by-domain.md) | Missing `guidance` is four whole domains — a scrape failure, recoverable | data | high | **confirmed** |
 | [F-002](findings/F-002-generative-ai-profile-standalone-or-overlay.md) | `generative-ai` is 9 controls and upstream never says whether it stands alone | data, site, classifier | high | **confirmed** |
 | [F-003](findings/F-003-level-definitions-dead-and-contradicted.md) | `level-definitions.json` is dead data and the UI contradicts it | data, site | high | open |
-| [F-004](findings/F-004-wizard-tree-reachability-gaps.md) | The wizard tree has unreachable and forced outcomes | site, classifier | high | open |
+| [F-004](findings/F-004-wizard-tree-reachability-gaps.md) | The wizard tree has unreachable and forced outcomes | site, classifier | high | **actioned** |
 | [F-005](findings/F-005-profiles-are-nested.md) | Profiles nest, and OSCAL confirms it is deliberate | classifier, site | high | **confirmed** |
 | [F-006](findings/F-006-official-oscal-source-exists-but-partial.md) | An official OSCAL source exists, but is half-coverage and stale | data, site, classifier | high | open |
 | [F-007](findings/F-007-prior-art-synthesis-control-discovery.md) | Prior art solves selection *after* typing — nobody types from a description | site, classifier | high | open |
@@ -81,6 +81,10 @@ no data change). No other system-type page carried the stale phrasing.
 - [ADR-004](decisions/ADR-004-guidance-recovery-route-rescrape.md) — the F-001 guidance-recovery
   route is re-scrape, not OSCAL import or hybrid (**accepted**, 2026-09-02, recorded retroactively
   — the rebuild itself already happened at the F-008 rescrape, 2026-09-01).
+- [ADR-005](decisions/ADR-005-cii-as-independent-baseline-characteristic.md) — CII designation is
+  its own baseline characteristic, not folded into the sensitivity rung (**accepted**, 2026-09-02).
+  Resolves RQ-2 issues 3 and 5 against the shipped wizard; amends ADR-001's baseline-resolution
+  table (`medium`/`high` rungs merge into one band; CII becomes a fifth, independent characteristic).
 
 Prior-art cards: `prior-art/PA-001..PA-013`, indexed in F-007. Read F-007 rather than the cards.
 

@@ -13,8 +13,10 @@ this rule binds `docs/` absolutely.** (Python is allowed in `research/`; it neve
 - Root `docs/index.html` = the tool's landing page — this repo IS the SSP tool, there's no
   separate portfolio section.
 - `docs/assets/data/*.json` (controls, domains, profiles, system-types) is fetched at runtime
-  by `docs/assets/js/controls.js`. `docs/assets/js/wizard.js` only produces links; it doesn't
-  fetch data. `level-definitions.json` is currently fetched by nothing.
+  by `docs/assets/js/controls.js`. `docs/assets/js/wizard.js` fetches `system-types.json` only —
+  to source display names and `classificationText` for its own option labels (ADR-005) — and
+  never `controls.json`/`domains.json`/`profiles.json`; composition stays `controls.js`'s job.
+  `level-definitions.json` is currently fetched by nothing.
 
 ## Rules
 - Do not introduce a build step, bundler, or framework unless explicitly asked.
@@ -63,6 +65,8 @@ values in the `prefers-color-scheme: dark` block, same pattern as `--pico-primar
   hand-pick replacement hex values.
 
 ## Known drift risk
-The 8 `docs/system-types/*/index.html` pages hardcode level counts and domain chips that are also
-derivable from `docs/assets/data/`. If the JSON changes, these pages go stale silently. Check them
-whenever `system-types.json` or `profiles.json` moves.
+The 8 `docs/system-types/*/index.html` pages hardcode level counts, domain chips, and each type's
+`classificationText` (copied verbatim into static markup) — all also derivable from
+`docs/assets/data/`. If the JSON changes, these pages go stale silently. Check them whenever
+`system-types.json` or `profiles.json` moves. Converting them to fetch-based rendering (matching
+`controls.js`'s and `wizard.js`'s pattern) would close this permanently but hasn't been done.

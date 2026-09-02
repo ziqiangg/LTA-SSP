@@ -9,36 +9,42 @@
   // accepts a comma-joined list of system-type ids; this file only decides which ids
   // to send it, and surfaces the two conflict cases ADR-001 says to flag rather than
   // silently resolve.
+  //
+  // Fetches system-types.json (ADR-001 amendment, ADR-005) to source every option's
+  // display name and classification text live, rather than duplicating them as
+  // hardcoded strings that can silently drift from the corpus (RQ-2 issue 5). Never
+  // fetches controls.json/domains.json/profiles.json — composition stays controls.js's
+  // job.
+  //
+  // CII designation is its own tick (ADR-005), not folded into the sensitivity rung:
+  // medium-risk-cloud and high-risk-cloud have byte-for-byte identical
+  // classificationText in the corpus, so sensitivity alone cannot distinguish them —
+  // only CII designation does (RQ-2 issue 3).
 
-  var TYPE_NAMES = {
-    "low-risk-cloud": "Low-Risk Cloud",
-    "low-risk-on-premises": "Low-Risk On-Premises",
-    "medium-risk-cloud": "Medium-Risk Cloud",
-    "high-risk-cloud": "High-Risk Cloud CII",
-    "generative-ai": "Generative AI",
-    "sandbox": "Sandbox",
-    "digital-services-others": "Digital Services (Others)",
-    "digital-services-high-impact": "Digital Services (High Impact)"
-  };
-
-  // Ordered ladder from F-005/F-012: sandbox, low- and medium-risk-cloud share the same
-  // 117-control membership (differing only in per-control level); high-risk-cloud adds
-  // 20 more. Ticking several is "unsure, cast a wider net" — controls.js's high-water-
-  // mark merge takes the strictest level wherever the same control appears more than
-  // once, so composing several rungs never loses information.
-  var RUNGS = [
-    { id: "sandbox", type: "sandbox", label: "Sandbox", hint: "Pilot or demonstration only — no production data." },
-    { id: "low", type: "low-risk-cloud", label: "Low", hint: "Up to Restricted, Sensitive Normal." },
-    { id: "medium", type: "medium-risk-cloud", label: "Medium", hint: "Confidential, Sensitive High." },
-    { id: "high", type: "high-risk-cloud", label: "High / CII", hint: "Confidential, Sensitive High, and Critical Information Infrastructure." }
-  ];
+  var DATA_BASE = "../assets/data/";
 
   var app = document.getElementById("wizard-app");
   if (!app) return;
 
+  var systemTypesById = {};
+
+  // Ordered ladder from F-005/F-012: sandbox and low-risk-cloud share the same
+  // 117-control membership as the sensitive band's medium-risk-cloud reading (differing
+  // only in per-control level); high-risk-cloud adds 20 more on top of that. Ticking
+  // several is "unsure, cast a wider net" — controls.js's high-water-mark merge takes
+  // the strictest level wherever the same control appears more than once, so composing
+  // several rungs never loses information. "sensitive" has no single `type` — see
+  // cloudTierTypes(), which resolves it against state.cii.
+  var RUNGS = [
+    { id: "sandbox", type: "sandbox", label: "Sandbox" },
+    { id: "low", type: "low-risk-cloud", label: "Low" },
+    { id: "sensitive", hintType: "medium-risk-cloud", label: "Confidential, Sensitive High" }
+  ];
+
   var state = {
     hosting: "", // "on-premises" | "cloud" | ""
     rungs: new Set(),
+    cii: "", // "" (unanswered) | "yes" | "no" — only meaningful when rungs has "sensitive"
     genai: false,
     ds: "" // "" | "others" | "high-impact"
   };
@@ -50,6 +56,8 @@
     if (rungParam) {
       rungParam.split(",").forEach(function (r) { if (r) state.rungs.add(r); });
     }
+    var ciiParam = p.get("cii");
+    state.cii = (ciiParam === "yes" || ciiParam === "no") ? ciiParam : "";
     state.genai = p.get("genai") === "1";
     state.ds = p.get("ds") || "";
   }
@@ -58,10 +66,28 @@
     var p = new URLSearchParams();
     if (state.hosting) p.set("hosting", state.hosting);
     if (state.rungs.size) p.set("rungs", Array.from(state.rungs).sort().join(","));
+    if (state.cii) p.set("cii", state.cii);
     if (state.genai) p.set("genai", "1");
     if (state.ds) p.set("ds", state.ds);
     var qs = p.toString();
     history.replaceState(null, "", qs ? "?" + qs : location.pathname);
+  }
+
+  // Resolves the cloud-hosting rungs (plus CII, for the "sensitive" band) to a list of
+  // system-type ids. Unanswered CII on a ticked "sensitive" band hedges by including
+  // both medium- and high-risk-cloud, rather than forcing a third click — F-010 found
+  // 0/15 realistic descriptions state CII designation, so "unsure" is the common case,
+  // not an edge one.
+  function cloudTierTypes() {
+    var types = [];
+    if (state.rungs.has("sandbox")) types.push("sandbox");
+    if (state.rungs.has("low")) types.push("low-risk-cloud");
+    if (state.rungs.has("sensitive")) {
+      if (state.cii === "yes") types.push("high-risk-cloud");
+      else if (state.cii === "no") types.push("medium-risk-cloud");
+      else { types.push("medium-risk-cloud"); types.push("high-risk-cloud"); }
+    }
+    return types;
   }
 
   // Resolves current ticks to either: { incomplete: true } (nothing decidable yet),
@@ -83,22 +109,30 @@
       types.push("low-risk-on-premises");
     } else if (state.hosting === "cloud") {
       if (!state.rungs.size) return { incomplete: true };
-      if (state.rungs.has("sandbox") && state.rungs.has("high")) {
+      var cloudTypes = cloudTierTypes();
+      if (state.rungs.has("sandbox") && cloudTypes.indexOf("high-risk-cloud") !== -1) {
         return {
           blocked:
-            "Sandbox and High/CII were both ticked. There's no upstream-defined “CII " +
-            "sandbox” profile — these are the two ends of the same ladder, with " +
-            "nothing composed in between (F-012). Pick whichever is the closer real answer: " +
-            "Sandbox if this is genuinely a pilot with no production or CII data, High-Risk " +
-            "Cloud CII if compliance actually requires it."
+            "Sandbox and CII-designated were both ticked (or CII was left unanswered, which " +
+            "hedges toward it). There's no upstream-defined “CII sandbox” profile — these are " +
+            "the two ends of the same ladder, with nothing composed in between (F-012). Pick " +
+            "whichever is the closer real answer: Sandbox if this is genuinely a pilot with no " +
+            "production or CII data, or answer CII directly above if compliance actually requires it."
         };
       }
-      RUNGS.forEach(function (r) { if (state.rungs.has(r.id)) types.push(r.type); });
+      types = types.concat(cloudTypes);
+    }
+
+    if (state.rungs.has("sensitive") && state.cii === "") {
+      notes.push(
+        "CII designation left unanswered — composing both Medium- and High-Risk Cloud CII to " +
+        "stay conservative until you know."
+      );
     }
 
     if (state.genai) {
       types.push("generative-ai");
-      if (state.rungs.has("high")) {
+      if (types.indexOf("high-risk-cloud") !== -1) {
         notes.push(
           "Generative AI's own classification caps at “Up to Confidential, Sensitive " +
           "High” — combining it with High-Risk Cloud CII is a combination this tool " +
@@ -118,6 +152,14 @@
     if (className) e.className = className;
     if (text !== undefined) e.textContent = text;
     return e;
+  }
+
+  function typeName(id) {
+    return (systemTypesById[id] && systemTypesById[id].name) || id;
+  }
+
+  function classificationText(id) {
+    return (systemTypesById[id] && systemTypesById[id].classificationText) || "";
   }
 
   function renderChoiceGroup(container, name, options, checkedTest, onChange, type) {
@@ -158,7 +200,7 @@
       return;
     }
 
-    var names = result.types.map(function (t) { return TYPE_NAMES[t] || t; });
+    var names = result.types.map(typeName);
     var heading = el("h2", null, names.join(" + "));
     box.appendChild(heading);
 
@@ -193,7 +235,7 @@
       a.className = "nav-card";
       a.href = "../system-types/" + tid + "/";
       a.innerHTML =
-        '<span class="nav-card-title">Read the ' + (TYPE_NAMES[tid] || tid) + ' profile &rarr;</span>' +
+        '<span class="nav-card-title">Read the ' + typeName(tid) + ' profile &rarr;</span>' +
         '<span class="nav-card-meta">Classification criteria, domains, and control levels used.</span>';
       var li = document.createElement("li");
       li.appendChild(a);
@@ -206,6 +248,12 @@
   }
 
   function render() {
+    // render() rebuilds the whole fieldset tree from scratch on every tick, which drops
+    // keyboard focus to <body> unless it's explicitly restored — every input id is
+    // deterministic (name + "-" + value) and stable across re-renders, so re-focusing by
+    // id after rebuilding puts a keyboard user back where they were instead of ejecting
+    // them to the top of the form (site-critic finding, 2026-09-02).
+    var focusedId = document.activeElement && document.activeElement.id;
     app.innerHTML = "";
 
     // --- Hosting location ---
@@ -222,7 +270,7 @@
       function (v) { return state.hosting === v; },
       function (v, checked) {
         state.hosting = checked ? v : "";
-        if (v !== "cloud") state.rungs.clear();
+        if (v !== "cloud") { state.rungs.clear(); state.cii = ""; }
         render();
         syncUrl();
       },
@@ -239,11 +287,14 @@
       renderChoiceGroup(
         rungList,
         "rung",
-        RUNGS.map(function (r) { return { value: r.id, label: r.label, hint: r.hint }; }),
+        RUNGS.map(function (r) {
+          return { value: r.id, label: r.label, hint: classificationText(r.hintType || r.type) };
+        }),
         function (v) { return state.rungs.has(v); },
         function (v, checked) {
           if (checked) state.rungs.add(v);
           else state.rungs.delete(v);
+          if (v === "sensitive" && !checked) state.cii = "";
           render();
           syncUrl();
         },
@@ -253,6 +304,38 @@
       app.appendChild(rungFieldset);
     }
 
+    // --- CII designation (only once the "sensitive" band is ticked) ---
+    if (state.hosting === "cloud" && state.rungs.has("sensitive")) {
+      var ciiFieldset = el("fieldset");
+      ciiFieldset.appendChild(el("legend", null, "Is this system designated Critical Information Infrastructure (CII)?"));
+      var ciiList = el("div", "check-list");
+      renderChoiceGroup(
+        ciiList,
+        "cii",
+        [
+          { value: "yes", label: "Yes — CII-designated", hint: "" },
+          { value: "no", label: "No — not CII-designated", hint: "" }
+        ],
+        function (v) { return state.cii === v; },
+        function (v, checked) {
+          state.cii = checked ? v : "";
+          render();
+          syncUrl();
+        },
+        "radio"
+      );
+      ciiFieldset.appendChild(ciiList);
+      if (!state.cii) {
+        ciiFieldset.appendChild(el(
+          "p",
+          "placeholder-note",
+          "Not sure? Leave both unticked — the composed baseline will include both Medium- and " +
+          "High-Risk Cloud CII controls until you know."
+        ));
+      }
+      app.appendChild(ciiFieldset);
+    }
+
     // --- Generative AI overlay ---
     var genaiFieldset = el("fieldset");
     genaiFieldset.appendChild(el("legend", null, "Does it incorporate Generative AI as a core function?"));
@@ -260,7 +343,11 @@
     renderChoiceGroup(
       genaiList,
       "genai",
-      [{ value: "1", label: "Yes — add the Generative AI overlay", hint: "" }],
+      [{
+        value: "1",
+        label: "Yes — add the Generative AI overlay",
+        hint: classificationText("generative-ai")
+      }],
       function () { return state.genai; },
       function (v, checked) {
         state.genai = checked;
@@ -280,8 +367,16 @@
       dsList,
       "ds",
       [
-        { value: "others", label: "Yes — fewer than 1,000,000 visits/year", hint: "" },
-        { value: "high-impact", label: "Yes — 1,000,000+ visits/year", hint: "" }
+        {
+          value: "others",
+          label: "Yes — fewer than 1,000,000 visits/year",
+          hint: classificationText("digital-services-others")
+        },
+        {
+          value: "high-impact",
+          label: "Yes — 1,000,000+ visits/year",
+          hint: classificationText("digital-services-high-impact")
+        }
       ],
       function (v) { return state.ds === v; },
       function (v, checked) {
@@ -303,7 +398,7 @@
     reset.textContent = "← Reset";
     reset.addEventListener("click", function (e) {
       e.preventDefault();
-      state = { hosting: "", rungs: new Set(), genai: false, ds: "" };
+      state = { hosting: "", rungs: new Set(), cii: "", genai: false, ds: "" };
       render();
       syncUrl();
     });
@@ -316,8 +411,22 @@
     nav.appendChild(skip);
 
     app.appendChild(nav);
+
+    if (focusedId) {
+      var toFocus = document.getElementById(focusedId);
+      if (toFocus) toFocus.focus();
+    }
   }
 
-  parseInitialState();
-  render();
+  app.textContent = "Loading…";
+  fetch(DATA_BASE + "system-types.json")
+    .then(function (r) { return r.json(); })
+    .then(function (types) {
+      types.forEach(function (t) { systemTypesById[t.id] = t; });
+      parseInitialState();
+      render();
+    })
+    .catch(function () {
+      app.textContent = "Couldn't load system-type data. Try reloading the page.";
+    });
 })();

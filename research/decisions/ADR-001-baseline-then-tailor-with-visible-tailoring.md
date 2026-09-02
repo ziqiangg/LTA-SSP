@@ -8,6 +8,10 @@ findings: [F-002, F-003, F-004, F-005, F-007, F-012]
 
 > **Amendment (2026-09-02):** Decision item 3 (the minimal tailoring record) is rejected — see
 > [ADR-003](ADR-003-reject-tailoring-record.md). Items 1 and 2 remain in force and are implemented.
+>
+> **Amendment (2026-09-02):** the baseline-resolution table's cloud sensitivity rung is amended —
+> CII designation is split out as its own characteristic, and the `medium`/`high` rungs merge into
+> one "Confidential, Sensitive High" band — see [ADR-005](ADR-005-cii-as-independent-baseline-characteristic.md).
 
 ## Context
 
