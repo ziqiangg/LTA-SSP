@@ -6,6 +6,9 @@ status: accepted
 findings: [F-002, F-003, F-004, F-005, F-007, F-012]
 ---
 
+> **Amendment (2026-09-02):** Decision item 3 (the minimal tailoring record) is rejected — see
+> [ADR-003](ADR-003-reject-tailoring-record.md). Items 1 and 2 remain in force and are implemented.
+
 ## Context
 
 F-007 found a framing conflict the SSP itself doesn't resolve: its only selection-guidance

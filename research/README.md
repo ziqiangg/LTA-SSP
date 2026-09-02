@@ -69,15 +69,18 @@ no data change). No other system-type page carried the stale phrasing.
   scoped-down minimal tailoring record — see F-012). **Steps 1 and 2 implemented 2026-09-02**: the
   wizard is now tick-all-that-apply (`docs/assets/js/wizard.js`), and the controls browser renders
   every catalog control with a mechanical `in-profile`/`not-in-profile` status
-  (`docs/assets/js/controls.js`). **Step 3 (the minimal tailoring record) is not built** — no
-  per-control override UI or persistence exists yet.
+  (`docs/assets/js/controls.js`). **Step 3 (the minimal tailoring record) is rejected** — see
+  ADR-003; no per-control override UI will be built.
 - [ADR-002](decisions/ADR-002-split-guidance-into-recommendations-and-risk.md) — split the composed
   `guidance` field into `recommendations` and `risk`/`rationale` (**accepted**, 2026-09-01,
   **implemented 2026-09-02** — `controls.json` reshipped via `promote.py`, `diff_corpus.py` and
   `corpus.py` updated, `controls.js` renders the two fields as separate paragraphs).
-
-Still waiting on an ADR: the F-001 guidance-recovery route — re-scrape vs OSCAL import vs hybrid
-(implicitly resolved via re-scrape at the F-008 rebuild, but never formally recorded as a decision).
+- [ADR-003](decisions/ADR-003-reject-tailoring-record.md) — reject ADR-001 step 3: the site has no
+  requirement for a per-control human override of the computed baseline (**accepted**, 2026-09-02).
+  ADR-001 steps 1–2 are unaffected and remain the full implementation of that ADR.
+- [ADR-004](decisions/ADR-004-guidance-recovery-route-rescrape.md) — the F-001 guidance-recovery
+  route is re-scrape, not OSCAL import or hybrid (**accepted**, 2026-09-02, recorded retroactively
+  — the rebuild itself already happened at the F-008 rescrape, 2026-09-01).
 
 Prior-art cards: `prior-art/PA-001..PA-013`, indexed in F-007. Read F-007 rather than the cards.
 

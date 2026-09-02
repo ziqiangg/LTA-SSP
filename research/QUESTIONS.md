@@ -123,9 +123,12 @@ upstream* (needs authoring or a pointer), or *deliberate*, with the upstream pag
 | `generative-ai` = 9 controls | **framed standalone, contents say otherwise upstream — resolved by owner confirmation:** composition is permitted but not required, for both GenAI and Digital Services templates (F-002, confirmed 2026-09-01). |
 | one-sentence `selectionGuidance` | **genuinely absent upstream** — no decision tool or flowchart exists. Whatever the site offers, it will be constructing (F-003). |
 
-Remaining: (a) decide the recovery route for F-001 in an ADR — scrape, OSCAL import, or hybrid.
-~~(b) get a human answer from GovTech on the composition question~~ — **done, F-002 confirmed
-2026-09-01.** ~~(c) decide whether to split the composed `guidance` field~~ — **done, drafted as
+Remaining: ~~(a) decide the recovery route for F-001 in an ADR — scrape, OSCAL import, or
+hybrid~~ — **done, recorded retroactively as
+[ADR-004](decisions/ADR-004-guidance-recovery-route-rescrape.md) 2026-09-02 (accepted): re-scrape,
+the route the F-008 rebuild already took.** ~~(b) get a human answer from GovTech on the
+composition question~~ — **done, F-002 confirmed 2026-09-01.** ~~(c) decide whether to split the
+composed `guidance` field~~ — **done, drafted as
 [ADR-002](decisions/ADR-002-split-guidance-into-recommendations-and-risk.md) 2026-09-01 (proposed,
 not yet owner-accepted).**
 

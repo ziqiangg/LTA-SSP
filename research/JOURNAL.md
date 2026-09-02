@@ -378,3 +378,50 @@ Entries record **what happened**; findings record **what is true**. Use `/resear
   throughout; fixed by dropping the opacity rule entirely — chip text, sort-after placement, and the
   reason line already carry the status without needing a dimming effect that cost contrast on the
   one element carrying it. Both fixes verified live in Chrome after the pass.
+
+## 2026-09-02 (session 7) — ADR-001 step 3 rejected
+
+- Picked up `instructions.md`'s "what's not done" list for inspection. Re-reading ADR-001 step 3
+  (the minimal tailoring record) alongside step 2 surfaced an internal tension the ADR never
+  reconciled: step 2 frames the six `scoped-out:*` categories as "a human override... applied via
+  step 3," while step 3 itself bans a structured reason enum ("would misrepresent a
+  project-authored convenience as a standard requirement"). Step 2 hands step 3 a vocabulary that
+  step 3's own rule forbids it from using.
+- On review, decided not to resolve that tension by building step 3 at all — the site has no
+  actual requirement for letting a user review and customize the automatically selected controls.
+  **Filed ADR-003**, rejecting ADR-001's Decision item 3 in full. Steps 1 (tick-all-that-apply
+  baseline) and 2 (status+reason rendering) are unaffected and remain the complete implementation
+  of ADR-001. No per-control override UI, `added`/`dropped` state, note capture, or `scoped-out:*`
+  categorization will be built anywhere in `docs/`.
+- ADR-001 left textually intact per the `research-note` skill's supersession convention; annotated
+  with a one-line amendment note pointing to ADR-003 instead. `research/README.md`'s decisions list
+  and ADR-001 bullet updated to match.
+- `instructions.md` rewritten: the "ADR-001 step 3" and "per-control `scoped-out:*` authoring"
+  items are removed from "what's not done" (closed, not deferred — they will never happen, not
+  merely not-yet-started). Added a prioritized "what's next" list for a future session: F-001's
+  guidance-recovery-route ADR (cheapest — purely retroactive), RQ-2 issues 3/5 classification
+  against the shipped tick-all-that-apply wizard, `domains.json`'s ingest pipeline
+  (`diff_domains.py`, still doesn't exist), then eval scaling to ~120-160 cases (F-010/F-011).
+- Not touched this session: RQ-2 issues 3/5 themselves (still open), F-001's ADR (still unwritten),
+  `domains.json` pipeline (still only spot-checked), eval scaling (still 15 cases). All four remain
+  exactly where the session-6 handover left them — only the tailoring-record item changed status,
+  from "not built" to "rejected."
+
+## 2026-09-02 (session 7, continued) — F-001's guidance-recovery-route ADR written
+
+- **Filed ADR-004**, closing the one loose thread F-001 itself flagged: "decide the route in an ADR
+  before acting; this is exactly the kind of choice that should not be made incidentally." That
+  never happened before acting — the recovery route (re-scrape) was chosen in effect when F-008
+  forced a full-corpus rebuild, not by a deliberate F-001-scoped decision. ADR-004 records it
+  retroactively.
+- **Decision:** re-scrape, not OSCAL import, not hybrid. Reasoning drawn straight from F-006 and
+  F-008, no new research needed: OSCAL is half-coverage (137/248, no GA/DSS groups) and already
+  drifted even in the domains it does cover (`lm` 20 vs. our 21, `pm` 8 vs. our 10) — it could not
+  have cleanly recovered F-001's gap on its own, and it could never have addressed F-008 (systemic
+  paraphrase across ~156 guidance fields), which is what actually forced the full re-scrape. Hybrid
+  was rejected for the two-sources-drift risk F-006 itself named, once re-scrape alone already
+  solved both problems.
+- Cross-referenced rather than re-decided the schema question F-001 also raised (joined vs. split
+  guidance/risk fields) — that's ADR-002's job, already accepted and implemented.
+- `research/README.md` (decisions list, removed the stale "still waiting on an ADR" line),
+  `QUESTIONS.md` (RQ-5's remaining-items list), and `instructions.md` all updated to match.

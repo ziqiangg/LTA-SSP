@@ -13,6 +13,11 @@ updated: 2026-09-01
 > across all four domains (14 checked), and the official OSCAL catalog shows 100% guidance coverage
 > in every group. This is a scrape failure and it is fully recoverable. See F-006 for the recovery
 > route.
+>
+> **Recovery route decided 2026-09-02, retroactively — [ADR-004](../decisions/ADR-004-guidance-recovery-route-rescrape.md):**
+> re-scrape, not OSCAL import or hybrid. All 50 gaps were in fact recovered at 100% by the F-008
+> rebuild (2026-09-01); ADR-004 formally records why re-scrape was the right route rather than
+> leaving the choice implicit.
 
 ## Observation
 
