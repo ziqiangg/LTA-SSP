@@ -282,3 +282,44 @@ Entries record **what happened**; findings record **what is true**. Use `/resear
 - Both ADRs from this session are `proposed`, not `accepted` — real review needed before either
   changes site or pipeline code. Handover items remaining: site work (gated on ADR-001 acceptance),
   and the eval-scaling / baseline-scoring research items.
+
+## 2026-09-01 (session 5) — owner ADR review
+
+- Reviewed ADR-001 and ADR-002 against their cited findings and against current code
+  (`controls.js`, `promote.py`, `diff_corpus.py`, `corpus.py`); all technical claims in both still
+  held.
+- **ADR-002 accepted as written** — `status: accepted`. Migration work (`promote.py`,
+  `diff_corpus.py`, `corpus.py`, `controls.js`, the `ssp-corpus`/`corpus-ingest` skill docs) is not
+  yet started.
+- While diffing profiles to build ADR-001's resolution table, found `sandbox` shares
+  `low-risk-cloud`'s and `medium-risk-cloud`'s exact 117-control membership and is a strict subset
+  of `high-risk-cloud` — filed **F-012**: sandbox is a fourth rung of the hosting ladder, not an
+  orthogonal non-production flag.
+- **ADR-001 revised**, still `proposed`: added a formal baseline-resolution table (characteristic →
+  shape → composition op → provenance tag `[upstream]`/`[derived]`/`[ours]`), three previously-
+  unstated conflict cases (on-prem + cloud rung; sandbox + CII; overlay ceiling vs. ticked rung), a
+  status/reason taxonomy for step 2 (SP 800-53B §2.4's six scoping categories, explicitly marked as
+  borrowed from a different standard, not SSP-sourced), and a scoped-down minimal tailoring record
+  for step 3 (`controlId → {added|dropped, note}`, no approval workflow or history — matched to
+  what a static site with no backend can actually render).
+- Open: ADR-001 still needs a final owner read of the revised resolution table/taxonomy before its
+  status can move to `accepted`; site work in README §4 stays gated until then.
+- Open (from F-012): does upstream ever define an on-premises or higher-sensitivity sandbox
+  variant? Not found in the current scrape.
+
+## 2026-09-02 (session 6) — ADR-001 accepted, gate lifted
+
+- Clarified one sentence in ADR-001 step 2: the NCSC CAF/ISO SoA/SP 800-53B/GOV.UK convergence is
+  cited as prior-art evidence for the *status + reason* presentation pattern only — it does not
+  expand the control corpus or supply normative content, which stays sourced solely from the SSP
+  (`docs/assets/data/*.json`). The one exception (SP 800-53B's taxonomy borrowed as vocabulary in
+  step 2) is cross-referenced rather than left implicit. Also fixed a stray "five" → "six" in the
+  `scoped-out:*` category count.
+- **ADR-001 accepted.** Both ADRs are now `accepted` — `research/README.md` and
+  `research/QUESTIONS.md` (RQ-2's direction-set note) updated to match.
+- Gate lifted: the handover's condition ("nothing in README §4 site work proceeds until ADR-001 is
+  reviewed and accepted") is satisfied. Site work — tick-all-that-apply wizard, status+reason
+  rendering, ADR-002's schema migration — can now proceed.
+- `instructions.md` (the session-5 scratch handover) is now fully spent: its blocking condition
+  (§3) is resolved and its ingest-pipeline/eval items (§1, §2) were already done. Not deleted yet —
+  left for the user to remove.

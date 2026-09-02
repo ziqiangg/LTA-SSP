@@ -49,6 +49,7 @@ you should do".
 | [F-009](findings/F-009-system-type-pages-linked-to-404.md) | All 8 system-type pages linked their main CTA to a 404 | site | high | **actioned** |
 | [F-010](findings/F-010-eval-pilot-no-case-has-one-answer.md) | Blind eval pilot: no realistic description had a single correct answer | classifier, site | medium | open |
 | [F-011](findings/F-011-eval-answer-set-homogeneity.md) | 6 of 15 pilot cases share one identical hosting-unknown answer pair | classifier | medium | open |
+| [F-012](findings/F-012-sandbox-is-a-ladder-rung.md) | `sandbox` shares low/medium-risk-cloud's exact control set — it's a fourth ladder rung, not a flag | site, classifier | high | open |
 
 **F-008 was promoted 2026-09-01 (session 3, then extended session 4).** `controls.json`,
 `system-types.json` and `level-definitions.json` all now reproduce upstream exactly (or, for
@@ -63,11 +64,11 @@ no data change). No other system-type page carried the stale phrasing.
 
 **Decisions:**
 - [ADR-001](decisions/ADR-001-baseline-then-tailor-with-visible-tailoring.md) — baseline-then-tailor,
-  with the tailoring step made real, visible, and recorded (**proposed**, 2026-09-01, not yet
-  owner-accepted).
+  with the tailoring step made real, visible, and recorded (**accepted**, 2026-09-01, after revision
+  during owner review to add a formal baseline-resolution table, a status/reason taxonomy, and a
+  scoped-down minimal tailoring record — see F-012).
 - [ADR-002](decisions/ADR-002-split-guidance-into-recommendations-and-risk.md) — split the composed
-  `guidance` field into `recommendations` and `risk`/`rationale` (**proposed**, 2026-09-01, not yet
-  owner-accepted).
+  `guidance` field into `recommendations` and `risk`/`rationale` (**accepted**, 2026-09-01).
 
 Still waiting on an ADR: the F-001 guidance-recovery route — re-scrape vs OSCAL import vs hybrid
 (implicitly resolved via re-scrape at the F-008 rebuild, but never formally recorded as a decision).

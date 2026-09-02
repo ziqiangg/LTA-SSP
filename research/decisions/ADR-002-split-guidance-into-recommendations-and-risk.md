@@ -2,7 +2,7 @@
 id: ADR-002
 title: Split the composed `guidance` field into `recommendations` and `risk`/`rationale`
 date: 2026-09-01
-status: proposed
+status: accepted
 findings: [F-007, F-008]
 ---
 

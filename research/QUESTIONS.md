@@ -29,7 +29,7 @@ under RQ-6.
 ---
 
 ## RQ-2 — Where does the current wizard give wrong or unhelpful answers?
-**Implications:** site · **Status:** in-progress · **Findings:** F-004
+**Implications:** site · **Status:** in-progress · **Findings:** F-004, F-012
 
 The 7-node tree in `wizard.js` returns exactly one type, with no ranking and no way to express a
 composite system. Known suspects are catalogued in F-004: composite systems (GenAI + digital
@@ -40,21 +40,32 @@ high-risk cloud separable only by CII designation.
 classified as *fixable in the tree* / *needs a different interaction model* / *blocked upstream by
 the standard*.
 
-**Direction set 2026-09-01 (ADR-001, proposed):** composite-system unreachability (F-004 issue 1)
+**Direction set 2026-09-01 (ADR-001, accepted):** composite-system unreachability (F-004 issue 1)
 and no-persistence (issue 4) are now classified *needs a different interaction model* —
 tick-all-that-apply plus high-water-mark composition, per the ADR. On-premises never reaching a
 sensitivity question (issue 2) stays *blocked upstream* (the standard defines only one on-prem
 profile). This doesn't itself answer RQ-2 — issues 3 and 5 still need their own classification —
 but the ADR fixes the target model the remaining failure modes get classified against.
 
+**New failure mode found during ADR-001 review (F-012, 2026-09-01):** q4 (sandbox) is asked as a
+branch separate from q5-q7 (sensitivity/hosting), but `sandbox` shares the exact control membership
+of `low-risk-cloud`/`medium-risk-cloud` and is a strict subset of `high-risk-cloud` — it is the
+laxest rung of the same ladder, not a different kind of question. Classified *needs a different
+interaction model*, folded into the same tick-all-that-apply/`min()` fix as issues 1 and 4.
+
 ---
 
 ## RQ-3 — Which signals in a free-text description determine the type?
-**Implications:** classifier · **Status:** open · **Findings:** F-005
+**Implications:** classifier · **Status:** open · **Findings:** F-005, F-012
 
 The wizard's 7 questions imply 7 features: WOGAA-tracked, traffic volume, GenAI core function,
 non-production, CII designation, hosting location, sensitivity level. Are those extractable from
 prose? Which are usually absent? What else carries signal?
+
+**Revised 2026-09-01 (F-012):** "non-production" (sandbox) is not a separate boolean feature — it
+is the bottom value of the same hosting-sensitivity ordinal as CII/sensitivity level. The feature
+inventory should list one ordinal (sandbox < low < medium < high) rather than a sandbox flag plus a
+separate sensitivity feature.
 
 *Answered when:* we have a feature inventory, each marked for how reliably it appears in a
 realistic description, plus a first read on whether rule-based extraction is sufficient or
