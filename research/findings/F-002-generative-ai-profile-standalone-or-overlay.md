@@ -7,7 +7,7 @@ rq: [RQ-5, RQ-2]
 implications: [data, site, classifier]
 confidence: high
 status: confirmed
-site_issue: deferred
+site_issue: resolved
 ---
 
 > **Revised twice, then confirmed (2026-09-01).**
@@ -23,12 +23,17 @@ site_issue: deferred
 > itself is still not implemented, only the underlying question is settled.
 > This retires the "materially unsafe" framing I originally used. The wizard is **incomplete**, not
 > wrong: it cannot express a legitimate combination. That is a usability defect, not a safety one.
+>
+> *Fourth* — **`site_issue` resolved 2026-09-02.** The wizard fix flagged as deferred below has
+> shipped: ADR-001's tick-all-that-apply rewrite makes GenAI an independent, composable checkbox
+> (`docs/assets/js/wizard.js`'s `genai` tick) rather than a terminal branch — a user can now tick
+> it alongside any hosting rung and get the union. `site_issue` moves from `deferred` to `resolved`.
 
-> **Known site issue, deliberately deferred (2026-09-01).** Answering "yes" at wizard q3 terminates
-> with 9 controls and no hosting profile, and the wizard offers no way to say "GenAI *and*
-> cloud-hosted". Since composition is permitted rather than required, this is a usability defect —
-> the tool cannot express a valid answer — not under-protection. Deferred under the research-only
-> decision; recorded so it is not lost.
+> **Known site issue, resolved 2026-09-02.** Answering "yes" at the old wizard's q3 used to
+> terminate with 9 controls and no hosting profile, with no way to say "GenAI *and* cloud-hosted".
+> ADR-001's tick-all-that-apply rewrite fixed this: GenAI is now a composable checkbox, so a user
+> can tick it alongside any hosting rung and receive the union (`controls.js`'s high-water-mark
+> merge, F-005/F-007).
 
 ## Observation
 
@@ -118,10 +123,10 @@ F-007).
 
 ## Implications
 
-- **site:** The wizard routes GenAI as a **terminal** answer — q3 → yes → done — and cannot express
-  "GenAI *and* cloud-hosted", which is a legitimate combination. The fix is to let the user select
-  multiple applicable characteristics and to surface the hosting question rather than skipping it.
-  This is the concrete case for the tick-all-that-apply model in F-007.
+- **site:** ~~The wizard routes GenAI as a **terminal** answer — q3 → yes → done — and cannot
+  express "GenAI *and* cloud-hosted", which is a legitimate combination.~~ **Fixed 2026-09-02** —
+  ADR-001's tick-all-that-apply model (the fix this finding motivated, via F-007) lets GenAI
+  compose with any hosting rung.
 - **classifier:** Keep the output schema as `(base_type, overlays[], confidence)`, now on firmer
   ground: composition is a real, permitted state of the world, so a single-label schema would be
   unable to represent valid answers. `overlays[]` expresses standalone (empty) and composite alike.

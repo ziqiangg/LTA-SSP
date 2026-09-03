@@ -509,3 +509,114 @@ Entries record **what happened**; findings record **what is true**. Use `/resear
   targets now state-of-the-art, none left un-piped.
 - Open: none for this item — it's closed. Next session should pick up `instructions.md`'s
   remaining item, RQ-6 (score the wizard-tree baseline against the 15-case eval set).
+
+## 2026-09-03 (session 9) — stale wizard-model docs fixed, RQ-6 scoring methodology pinned (ADR-006)
+
+- Full-repo sweep for references to the retired "7-node wizard tree" (retired 2026-09-02 by
+  ADR-001/ADR-005). Fixed everywhere it was presented as still-current: `eval-set` skill and
+  `evals/README.md`'s "Baseline first" sections, `research/README.md`'s "The problem" framing
+  (which had contradicted its own later Decisions section), `QUESTIONS.md`'s RQ-2 opening line
+  (now past-tense) and RQ-3's feature inventory (now lists the current independent-characteristic
+  set), and F-004's stale "this tree... is the baseline" implication line. Left untouched, as
+  correctly historical: the prior-art cards (PA-002/003/006/008/011), `instructions.md`,
+  `docs/CLAUDE.md`, `JOURNAL.md`'s own past entries, the ADR files' Context sections, and
+  `wizard.js`'s header comment.
+- Reconciled three findings whose proposed site fixes had already shipped but whose `status`
+  metadata was never updated to match (F-004 already had this pattern from a prior session; these
+  three didn't): **F-007** (`open` → `actioned` — its top site recommendation shipped via ADR-001/
+  ADR-005), **F-012** (`open` → `actioned` — the sandbox-as-ladder-rung fix shipped in the same
+  rewrite), **F-002** (`site_issue: deferred` → `resolved` — GenAI is now a composable checkbox,
+  not a terminal wizard branch). F-010 got a one-line wording fix only (its stale `q7` node
+  reference) — `status` stays `open`, the underlying finding (users don't have the sensitivity
+  fact) is still true.
+- Filed **ADR-006** (RQ-6 baseline scoring methodology, accepted): resolves judgment calls the
+  eval-set skill's principles left implicit — what "mechanically applied" does and doesn't cover
+  (ticks are human-read, not RQ-3's automated extraction), the exact `wizard.js` `resolve()`
+  branching to score against (version-pinned, re-run required if the wizard changes again), how to
+  score the CII hedge (Top-1 miss, Top-3 hit, logged separately) and blocked outputs (miss, tagged
+  distinctly from a wrong guess), the missing-hosting-field fallback (genai/ds can still resolve
+  even when hosting is untouched — but ticking "cloud" with no rung is an immediate incomplete,
+  a real trap in `resolve()`'s control flow), and the majority-class definition over a set-valued
+  label space (most common whole `acceptable_answers` entry, not most common individual type id).
+- `QUESTIONS.md`'s RQ-6 entry updated: `Findings:` gains `ADR-006`, a new note records the
+  methodology as pinned while `Status` stays `open` — the baseline still hasn't actually been
+  *run*. `research/README.md`'s findings table and Decisions list updated to match.
+- Scope was deliberately docs-and-methodology only, per owner decision — no scorer script, no
+  Python port of `resolve()`, no actual baseline numbers this session. That's next: run ADR-006's
+  methodology against the 15-case pilot and write up `v1/results/wizard-baseline-<date>.md` plus
+  the majority-class floor.
+
+## 2026-09-03 (session 9, continued) — RQ-6 baseline run: majority-class floor beats the wizard
+
+- Ran the actual RQ-6 scoring per ADR-006: wrote `research/scripts/score_rq6_baseline.py` (a
+  Python port of `wizard.js`'s `resolve()`), hand-ticked all 15 pilot cases against their
+  descriptions (`cases-raw.jsonl`) per ADR-006 point 1, and scored both the rule-based wizard
+  baseline and the majority-class floor. **Majority-class floor (always `medium-risk-cloud`):
+  60.0% Top-1. Rule-based wizard baseline: 20.0% Top-1, 40.0% Top-3.** The floor wins outright.
+- Root cause: the wizard resolves to `incomplete` on 8/15 cases, all `hosting-unknown` — the
+  cloud-sensitivity-rung question only renders once `hosting = "cloud"` is ticked, so sensitivity
+  is unreachable whenever hosting isn't stated, regardless of how clearly the description signals
+  sensitive data. Filed as **F-013** (a genuine structural finding, not scorer noise), alongside
+  the retrieval-side numbers (precision 0.96 / recall 0.27 / F1 0.72 on resolvable cases; two
+  over-serving instances where the CII-hedge/rung-tie union pulled in `high-risk-cloud`'s 20 extra
+  controls with no acceptable answer needing them).
+- Full write-up: `research/evals/v1/results/wizard-baseline-2026-09-03.md`. Two methodological
+  points flagged there as open (not silently decided): the retrieval-ground-truth definition under
+  multi-answer labels, and extending ADR-006's hedge-scoring rule to rung ties (EV-011) by analogy
+  rather than by an explicit ADR clause — both worth folding into an ADR-006 amendment before a
+  second method is scored against this same baseline.
+- **RQ-6 moves to answered.** `QUESTIONS.md` and `research/README.md` updated (F-013 added to the
+  findings table, ADR-006's blurb points at the results file). This closes `instructions.md`'s
+  last open item; the next session should pick a next step from `QUESTIONS.md` fresh (RQ-1 and
+  RQ-3 are the remaining open classifier-track questions) rather than from a stale handover file.
+
+## 2026-09-03 (session 9, continued) — ADR-007: fixed the hosting-hedge gap F-013 found
+
+- Before scoping a fix, evaluated whether the wizard actually needed one, or whether F-013's poor
+  numbers were an eval-methodology artifact. Checked `docs/find-your-system-type/index.html`'s own
+  copy directly: it promises "tick more than one if unsure" and frames the tool as a conservative
+  starting-baseline builder, not a precise one-shot classifier — so RQ-6's exact-match Top-1
+  scoring is a harsher task than the tool claims to perform. That's real, but a narrower defect
+  survived the check independent of the eval score: the hosting question had **no** hedge
+  affordance at all (no "tick several," no "leave unticked" note), unlike CII and the sensitivity
+  rung, which already honour that promise. Confirmed directly in `wizard.js` before concluding a
+  fix was justified.
+- Filed **ADR-007**: hosting left unanswered now makes the sensitivity-rung and CII questions
+  reachable anyway (previously gated behind `hosting === "cloud"`), and ticking `low`/`sensitive`
+  composes the cloud-tier answer together with `low-risk-on-premises` — the same "compose
+  conservatively under disclosed uncertainty" idiom ADR-005 already uses for CII, extended one
+  axis. `sandbox` deliberately excluded (F-012: no on-premises sandbox profile exists to hedge
+  toward). Scoped narrowly on purpose — one file changed (`docs/assets/js/wizard.js`), no question
+  reordering, no new state field.
+- Re-ran `research/scripts/score_rq6_baseline.py` (updated for the new `resolve()` branching;
+  6 cases' ticks re-derived against the newly-reachable question). **Wizard baseline: 40% → 80%
+  Top-3**, now clearing the 60% majority-class floor it lost to that morning. Recall 0.27 → 0.67,
+  F1 0.72 → 0.84. Cost: the CII sub-hedge now stacks with the new hosting hedge on 4 more cases,
+  so over-serving instances (predicting `high-risk-cloud` when no acceptable answer needs it) grew
+  from 2 to 6 — a known, disclosed tradeoff, not a defect.
+- F-013 marked `actioned` with a resolution note (F-004's pattern — original Observation left
+  unedited). `QUESTIONS.md`'s RQ-6 entry, `research/README.md`'s Decisions/findings table, and
+  ADR-006 itself (a dated amendment note — its point-2 branching summary is now stale, matching
+  its own point-2 re-run trigger) all updated. Both the pre-fix and post-fix results files kept —
+  `wizard-baseline-2026-09-03.md` (now headed with a pointer to the re-run) and
+  `wizard-baseline-2026-09-03-adr007.md`.
+- Not done this session: manual Chrome verification of the new hosting-hedge UI (focus
+  preservation across the newly-conditional fieldsets, the new hint note's visibility, both
+  conflict blocks still firing with hosting blank). Flagged for next session or immediate
+  follow-up before calling this fully shipped — code + research bookkeeping are done, UI
+  verification per `docs/CLAUDE.md`'s design discipline is not.
+
+## 2026-09-03 (session 9, continued) — ADR-007 UI verification: pass
+
+- `site-critic` verified the ADR-007 hosting-hedge change live in Chrome: the new hosting hint
+  note, the sensitivity/CII fieldsets rendering with hosting blank, the three-type composed
+  result with both advisory notes, keyboard focus preserved across the tick (checked via
+  `document.activeElement`, not just visually), and both conflict blocks (on-prem+rung;
+  sandbox+CII) still firing correctly — including the sandbox+CII block now firing with hosting
+  blank, which wasn't reachable before this change. Console clean throughout.
+- One gap: the mobile (390px) screenshot couldn't be captured — `resize_window` failed
+  repeatedly in that session (looks like an environment/tool issue, not a size-parameter one).
+  Substituted a CSS read of the touched elements (`.check-list`, `.choice-option`,
+  `.placeholder-note`) — all flex-column/auto layouts, nothing fixed-width, so no new
+  mobile-overflow risk is expected — but this is inference, not a verified screenshot.
+  Recommend a follow-up mobile capture in a fresh session before treating this as fully closed.

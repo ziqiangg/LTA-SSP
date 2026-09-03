@@ -5,8 +5,18 @@ date: 2026-09-01
 rq: [RQ-2, RQ-3]
 implications: [site, classifier]
 confidence: high
-status: open
+status: actioned
 ---
+
+> **Resolved 2026-09-02.** The fix this finding proposed — hosting as one ordered characteristic
+> resolved by `min()`, not a separate sandbox tick-box — shipped as part of ADR-001's
+> tick-all-that-apply rewrite: `wizard.js`'s sensitivity-rung fieldset includes `sandbox` as a
+> checkbox alongside `low`/`sensitive`, all resolved through the same `cloudTierTypes()` path, not
+> a separate branch. `status` moves to `actioned`. The corpus gap this finding also names — no
+> `sandbox`-at-CII or `sandbox`-on-premises variant upstream — is unaffected and still open;
+> `wizard.js`'s conflict check now blocks exactly that combination (including the CII-unanswered
+> hedge) rather than silently resolving it — see
+> [ADR-005](../decisions/ADR-005-cii-as-independent-baseline-characteristic.md).
 
 ## Observation
 
@@ -69,10 +79,13 @@ one.
 
 ## Implications
 
-- **site:** ADR-001's tick-all-that-apply model should represent hosting as **one ordered
+- **site:** ~~ADR-001's tick-all-that-apply model should represent hosting as **one ordered
   characteristic with four rungs** (sandbox, low, medium, high) resolved by a single `min()`, not
-  as a hosting-tier tick-box plus a separate sandbox tick-box. `wizard.js`'s q4 and q5-q7 are
-  candidates for merging into one ordered question once ADR-001 moves to implementation.
+  as a hosting-tier tick-box plus a separate sandbox tick-box.~~ **Shipped 2026-09-02** — the
+  sensitivity-rung fieldset in `wizard.js` includes `sandbox` as a checkbox resolved through the
+  same `cloudTierTypes()` path as `low`/`sensitive`, not a separate branch (the rung count landed
+  at three, not four — ADR-005 subsequently merged the old `medium`/`high` rungs into one
+  `sensitive` band and split CII out as its own question).
 - **classifier:** The feature schema from F-004 should list hosting sensitivity as one ordinal
   (sandbox < low < medium < high) rather than a boolean sandbox flag plus a separate ordinal.
 - **classifier/site:** A description implying both "pilot/sandbox" and "CII" is evidence of an

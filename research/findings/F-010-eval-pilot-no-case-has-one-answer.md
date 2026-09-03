@@ -113,9 +113,10 @@ What is *not* uncertain: the schema defects below are demonstrated, not inferred
   missing the deciding fact measures the label distribution, not the method.
 - **classifier:** The output must include *which question would resolve the ambiguity*. On this
   evidence that is the most useful thing such a system can emit — more useful than the prediction.
-- **site:** The wizard asks for facts users do not have to hand. q7 asks for a Security Sensitivity
-  Level; nobody in this set knew theirs. FIPS 199's AMPLIFICATION pattern (F-007, PA-003) — asking
-  about *consequences* instead of *classifications* — addresses exactly this.
+- **site:** The wizard asks for facts users do not have to hand. The sensitivity-rung question
+  (formerly q7) asks for a Security Sensitivity Level; nobody in this set knew theirs. FIPS 199's
+  AMPLIFICATION pattern (F-007, PA-003) — asking about *consequences* instead of *classifications*
+  — addresses exactly this, and is still not implemented (F-007).
 - **site:** `EV-013` is worth carrying into any wizard redesign. A staging environment whose
   anonymisation has been silently failing routes to `sandbox` (3 mandatory + 114 optional controls)
   while holding live citizen data. The tree keys on the environment label; the risk lives in the

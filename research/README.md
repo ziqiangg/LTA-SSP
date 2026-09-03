@@ -5,14 +5,19 @@
 ## The problem
 
 Singapore's SSP publishes 248 controls across 26 domains. A user with a system has to work out
-which ~100 of them apply, and what to actually do about each. Today the only path is:
+which ~100 of them apply, and what to actually do about each. Today the path is:
 
-> answer 7 fixed questions → get exactly 1 of 8 system types → look up that type's control list
+> tick every characteristic that applies (hosting, sensitivity rung, CII, GenAI, digital-service)
+> → get a composed baseline of one or more system types → see every control with a status and a
+> reason
 
-That is `docs/assets/js/wizard.js` (a hardcoded tree that fetches nothing) feeding
-`docs/assets/js/controls.js` (a join against `profiles.json`). It works, but it cannot rank,
-cannot express a system that is two things at once, and stops at the type — never at "here is what
-you should do".
+That is `docs/assets/js/wizard.js` (fetches `system-types.json` to source its own option labels,
+per ADR-005) feeding `docs/assets/js/controls.js` (a join against `profiles.json`, high-water-mark
+composed when more than one type applies). It replaced a single-outcome 7-question tree on
+2026-09-02 (ADR-001, ADR-005) precisely because that tree couldn't rank, couldn't express a system
+that is two things at once, and stopped at the type. What it still doesn't do: derive guidance
+beyond the shipped `recommendations`/`risk` text, or help a user who doesn't know facts like
+hosting or CII designation to begin with (F-010).
 
 ## Two consumers of every finding
 
@@ -44,12 +49,13 @@ you should do".
 | [F-004](findings/F-004-wizard-tree-reachability-gaps.md) | The wizard tree has unreachable and forced outcomes | site, classifier | high | **actioned** |
 | [F-005](findings/F-005-profiles-are-nested.md) | Profiles nest, and OSCAL confirms it is deliberate | classifier, site | high | **confirmed** |
 | [F-006](findings/F-006-official-oscal-source-exists-but-partial.md) | An official OSCAL source exists, but is half-coverage and stale | data, site, classifier | high | open |
-| [F-007](findings/F-007-prior-art-synthesis-control-discovery.md) | Prior art solves selection *after* typing — nobody types from a description | site, classifier | high | open |
+| [F-007](findings/F-007-prior-art-synthesis-control-discovery.md) | Prior art solves selection *after* typing — nobody types from a description | site, classifier | high | **actioned** |
 | [F-008](findings/F-008-shipped-corpus-is-paraphrased-not-scraped.md) | **The shipped corpus is not a faithful scrape — most guidance was paraphrased** | data, site, classifier | high | **actioned** |
 | [F-009](findings/F-009-system-type-pages-linked-to-404.md) | All 8 system-type pages linked their main CTA to a 404 | site | high | **actioned** |
 | [F-010](findings/F-010-eval-pilot-no-case-has-one-answer.md) | Blind eval pilot: no realistic description had a single correct answer | classifier, site | medium | open |
 | [F-011](findings/F-011-eval-answer-set-homogeneity.md) | 6 of 15 pilot cases share one identical hosting-unknown answer pair | classifier | medium | open |
-| [F-012](findings/F-012-sandbox-is-a-ladder-rung.md) | `sandbox` shares low/medium-risk-cloud's exact control set — it's a fourth ladder rung, not a flag | site, classifier | high | open |
+| [F-012](findings/F-012-sandbox-is-a-ladder-rung.md) | `sandbox` shares low/medium-risk-cloud's exact control set — it's a fourth ladder rung, not a flag | site, classifier | high | **actioned** |
+| [F-013](findings/F-013-majority-class-beats-wizard-baseline.md) | On the 15-case pilot, always guessing `medium-risk-cloud` beat the rule-based wizard baseline (60% vs. 20% Top-1) — fixed same day, ADR-007 | site, classifier | medium | **actioned** |
 
 **F-008 was promoted 2026-09-01 (session 3, then extended sessions 4 and 8).** All four shipped
 corpus files — `controls.json`, `system-types.json`, `level-definitions.json`, and now
@@ -86,6 +92,17 @@ no data change). No other system-type page carried the stale phrasing.
   its own baseline characteristic, not folded into the sensitivity rung (**accepted**, 2026-09-02).
   Resolves RQ-2 issues 3 and 5 against the shipped wizard; amends ADR-001's baseline-resolution
   table (`medium`/`high` rungs merge into one band; CII becomes a fifth, independent characteristic).
+- [ADR-006](decisions/ADR-006-rq6-baseline-scoring-methodology.md) — pins the RQ-6 baseline scoring
+  methodology: what "mechanically applied" covers, how to score the wizard's CII hedge and
+  blocked/conflict outputs, the majority-class definition, and the metric set (**accepted**,
+  2026-09-03). Run the same day —
+  [results](evals/v1/results/wizard-baseline-2026-09-03.md); **RQ-6 → answered**, see F-013.
+  Amended same day by ADR-007.
+- [ADR-007](decisions/ADR-007-hosting-unknown-hedges-with-on-premises.md) — hosting-unknown now
+  hedges with `low-risk-on-premises` when a sensitivity rung is ticked, extending ADR-005's CII
+  hedge idiom to the one axis that lacked it (**accepted**, 2026-09-03). Fixes F-013's site-level
+  cause; re-scored the same day —
+  [results](evals/v1/results/wizard-baseline-2026-09-03-adr007.md), wizard Top-3 40% → 80%.
 
 Prior-art cards: `prior-art/PA-001..PA-013`, indexed in F-007. Read F-007 rather than the cards.
 

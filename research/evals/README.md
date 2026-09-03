@@ -45,9 +45,13 @@ Two constraints established during setup, both from findings:
 
 ## Baseline first
 
-Score the existing 7-node wizard tree (`docs/assets/js/wizard.js`, mechanically applied) and the
-majority-class floor before evaluating anything else. Every later method reports as a delta
-against those two numbers.
+Score today's shipped `wizard.js` logic (tick-all-that-apply + high-water-mark composition, CII
+resolved independently per ADR-005) and the majority-class floor before evaluating anything else.
+Every later method reports as a delta against those two numbers.
+
+The exact scoring rules — how to score the CII hedge, blocked/conflict outputs, missing-field
+cases, the majority-class definition, and the full metric set — are pinned in
+`research/decisions/ADR-006-rq6-baseline-scoring-methodology.md`, not restated here.
 
 Results go in `v1/results/<method>-<date>.md`, each recording method, configuration, eval version
 and date. A result without its configuration is not reproducible and must not be cited.

@@ -5,9 +5,22 @@ date: 2026-09-01
 rq: [RQ-4, RQ-3, RQ-6]
 implications: [site, classifier]
 confidence: high
-status: open
+status: actioned
 sources: [PA-001, PA-002, PA-003, PA-004, PA-005, PA-006, PA-007, PA-008, PA-009, PA-010, PA-011, PA-012, PA-013]
 ---
+
+> **Primary site recommendation actioned 2026-09-02.** This finding's top site recommendation —
+> "replace the 7-question tree with tick-all-that-apply plus a high-water-mark resolve" (below) —
+> shipped as ADR-001 (implemented 2026-09-02) and ADR-005 (CII split into its own characteristic,
+> 2026-09-02). The "render all controls with a status and a reason" recommendation also shipped,
+> via ADR-001 step 2 (`controls.js`'s mechanical `in-profile`/`not-in-profile` status). The "split
+> the conflated axes" and "which direction does this tool serve" recommendations are **not** fully
+> resolved — the wizard now composes independent characteristics, a step toward the former, but
+> `profiles.json` itself still ships 8 discrete type ids rather than an orthogonal decomposition,
+> and no ADR has settled the ISO-vs-NIST framing question. `status` moves to `actioned` to reflect
+> that the finding's actionable core has been acted on; its open synthesis questions (crosswalk
+> disagreement rates, the overlay-conflict literature gap, the framing tension) remain live
+> research below, not implementation debt.
 
 ## Observation
 
@@ -82,9 +95,10 @@ direction this tool serves is an **ADR-level decision**, not an implementation d
 - **site (highest value, cheapest):** Render *all* controls with a status and a reason rather than
   a filtered list — four independent frameworks converge on this. It directly addresses the "why
   does this apply to me" gap and needs no data-model change, only `controls.js` presentation.
-- **site:** Replace the 7-question tree with tick-all-that-apply plus a high-water-mark resolve
-  (PA-003). Rewrite the risk-tier question using FIPS 199's AMPLIFICATION pattern — concrete
-  consequences rather than classification jargon — which is pure copy-editing in `wizard.js`.
+- **site:** ~~Replace the 7-question tree with tick-all-that-apply plus a high-water-mark resolve
+  (PA-003).~~ **Shipped 2026-09-02** (ADR-001, ADR-005). Still open: rewrite the risk-tier question
+  using FIPS 199's AMPLIFICATION pattern — concrete consequences rather than classification jargon
+  — which is pure copy-editing in `wizard.js`.
 - **site:** Split the conflated axes. Our 8 types mix *what kind of thing it is* (cloud / digital
   service) with *how bad if it fails* (low / medium / high). FIPS 199 keeps these orthogonal; doing
   the same would yield 8 combinations from ~4 answers and make the nesting explainable rather than

@@ -31,8 +31,8 @@ under RQ-6.
 ## RQ-2 — Where does the current wizard give wrong or unhelpful answers?
 **Implications:** site · **Status:** **answered** 2026-09-02 · **Findings:** F-004, F-012, ADR-005
 
-The 7-node tree in `wizard.js` returns exactly one type, with no ranking and no way to express a
-composite system. Known suspects are catalogued in F-004: composite systems (GenAI + digital
+The 7-node tree in `wizard.js` **returned** exactly one type, with no ranking and no way to express
+a composite system. Known suspects were catalogued in F-004: composite systems (GenAI + digital
 service) unreachable, on-premises never reaching the sensitivity question, and medium vs.
 high-risk cloud separable only by CII designation.
 
@@ -70,9 +70,11 @@ hasn't been run against the current model.
 ## RQ-3 — Which signals in a free-text description determine the type?
 **Implications:** classifier · **Status:** open · **Findings:** F-005, F-012
 
-The wizard's 7 questions imply 7 features: WOGAA-tracked, traffic volume, GenAI core function,
-non-production, CII designation, hosting location, sensitivity level. Are those extractable from
-prose? Which are usually absent? What else carries signal?
+The wizard's current tick-all-that-apply model implies the same underlying features the old
+7-question tree did, now asked as independent characteristics rather than one exclusive path:
+WOGAA-tracked, traffic volume, GenAI core function, hosting location, a sandbox/low/sensitive
+hosting-sensitivity rung, and — split out on its own since ADR-005 — CII designation. Are those
+extractable from prose? Which are usually absent? What else carries signal?
 
 **Revised 2026-09-01 (F-012):** "non-production" (sandbox) is not a separate boolean feature — it
 is the bottom value of the same hosting-sensitivity ordinal as CII/sensitivity level. The feature
@@ -142,10 +144,13 @@ not yet owner-accepted).**
 ---
 
 ## RQ-6 — What does a defensible eval look like, and what is the baseline?
-**Implications:** classifier · **Status:** open · **Findings:** F-010, F-011
+**Implications:** classifier · **Status:** **answered** 2026-09-03 · **Findings:** F-010, F-011,
+F-013, ADR-006
 
 Nothing can be claimed about semantic or LLM approaches until the rule-based baseline — today's
-wizard tree, mechanically applied — is measured on a labelled set.
+wizard logic (tick-all-that-apply + high-water-mark composition, CII independent per ADR-005),
+mechanically applied per [ADR-006](decisions/ADR-006-rq6-baseline-scoring-methodology.md) — is
+measured on a labelled set.
 
 **Scaling deferred 2026-09-02.** Scaling `evals/v1/` to ~120-160 cases is deferred indefinitely —
 settling with the current 15-case pilot rather than generating more. F-010's and F-011's findings
@@ -153,9 +158,25 @@ settling with the current 15-case pilot rather than generating more. F-010's and
 constrain what the 15-case set can claim; scaling was how this ADR-free decision proposed to
 address F-011's specific homogeneity risk, not a prerequisite for scoring a baseline at all.
 
-*Answered when:* `evals/v1/` (currently 15 labelled cases) has an ambiguity-tag breakdown, and the
-wizard-tree baseline plus the majority-class floor are both scored and written up against it. The
-120-160 target is no longer the bar — see the deferral note above.
+**Scoring methodology pinned 2026-09-03 (ADR-006).** Before this, "mechanically applied" left
+several judgment calls implicit — how to score the wizard's CII-hedge output, blocked/conflict
+outputs, and missing-field cases, and what "majority class" means over a set-valued label space.
+ADR-006 resolves each.
+
+**Answered 2026-09-03.** Both scored against the 15-case pilot per ADR-006 —
+`research/evals/v1/results/wizard-baseline-2026-09-03.md`. **Majority-class floor: 60.0% Top-1
+(always guess `medium-risk-cloud`). Rule-based wizard baseline: 20.0% Top-1, 40.0% Top-3** — the
+floor beat the baseline outright. The wizard resolved to `incomplete` on 8/15 cases, all
+`hosting-unknown`, because the sensitivity-rung question only rendered once `hosting = "cloud"`
+was ticked — sensitivity was gated behind hosting, not askable independently. Filed as **F-013**.
+
+**Fixed and re-scored, same day (ADR-007, F-013's resolution note).** The hosting-gates-sensitivity
+gap was a real, narrow site defect independent of the eval numbers — the wizard's own copy
+promises "tick more than one if unsure," and every other axis (CII, sensitivity rung) already
+honoured that except hosting. ADR-007 extended the existing CII-hedge idiom to hosting. Re-run:
+**wizard baseline moves to 20.0% Top-1, 80.0% Top-3** —
+`research/evals/v1/results/wizard-baseline-2026-09-03-adr007.md` — now clearing the majority-class
+floor. These are the current figures any semantic or LLM method reports a delta against.
 
 *Run via:* `eval-set` skill.
 

@@ -149,10 +149,15 @@ Two published anchors (F-007, cards PA-009/PA-010). Use them; do not set targets
 
 ## Baseline first
 
-Establish the **rule-based baseline** — today's 7-node wizard tree in `docs/assets/js/wizard.js`,
-mechanically applied — before evaluating anything else. Every later method reports as a delta
-against it. Also record the **majority-class** floor, so an apparently good number can be checked
-against doing nothing.
+Establish the **rule-based baseline** — today's shipped `wizard.js` logic (tick-all-that-apply +
+high-water-mark composition, CII resolved independently per ADR-005), mechanically applied —
+before evaluating anything else. Every later method reports as a delta against it. Also record the
+**majority-class** floor, so an apparently good number can be checked against doing nothing.
+
+The exact scoring rules — how to score the wizard's CII hedge, blocked/conflict outputs,
+missing-field cases, the majority-class definition, and the full metric set — are pinned in
+`research/decisions/ADR-006-rq6-baseline-scoring-methodology.md`. Read it before writing a scorer
+rather than re-deriving these rules here.
 
 Log every run with the method, its configuration, the eval version, and the date. A result without
 its configuration is not reproducible and should not be cited in a finding.

@@ -94,7 +94,10 @@ on-premises profile, so no interaction model fixes it — only clearer disclosur
   sensitivity level. Note that at least two (CII designation, WOGAA tracking) are **administrative
   facts not inferable from a system description**, which puts a hard ceiling on any text-only
   classifier. Output should be `(base_type, overlays[], confidence)`, not a single label.
-- This tree, mechanically applied, is the **baseline** RQ-6 must score first.
+- ~~This tree, mechanically applied, is the **baseline** RQ-6 must score first.~~ Superseded: the
+  baseline RQ-6 scores is the wizard's *current* logic (tick-all-that-apply + high-water-mark
+  composition, CII independent per ADR-005), not this retired tree — see
+  [ADR-006](../decisions/ADR-006-rq6-baseline-scoring-methodology.md) for the exact scoring rules.
 
 ## Open questions
 

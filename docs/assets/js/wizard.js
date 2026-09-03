@@ -20,6 +20,16 @@
   // medium-risk-cloud and high-risk-cloud have byte-for-byte identical
   // classificationText in the corpus, so sensitivity alone cannot distinguish them —
   // only CII designation does (RQ-2 issue 3).
+  //
+  // Leaving "Where is it hosted?" unanswered no longer dead-ends the sensitivity
+  // question (ADR-007): ticking a sensitivity rung with hosting blank composes the
+  // relevant cloud tier(s) together with the single on-premises baseline, since
+  // on-premises doesn't branch by sensitivity either (F-004 issue 2). This is the
+  // same "compose conservatively under disclosed uncertainty" idiom ADR-005 already
+  // uses for CII, extended one axis further — RQ-6's baseline run (F-013) found 8 of
+  // 15 pilot cases dead-ended here specifically, breaking this tool's own stated
+  // "tick more than one if unsure" contract for exactly the one axis that had no
+  // hedge affordance at all.
 
   var DATA_BASE = "../assets/data/";
 
@@ -107,8 +117,20 @@
         };
       }
       types.push("low-risk-on-premises");
-    } else if (state.hosting === "cloud") {
-      if (!state.rungs.size) return { incomplete: true };
+    } else if (state.hosting === "cloud" && !state.rungs.size) {
+      return { incomplete: true };
+    }
+
+    // Cloud sensitivity rungs resolve the same way whether hosting is
+    // explicitly "cloud" or genuinely unanswered (F-013/ADR-007): "I don't
+    // know if this is cloud or on-premises, but I know the data is
+    // sensitive" has an honest answer. Composes the relevant cloud tier(s)
+    // and, when hosting is blank and a non-sandbox rung was ticked, the
+    // single on-premises baseline too — on-premises doesn't branch by
+    // sensitivity either (F-004 issue 2). Sandbox is excluded from this
+    // hedge: F-012 found no on-premises sandbox profile exists upstream to
+    // hedge toward.
+    if (state.hosting !== "on-premises" && state.rungs.size) {
       var cloudTypes = cloudTierTypes();
       if (state.rungs.has("sandbox") && cloudTypes.indexOf("high-risk-cloud") !== -1) {
         return {
@@ -121,6 +143,14 @@
         };
       }
       types = types.concat(cloudTypes);
+      if (state.hosting === "" && (state.rungs.has("low") || state.rungs.has("sensitive"))) {
+        types.push("low-risk-on-premises");
+        notes.push(
+          "Hosting not specified — composing the relevant cloud tier(s) together with the " +
+          "single on-premises baseline, since sensitivity level doesn't change the " +
+          "on-premises profile. Answer “Where is it hosted?” above for a narrower result."
+        );
+      }
     }
 
     if (state.rungs.has("sensitive") && state.cii === "") {
@@ -277,10 +307,21 @@
       "radio"
     );
     hostingFieldset.appendChild(hostingList);
+    if (!state.hosting) {
+      hostingFieldset.appendChild(el(
+        "p",
+        "placeholder-note",
+        "Not sure, or a third party manages it? Leave both unticked — ticking a sensitivity " +
+        "band below will still give you a combined baseline covering the relevant cloud tier " +
+        "and the single on-premises profile."
+      ));
+    }
     app.appendChild(hostingFieldset);
 
-    // --- Cloud sensitivity rung (only once "cloud" is chosen) ---
-    if (state.hosting === "cloud") {
+    // --- Cloud sensitivity rung (once "cloud" is chosen, or hosting is left
+    // unanswered — F-013/ADR-007: ticking a rung with hosting blank still
+    // resolves to an honest combined baseline, see resolve()) ---
+    if (state.hosting !== "on-premises") {
       var rungFieldset = el("fieldset");
       rungFieldset.appendChild(el("legend", null, "Sensitivity rung — tick one, or several if unsure"));
       var rungList = el("div", "check-list");
@@ -305,7 +346,7 @@
     }
 
     // --- CII designation (only once the "sensitive" band is ticked) ---
-    if (state.hosting === "cloud" && state.rungs.has("sensitive")) {
+    if (state.hosting !== "on-premises" && state.rungs.has("sensitive")) {
       var ciiFieldset = el("fieldset");
       ciiFieldset.appendChild(el("legend", null, "Is this system designated Critical Information Infrastructure (CII)?"));
       var ciiList = el("div", "check-list");
