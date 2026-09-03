@@ -21,6 +21,7 @@
   var domains = [];
   var systemTypes = [];
   var profiles = {};
+  var levelDefinitions = {};
   var domainsById = {};
   var systemTypesById = {};
 
@@ -293,6 +294,50 @@
     });
   }
 
+  // F-003: level-definitions.json carries the only official prose for what
+  // L0/L1/L2 mean and the standard's one sentence of selectionGuidance —
+  // both were committed but fetched by nothing. Rendered once here (not
+  // inside renderLevelFilter(), which rebuilds on every type change) since
+  // the content is static regardless of which type is selected.
+  function renderLevelLegend() {
+    var container = document.getElementById("level-legend");
+    if (!container || !levelDefinitions["0"]) return;
+    container.innerHTML = "";
+
+    var details = document.createElement("details");
+    var summary = document.createElement("summary");
+    summary.textContent = "What do these levels mean?";
+    details.appendChild(summary);
+
+    var dl = document.createElement("dl");
+    [
+      ["L0 — " + LEVEL_LABEL[0], levelDefinitions["0"]],
+      ["L1 — " + LEVEL_LABEL[1], levelDefinitions["1"]],
+      ["L2 — " + LEVEL_LABEL[2], levelDefinitions["2"]]
+    ].forEach(function (pair) {
+      var dt = document.createElement("dt");
+      dt.textContent = pair[0];
+      var dd = document.createElement("dd");
+      dd.textContent = pair[1];
+      dl.appendChild(dt);
+      dl.appendChild(dd);
+    });
+    details.appendChild(dl);
+
+    var guidance = document.createElement("p");
+    guidance.className = "control-guidance";
+    guidance.textContent = levelDefinitions.selectionGuidance + " — ";
+    var link = document.createElement("a");
+    link.href = levelDefinitions.sourceUrl;
+    link.className = "source-link";
+    link.textContent = "the official standard";
+    guidance.appendChild(link);
+    guidance.appendChild(document.createTextNode("."));
+    details.appendChild(guidance);
+
+    container.appendChild(details);
+  }
+
   function renderDomainFilter() {
     domainFilter.innerHTML = "";
     if (!state.type) return;
@@ -506,13 +551,15 @@
       fetch(DATA_BASE + "controls.json").then(function (r) { return r.json(); }),
       fetch(DATA_BASE + "domains.json").then(function (r) { return r.json(); }),
       fetch(DATA_BASE + "system-types.json").then(function (r) { return r.json(); }),
-      fetch(DATA_BASE + "profiles.json").then(function (r) { return r.json(); })
+      fetch(DATA_BASE + "profiles.json").then(function (r) { return r.json(); }),
+      fetch(DATA_BASE + "level-definitions.json").then(function (r) { return r.json(); })
     ])
       .then(function (results) {
         controls = results[0];
         domains = results[1];
         systemTypes = results[2];
         profiles = results[3];
+        levelDefinitions = results[4];
         domains.forEach(function (d) { domainsById[d.id] = d; });
         systemTypes.forEach(function (t) { systemTypesById[t.id] = t; });
 
@@ -523,6 +570,7 @@
 
         renderTypeOptions();
         renderLevelFilter();
+        renderLevelLegend();
         renderDomainFilter();
         searchInput.value = state.q;
         renderResults();

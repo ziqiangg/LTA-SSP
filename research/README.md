@@ -45,7 +45,7 @@ hosting or CII designation to begin with (F-010).
 |---|---|---|---|---|
 | [F-001](findings/F-001-guidance-gaps-cluster-by-domain.md) | Missing `guidance` is four whole domains — a scrape failure, recoverable | data | high | **confirmed** |
 | [F-002](findings/F-002-generative-ai-profile-standalone-or-overlay.md) | `generative-ai` is 9 controls and upstream never says whether it stands alone | data, site, classifier | high | **confirmed** |
-| [F-003](findings/F-003-level-definitions-dead-and-contradicted.md) | `level-definitions.json` is dead data and the UI contradicts it | data, site | high | open |
+| [F-003](findings/F-003-level-definitions-dead-and-contradicted.md) | `level-definitions.json` is dead data and the UI contradicts it | data, site | high | **actioned** |
 | [F-004](findings/F-004-wizard-tree-reachability-gaps.md) | The wizard tree has unreachable and forced outcomes | site, classifier | high | **actioned** |
 | [F-005](findings/F-005-profiles-are-nested.md) | Profiles nest, and OSCAL confirms it is deliberate | classifier, site | high | **confirmed** |
 | [F-006](findings/F-006-official-oscal-source-exists-but-partial.md) | An official OSCAL source exists, but is half-coverage and stale | data, site, classifier | high | open |
@@ -56,12 +56,14 @@ hosting or CII designation to begin with (F-010).
 | [F-011](findings/F-011-eval-answer-set-homogeneity.md) | 6 of 15 pilot cases share one identical hosting-unknown answer pair | classifier | medium | open |
 | [F-012](findings/F-012-sandbox-is-a-ladder-rung.md) | `sandbox` shares low/medium-risk-cloud's exact control set — it's a fourth ladder rung, not a flag | site, classifier | high | **actioned** |
 | [F-013](findings/F-013-majority-class-beats-wizard-baseline.md) | On the 15-case pilot, always guessing `medium-risk-cloud` beat the rule-based wizard baseline (60% vs. 20% Top-1) — fixed same day, ADR-007 | site, classifier | medium | **actioned** |
+| [F-014](findings/F-014-scrape-footer-contamination-on-last-control.md) | `scrape.py`'s missing end-of-page landmark let site footer/nav chrome leak into 20 controls' `risk`/`rationale` and fabricate their `citations` | data, site | high | **actioned** |
 
 **F-008 was promoted 2026-09-01 (session 3, then extended sessions 4 and 8).** All four shipped
 corpus files — `controls.json`, `system-types.json`, `level-definitions.json`, and now
 `domains.json` — have been run through the full fetch → parse → diff → verify → promote pipeline
 and reproduce upstream exactly (or, for `system-types.json`'s `name` field, differ from upstream
-by one confirmed live typo — see F-008's header note).
+by one confirmed live typo — see F-008's header note; or, for `controls.json`, until F-014 found
+and fixed a separate footer-contamination defect on 2026-09-03 — see below).
 
 **Known drift, since fixed:** `docs/system-types/sandbox/index.html` hardcoded the pre-correction
 paraphrased sensitivity text ("Security sensitivity level designated as…") that

@@ -347,12 +347,54 @@ def cmd_gaps(c, args):
     print()
 
     print("== level-definitions.json ==")
-    print("fetched by no JS file "
-          "(controls.js loads controls/domains/system-types/profiles only)")
-    print("UI labels in controls.js: {0:'Mandatory', 1:'Baseline', 2:'Optional'}")
+    print("fetched by controls.js (level legend) and wizard.js (selectionGuidance) — F-003")
+    print("UI badge labels in controls.js: {0:'Mandatory', 1:'Baseline', 2:'Optional'}")
     for k in ("0", "1", "2"):
         print("  L%s: %s" % (k, c["levels"][k]))
     print("  selectionGuidance: %s" % c["levels"]["selectionGuidance"])
+    print()
+
+    # F-014: page chrome (nav/footer) leaking past scrape.py's per-control boundary
+    # into text fields, and the same chrome's links shipping as fake citations. Would
+    # have caught the 20-control contamination this scan is named for the first time
+    # it happened -- run this after every scrape, not just once after a known incident.
+    print("== scrape contamination (F-014) ==")
+    CHROME_SUBSTRINGS = ("see all pages", "back to top", "isomer", "other pages in")
+    TEXT_FIELDS = ("description", "recommendations", "risk", "rationale")
+    contaminated_text = []
+    for x in controls:
+        for f in TEXT_FIELDS:
+            val = (x.get(f) or "").lower()
+            if any(s in val for s in CHROME_SUBSTRINGS):
+                contaminated_text.append((x["id"], f))
+    print("controls with chrome text in a content field: %d" % len(contaminated_text))
+    for cid, f in contaminated_text:
+        print("  %s (%s)" % (cid, f))
+
+    degenerate_cites = []
+    for x in controls:
+        for cite in (x.get("citations") or []):
+            url = (cite.get("url") or "").strip()
+            if not url or url == "#":
+                degenerate_cites.append((x["id"], cite.get("standard")))
+    print("citations with a degenerate (#/empty) url: %d" % len(degenerate_cites))
+    print("  (a missing url alone isn't necessarily wrong -- AS-11/AS-14/CK-2/CK-3/PM-1 are "
+          "known-legitimate standards named in prose but never hyperlinked upstream, per "
+          "promote.py's build_citations() docstring. A chrome-looking standard name like "
+          "'Back to top' is the actual signal.)")
+    for cid, standard in degenerate_cites:
+        print("  %s: %r" % (cid, standard))
+
+    by_citeset = defaultdict(list)
+    for x in controls:
+        cites = x.get("citations") or []
+        if cites:
+            key = frozenset((cite.get("standard"), cite.get("url")) for cite in cites)
+            by_citeset[key].append(x["id"])
+    dupes = {k: v for k, v in by_citeset.items() if len(v) > 1}
+    print("identical citation sets shared across >1 control: %d" % len(dupes))
+    for ids in dupes.values():
+        print("  %s" % ids)
 
 
 def main():

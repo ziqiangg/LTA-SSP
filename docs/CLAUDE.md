@@ -12,11 +12,12 @@ this rule binds `docs/` absolutely.** (Python is allowed in `research/`; it neve
 - Shared assets in `docs/assets/{css,data,img,js}/`.
 - Root `docs/index.html` = the tool's landing page — this repo IS the SSP tool, there's no
   separate portfolio section.
-- `docs/assets/data/*.json` (controls, domains, profiles, system-types) is fetched at runtime
-  by `docs/assets/js/controls.js`. `docs/assets/js/wizard.js` fetches `system-types.json` only —
-  to source display names and `classificationText` for its own option labels (ADR-005) — and
-  never `controls.json`/`domains.json`/`profiles.json`; composition stays `controls.js`'s job.
-  `level-definitions.json` is currently fetched by nothing.
+- `docs/assets/data/*.json` (controls, domains, profiles, system-types, level-definitions) is
+  fetched at runtime by `docs/assets/js/controls.js`. `docs/assets/js/wizard.js` fetches
+  `system-types.json` (display names and `classificationText` for its own option labels, ADR-005)
+  and `level-definitions.json` (the standard's `selectionGuidance` sentence, shown on every
+  computed result, F-003) — never `controls.json`/`domains.json`/`profiles.json`; composition
+  stays `controls.js`'s job.
 
 ## Rules
 - Do not introduce a build step, bundler, or framework unless explicitly asked.

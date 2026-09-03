@@ -123,19 +123,41 @@ def sort_key(cid):
     return (m.group(1), int(m.group(2))) if m else (cid, 0)
 
 
-def build_citations(u, shipped):
+# F-014: names that are site chrome (nav/footer), never a real standard reference --
+# the Isomer government template's fixed strings, plus the two catalog display names.
+# A missing standard name isn't this signal by itself (AS-11/AS-14/CK-2/CK-3/PM-1 are
+# legitimate standards named in prose but never hyperlinked, per F-008) -- only a name
+# that itself reads as navigation/footer chrome is. Domain display names are added at
+# call time from the shipped domains list, since there are 26 of them and they aren't
+# worth hand-maintaining here.
+CHROME_STANDARD_NAMES = {
+    "cybersecurity", "digital service standards", "see all pages", "back to top",
+    "about", "ssp", "control catalog", "highlights", "contact", "feedback",
+    "report vulnerability", "privacy statement", "terms of use", "reach",
+}
+
+
+def build_citations(u, shipped, chrome_names=CHROME_STANDARD_NAMES):
     """Prefer upstream hyperlinks; fall back to the existing prose-derived entries.
 
     The 5 controls with shipped citations but no upstream link (AS-11, AS-14, CK-2,
     CK-3, PM-1) were verified to name those standards in upstream prose — they are
     real, just not hyperlinked. Dropping them would lose information.
+
+    F-014: the shipped schema carries no `url` for citations, only `standard` (+
+    optional `reference`) — so the fallback below can only filter chrome by name, not
+    by URL. `chrome_names` must include every domain/catalog display name in play, not
+    just the fixed footer strings, since a page's own category-nav links use those too.
     """
     links = u.get("links") or []
     if links:
         out, seen = [], set()
         for l in links:
             text, href = norm(l.get("text")), l.get("href")
-            if not text or text.lower() in seen:
+            # F-014 defense-in-depth: a citation can never legitimately be a bare
+            # in-page anchor. Independent of scrape.py's own chrome-boundary fix --
+            # cheap insurance that doesn't rely on that fix being exhaustive.
+            if not text or not href or href == "#" or text.lower() in seen:
                 continue
             seen.add(text.lower())
             out.append({"standard": text, "url": href})
@@ -146,11 +168,16 @@ def build_citations(u, shipped):
         return None
     cleaned = []
     for c in cits:
+        # F-014: don't blindly trust old shipped citations -- a control whose
+        # upstream scrape now correctly shows no links may have inherited chrome
+        # that shipped before this defect was found and fixed.
+        if norm(c["standard"]).lower() in chrome_names:
+            continue
         e = {"standard": c["standard"]}
         if c.get("reference") and norm(c["reference"]) != norm(c["standard"]):
             e["reference"] = c["reference"]
         cleaned.append(e)
-    return cleaned
+    return cleaned or None
 
 
 def build_controls():
@@ -159,6 +186,12 @@ def build_controls():
     if set(up) != set(lo):
         raise SystemExit("REFUSING: scraped and shipped control ids differ. Re-run "
                          "diff_corpus.py and investigate before promoting.")
+
+    # F-014: domain display names are chrome in a citations context (a page's own
+    # category-nav links use them) even though they're legitimate as domain names
+    # everywhere else -- add them to the fixed chrome-name set for this run only.
+    domains = json.loads(SHIPPED["domains"].read_text(encoding="utf-8"))
+    chrome_names = CHROME_STANDARD_NAMES | {norm(d["name"]).lower() for d in domains}
 
     out, changes = [], Counter()
     for cid in sorted(up, key=sort_key):
@@ -180,7 +213,7 @@ def build_controls():
             rec["risk"] = norm(u.get("risk", ""))
         if u.get("parameters"):
             rec["parameters"] = u["parameters"]
-        cits = build_citations(u, s)
+        cits = build_citations(u, s, chrome_names)
         if cits:
             rec["citations"] = cits
 
@@ -201,6 +234,8 @@ def build_controls():
             changes["citations added"] += 1
         elif cits and s.get("citations") and cits != s["citations"]:
             changes["citations corrected"] += 1
+        elif not cits and s.get("citations"):
+            changes["citations removed (was chrome, F-014)"] += 1
 
         out.append({k: rec[k] for k in FIELD_ORDER if k in rec})
 

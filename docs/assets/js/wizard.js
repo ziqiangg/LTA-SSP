@@ -30,6 +30,11 @@
   // 15 pilot cases dead-ended here specifically, breaking this tool's own stated
   // "tick more than one if unsure" contract for exactly the one axis that had no
   // hedge affordance at all.
+  //
+  // Also fetches level-definitions.json (F-003) to show the standard's own
+  // selectionGuidance sentence on every computed result — this tool constructs a
+  // starting baseline, and F-003 found the standard's one line on how selection is
+  // actually meant to work was committed to the corpus but shown to nobody.
 
   var DATA_BASE = "../assets/data/";
 
@@ -37,6 +42,7 @@
   if (!app) return;
 
   var systemTypesById = {};
+  var levelDefinitions = {};
 
   // Ordered ladder from F-005/F-012: sandbox and low-risk-cloud share the same
   // 117-control membership as the sensitive band's medium-risk-cloud reading (differing
@@ -245,6 +251,21 @@
     result.notes.forEach(function (n) {
       box.appendChild(el("p", "placeholder-note", n));
     });
+
+    // F-003: the composed list above is this tool's own construction, not an
+    // upstream determination — the standard's one sentence on how controls
+    // are actually meant to be selected belongs right where that baseline is
+    // handed over, not left in the unfetched level-definitions.json.
+    if (levelDefinitions.selectionGuidance) {
+      var guidance = el("p", "control-guidance", levelDefinitions.selectionGuidance + " — ");
+      var link = document.createElement("a");
+      link.className = "source-link";
+      link.href = levelDefinitions.sourceUrl;
+      link.textContent = "the official standard";
+      guidance.appendChild(link);
+      guidance.appendChild(document.createTextNode("."));
+      box.appendChild(guidance);
+    }
 
     var typeParam = result.types.join(",");
     var grid = el("div", "wizard-result");
@@ -460,10 +481,13 @@
   }
 
   app.textContent = "Loading…";
-  fetch(DATA_BASE + "system-types.json")
-    .then(function (r) { return r.json(); })
-    .then(function (types) {
-      types.forEach(function (t) { systemTypesById[t.id] = t; });
+  Promise.all([
+    fetch(DATA_BASE + "system-types.json").then(function (r) { return r.json(); }),
+    fetch(DATA_BASE + "level-definitions.json").then(function (r) { return r.json(); })
+  ])
+    .then(function (results) {
+      results[0].forEach(function (t) { systemTypesById[t.id] = t; });
+      levelDefinitions = results[1];
       parseInitialState();
       render();
     })

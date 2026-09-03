@@ -620,3 +620,88 @@ Entries record **what happened**; findings record **what is true**. Use `/resear
   `.placeholder-note`) — all flex-column/auto layouts, nothing fixed-width, so no new
   mobile-overflow risk is expected — but this is inference, not a verified screenshot.
   Recommend a follow-up mobile capture in a fresh session before treating this as fully closed.
+
+## 2026-09-03 (session 9, continued) — F-003: wired level-definitions.json into the UI
+
+- `controls.js` now fetches `level-definitions.json` (5th entry in the existing `init()`
+  `Promise.all`) and renders a one-time `<details>` legend (`renderLevelLegend()`, called once,
+  not from `renderLevelFilter()`'s per-type-change rebuild) next to the level-filter checkboxes:
+  the full L0/L1/L2 prose plus the attributed `selectionGuidance` sentence.
+  `docs/controls/index.html` gained one empty `<div id="level-legend">` container to match.
+- `wizard.js` now fetches `level-definitions.json` alongside `system-types.json` (switched the
+  single fetch chain to `Promise.all`) and shows `selectionGuidance`, attributed, on every
+  computed result — the standard's own answer to "how do I know what applies to me," previously
+  shown to nobody.
+- Deliberately left unchanged: `LEVEL_LABEL`'s short badge words (not upstream data, nothing to
+  drift), and `defaultLevelsForIds()`'s L0+L1 preselection (the finding's complaint was
+  under-explained labels next to a reasonable default, not the default itself). No new ADR —
+  this is presentation, not a change to `resolve()` or any labelling/routing decision.
+- `docs/CLAUDE.md`'s Structure note updated (both files now fetch `level-definitions.json`).
+  F-003 marked `actioned` with a resolution note; `research/README.md`'s findings table updated.
+
+## 2026-09-03 (session 9, continued) — F-003 verified; one CSS scoping fix
+
+- `site-critic` verified the F-003 fix live: level legend expands/collapses correctly with
+  working attributed link, level-filter checkboxes still work after the 4→5 fetch change,
+  wizard's `selectionGuidance` renders correctly on both single-type and composed results,
+  keyboard focus and console clean throughout, WCAG 1.4.1 compliant.
+- One pre-existing bug surfaced by the check, now fixed: `.control-guidance` was CSS-scoped as
+  `.control-card .control-guidance` (style.css), so it silently never applied to any of its
+  non-card usages — the wizard's existing "Composed baseline" note, and now the two new
+  guidance paragraphs this session added. Unscoped it to a bare `.control-guidance` rule, fixing
+  all instances at once (one-line change, no other usage of the class exists to conflict with).
+  Mobile screenshot still unverified in this session (`resize_window` tool malfunction, second
+  session in a row) — CSS is fluid/no-breakpoint throughout, so low risk, but flagged again as a
+  recommended follow-up rather than treated as silently fine.
+
+## 2026-09-03 (session 9, continued) — F-014: scrape.py footer-contamination bug found and fixed
+
+- User spotted "see all pages..." text and irrelevant/404-ish reference links in some control
+  cards on the live site. Diagnosed via two parallel investigations (a `corpus-analyst` data
+  enumeration and an `Explore` pass through `scrape.py`), which converged exactly: 20 of 248
+  controls (8.1%) — always the *last* control on their domain's catalog page — had the site's
+  own footer/nav chrome appended to `risk`/`rationale` (rendered twice, mobile+desktop DOM
+  variants), and the same 20 controls' `citations` were 100% fabricated nav-link junk (0%
+  genuine). Root cause: `scrape_domain()`'s block-accumulation loop had START landmarks but no
+  END landmark for the last field of the last control on a page — it only stopped on a new
+  control heading, `Group:`, or `Parameters`, none of which exist after the true last control.
+  Confirmed new and distinct from F-001 (content loss) and F-008 (LLM paraphrasing) — zero id
+  overlap with either.
+- Fixed `scrape.py`: added a chrome-block stop-condition (`is_chrome()`) that breaks the
+  accumulation loop once page nav/footer text is reached. First attempt used a `"Back to "`
+  prefix match that missed the actual DOM structure (the literal block is `"Back to"`, no
+  trailing space or catalog name — confirmed by tracing `blocks_of()` against both catalogs'
+  cached pages) — corrected after direct inspection.
+- Extended `corpus.py gaps` with a standing "scrape contamination" scan (chrome substrings,
+  degenerate citation URLs, duplicated citation sets) so this defect *class* — not just this
+  specific incident — is now caught automatically on every future scrape, closing the gap that
+  let it hide the first time (a diff can only prove parse-matches-shipped, never
+  parse-matches-reality). Updated the `corpus-ingest` skill to mandate running it before every
+  promotion, and to always include the last control per domain page in any `corpus-verifier`
+  sample going forward.
+- Re-ran the pipeline: `scrape.py controls` → `diff_corpus.py` (confirmed exactly the 20 ids'
+  `risk`/`rationale`/`citations` changed, nothing else) → `promote.py --apply`.
+- **Found a second bug while fixing the first**: `promote.py`'s `build_citations()` falls back to
+  the *existing shipped* citations whenever a control has no fresh scraped links (by design, to
+  preserve 5 controls with real standards named in prose but never hyperlinked). Once the
+  scrape.py fix correctly emptied `links` for the 20 contaminated controls, this fallback
+  silently preserved their *already-contaminated shipped* citations — first `--apply` reported
+  clean text but the citations junk was untouched. Fixed by filtering the fallback against a
+  `chrome_names` set (fixed footer/nav strings + every domain/catalog display name, loaded from
+  `domains.json`) — since the shipped citations schema carries no `url` field, only `standard`,
+  filtering has to be by name. Added a `"citations removed (was chrome, F-014)"` counter to
+  `build_controls()` so this outcome is visible in `--dry-run`/`--apply` output (previously there
+  was no counter bucket for "cleared to nothing," only "added"/"corrected" — the fallback bug's
+  effect was invisible in the promotion report itself).
+- Verification note: the `corpus-verifier` agent hit a session rate limit before it could run.
+  Substituted direct `WebFetch` calls against 2 of the 20 fixed controls (`AC-16`, `BD-9`) plus a
+  negative control (`LM-21`, one of the 6 already-clean domains) — confirmed exact match to the
+  live DOM. Flagged in F-014 as a follow-up: a fuller `corpus-verifier` pass, specifically
+  covering the citations-fallback fix, is still owed once available.
+- Final state confirmed via `corpus.py stats`: citations coverage 36 → 16 (exactly the
+  `corpus-analyst` investigation's predicted genuine subset), everything else (control counts,
+  catalog split, guidance coverage, profile stats) unchanged.
+- Filed **F-014**. `research/README.md` (findings table + F-008 promotion note) and
+  `QUESTIONS.md` (RQ-5 cross-reference, not folded into its verdict table — different defect
+  class) updated. No `docs/` code changes and no ADR — this is a data-pipeline bug fix with one
+  correct resolution, following F-008's own precedent.

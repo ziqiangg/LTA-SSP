@@ -42,6 +42,16 @@ landmark, a new field). The diff script only tells you the Python parse disagree
 the actual claim being promoted. Two independent paths agreeing (the Python parser, and a Chrome
 read of the rendered DOM) is the real evidence; a clean diff against old shipped data is not.
 Give it the specific pages and fields to check — it does not re-verify everything by default.
+**Always include the last control on each domain/catalog page in the sample** (F-014: the DOM
+position with no following control heading to close its final field — a structurally
+higher-risk spot than any control the caller might otherwise pick).
+
+**Run `python research/scripts/corpus.py gaps` before every promotion, not just once after a
+known incident.** Its "scrape contamination (F-014)" section catches page chrome (nav/footer
+text, dead `#` links, duplicated citation sets) that leaked past a control's true boundary — a
+diff alone cannot catch this, because a diff only proves "the Python parse agrees with what's
+already shipped," never "the Python parse agrees with reality." A contaminated scrape that
+matches a previously-contaminated shipped file reports as a clean diff.
 
 ## Scraped-format schema (`research/corpus/scraped/*.json`)
 

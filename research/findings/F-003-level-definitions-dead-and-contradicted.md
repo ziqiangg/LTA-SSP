@@ -5,8 +5,18 @@ date: 2026-09-01
 rq: [RQ-5]
 implications: [data, site]
 confidence: high
-status: open
+status: actioned
 ---
+
+> **Actioned 2026-09-03.** Both site implications shipped: `controls.js` now fetches
+> `level-definitions.json` and renders a `<details>` legend next to the level-filter checkboxes
+> with the full L0/L1/L2 prose (not just the short `LEVEL_LABEL` gloss) and the attributed
+> `selectionGuidance` sentence; `wizard.js` now fetches the same file and shows
+> `selectionGuidance` on every computed result. `LEVEL_LABEL`'s three short badge words are left
+> as hardcoded UI glosses, not replaced — they aren't values present in the corpus JSON, so there
+> was nothing to source them from; only the missing full prose was the actual data-rot problem.
+> `defaultLevelsFor()`'s L0+L1 preselection is unchanged — the fix is disclosure next to the
+> pre-ticked checkboxes, not a change to what's pre-ticked. `status` moves to `actioned`.
 
 ## Observation
 

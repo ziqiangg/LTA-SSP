@@ -471,7 +471,9 @@ body > header {
   margin-bottom: 0.75rem;
 }
 
-.control-card .control-guidance {
+/* Unscoped from .control-card (2026-09-03, F-003): reused outside control cards too —
+   the wizard's composed-baseline/selectionGuidance notes and the /controls/ level legend. */
+.control-guidance {
   color: var(--pico-muted-color);
   font-size: 0.9rem;
 }

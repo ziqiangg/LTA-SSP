@@ -141,6 +141,13 @@ composed `guidance` field~~ — **done, drafted as
 [ADR-002](decisions/ADR-002-split-guidance-into-recommendations-and-risk.md) 2026-09-01 (proposed,
 not yet owner-accepted).**
 
+**Not part of this RQ's original scope, but the same broad thread — filed separately:** F-014
+(2026-09-03) found and fixed a distinct corpus-fidelity defect discovered post-hoc: 20 controls'
+`risk`/`rationale` and `citations` had site footer/nav chrome leaked in by a `scrape.py` boundary
+bug, unrelated to any gap RQ-5 already classified above. Not folding into RQ-5's own verdict
+table since it's a different defect class (contamination, not absence) found after RQ-5 was
+already substantially answered.
+
 ---
 
 ## RQ-6 — What does a defensible eval look like, and what is the baseline?

@@ -92,6 +92,22 @@ LANDMARKS = ["Group:", "Parameters"] + list(FIELD_LANDMARKS)
 
 CONTROL_RE = re.compile(r"^([A-Z]{2})-(\d+):\s*(.+)$")
 
+# F-014: the last control on a domain's catalog page has no following control heading
+# to close its final field/links -- the block loop used to run off the end of real
+# content into the page's breadcrumb/nav/footer chrome (rendered twice, mobile+desktop),
+# folding "Back to <Catalog> / Other pages in <Catalog> / See all pages / Back to top /
+# <Isomer footer>" straight into risk/rationale and every footer link into citations.
+# "Back to" the category link renders as its OWN block with no trailing space or
+# catalog name (confirmed against both catalogs' cached HTML) -- the catalog name is a
+# separate following block. Match the literal "Back to" block exactly, plus the other
+# markers as a prefix/exact fallback in case a differently-rendered page merges them.
+CHROME_PREFIXES = ("Other pages in ",)
+CHROME_EXACT = {"Back to", "See all pages", "Back to top"}
+
+
+def is_chrome(text):
+    return text in CHROME_EXACT or text.startswith(CHROME_PREFIXES)
+
 
 class BlockExtractor(HTMLParser):
     """Flatten HTML into a list of block-level text runs, keeping inline text joined.
@@ -216,6 +232,12 @@ def scrape_domain(code, catalog, use_cache=True):
     i = 0
     while i < len(blocks):
         text = blocks[i]["text"]
+        if is_chrome(text):
+            # Page chrome only ever appears after the true last control's content --
+            # nothing past this point is ever real. Stop entirely rather than just
+            # closing the field, so the footer's second (mobile/desktop) render is
+            # never reached either.
+            break
         m = CONTROL_RE.match(text)
         if m and m.group(1).upper() == code.upper():
             if cur:
